@@ -4,6 +4,7 @@ const cors = require("cors")
 const fileUpload = require('express-fileupload')
 const path = require('path')
 const sequelize = require('./db')
+const models = require('./models/models.js')
 const PORT = process.env.PORT || 4221
 
 const app = express()
