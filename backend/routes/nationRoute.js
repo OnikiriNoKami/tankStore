@@ -1,10 +1,11 @@
 const Router = require('express')
+const NationController = require('../controllers/nationController')
 const router = new Router()
 
-router.get('/',)
-router.post('/',)
-router.put('/',)
-router.delete('/',)
+router.get('/', NationController.getAll)
+router.post('/', NationController.create)
+router.put('/', NationController.update)
+router.delete('/', NationController.delete)
 
 
 module.exports = router
