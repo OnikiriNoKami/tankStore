@@ -9,6 +9,7 @@ const statusRouter = require('./statusRoute')
 const tankRouter = require('./tankRoute')
 const tankTypeRouter = require('./tankTypeRoute')
 const userRouter = require('./userRoute')
+const storageRouter = require('./storageRoute')
 
 router.use('/user', userRouter)
 router.use('/module', moduleRouter)
@@ -18,5 +19,5 @@ router.use('/status', statusRouter)
 router.use('/tank', tankRouter)
 router.use('/tank_type', tankTypeRouter)
 router.use('/module_type', moduleTypeRouter)
-
+router.use('/storage', storageRouter)
 module.exports = router
