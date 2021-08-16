@@ -10,6 +10,7 @@ const tankRouter = require('./tankRoute')
 const tankTypeRouter = require('./tankTypeRoute')
 const userRouter = require('./userRoute')
 const storageRouter = require('./storageRoute')
+const imageRouter = require('./imageRoute')
 
 router.use('/user', userRouter)
 router.use('/module', moduleRouter)
@@ -20,4 +21,5 @@ router.use('/tank', tankRouter)
 router.use('/tank_type', tankTypeRouter)
 router.use('/module_type', moduleTypeRouter)
 router.use('/storage', storageRouter)
+router.use('/images', imageRouter)
 module.exports = router
