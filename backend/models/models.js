@@ -108,8 +108,8 @@ Tank.belongsTo(Status)
 Tank.hasMany(Image)
 Image.belongsTo(Tank)
 
-Storage.hasOne(Tank)
-Tank.belongsTo(Storage)
+Tank.hasOne(Storage)
+Storage.belongsTo(Tank)
 
 Tank.hasMany(Module)
 Module.belongsTo(Tank)
