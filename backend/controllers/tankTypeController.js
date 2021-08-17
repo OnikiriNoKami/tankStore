@@ -8,7 +8,7 @@ class TankTypeController {
     
     async create(req, res) {
         const {title, title_short} = req.body
-        const tantType = await TankType.create({title, title_short})
+        const tankType = await TankType.create({title, title_short})
         return res.json(tankType)
     }
 
