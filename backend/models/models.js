@@ -68,7 +68,7 @@ const Module = sequelize.define('module', {
     description: {type: DataTypes.STRING(1000), allowNull: false},
     price_silver: {type: DataTypes.INTEGER, allowNull: false},
     price_exp: {type: DataTypes.INTEGER, allowNull: false},
-    image: {type: DataTypes.INTEGER, allowNull: false},
+    image: {type: DataTypes.STRING, allowNull: false},
     order_index: {type: DataTypes.INTEGER, allowNull: false}
 })
 
