@@ -1,8 +1,9 @@
 const uuid = require('uuid')
 const path = require('path')
 const { Module } = require('../models/models')
+const messages = require('../message/databaseRelated')
 class ModuleController {
-    async create(req, res){
+    async create(req, res, next){
         try {
             const {title, description, 
                 tankId, price_silver, price_exp,
@@ -19,13 +20,13 @@ class ModuleController {
                 price_exp, order_index, image: fileName
             })
     
-            return res.json(module)
+            return res.status(201).json(module)
         } catch (e) {
-            return res.json({message: e.message})
+            return next(e)
         }
     }
 
-    async getById(req, res){
+    async getById(req, res, next){
         const {id} = req.params
         const module = await Module.findOne({
             where: {
@@ -34,13 +35,13 @@ class ModuleController {
         })
 
         if(module === null) {
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             return res.json(module)
         }  
     }
 
-    async getByTankId(req, res){
+    async getByTankId(req, res, next){
         const {tankId} = req.params
         const modules = await Module.findAll({
             where: {
@@ -49,13 +50,13 @@ class ModuleController {
         })
 
         if(modules === null) {
-            return res.json({message: "No such instances in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             return res.json(modules)
         }  
     }
 
-    async update(req, res){
+    async update(req, res, next){
         try {
             const {id, title, description, 
                 tankId, price_silver, price_exp,
@@ -76,7 +77,7 @@ class ModuleController {
             })
 
             if(module === null) {
-                return res.json({message: "No such instance in database!"})
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
             } else {
                 module.title = title
                 module.description = description
@@ -86,15 +87,15 @@ class ModuleController {
                 module.moduleTypeId = moduleTypeId
                 module.order_index = order_index
                 module.image = fileName || module.image
-                module.save()
+                await module.save()
                 return res.json(module)
             } 
         } catch (e) {
-            return res.json({message: e.message})
+            return next(e)
         }
     }
 
-    async delete(req, res){
+    async delete(req, res, next){
         const {id} = req.body
         const module = await Module.findOne({
             where: {
@@ -103,10 +104,10 @@ class ModuleController {
         })
 
         if(module === null) {
-            return res.json({message: "No such instances in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             module.destroy()
-            return res.json({message: "Success!"})
+            return res.json({message: messages.DELETION_SUCCESS})
         }  
     }
 }
