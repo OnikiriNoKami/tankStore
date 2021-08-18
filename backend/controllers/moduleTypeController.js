@@ -1,4 +1,6 @@
 const { ModuleType } = require("../models/models")
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 class ModuleTypeController {
     async getAll(req, res) {
@@ -9,35 +11,35 @@ class ModuleTypeController {
     async create(req, res) {
         const {title} = req.body
         const moduleType = await ModuleType.create({title})
-        return res.json(moduleType)
+        return res.status(201).json(moduleType)
     }
 
-    async update(req, res) {
+    async update(req, res, next) {
         const {id, title} = req.body
         const moduleType = await ModuleType.findOne({ where: {
             id: id
         }})
         if(moduleType === null) {
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             moduleType.title = title
-            moduleType.save()
+            await moduleType.save()
             return res.json(moduleType)
         }        
     }
 
-    async delete(req, res) {
+    async delete(req, res, next) {
         const {id} = req.body
         const moduleType = await ModuleType.findOne({ where: {
             id: id
         }})
         if(moduleType === null) {
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
-            moduleType.destroy()
+            await moduleType.destroy()
+            return res.json({message: messages.DELETION_SUCCESS})
         }
-        return res.json({message: "Success! Instance gone."})
-    }    
+}    
 
 }
 
