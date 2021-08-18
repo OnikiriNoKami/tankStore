@@ -1,4 +1,6 @@
 const { Storage } = require("../models/models");
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 
 class StorageController {
@@ -10,7 +12,11 @@ class StorageController {
             }
         })
 
-        return res.json(storage)
+        if(storage === null) {
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+        } else {
+            return res.json(storage)
+        }
     }
 
     async create(req, res){
@@ -19,10 +25,10 @@ class StorageController {
             amount, tankId
         })
 
-        return res.json(storage)
+        return res.status(201).json(storage)
     }
 
-    async update(req, res){
+    async update(req, res, next){
         const {id, tankId, amount} = req.body
         const storage = await Storage.findOne({
             where: {
@@ -30,11 +36,11 @@ class StorageController {
             }
         })
         if(storage === null) {
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             storage.tankId = tankId
             storage.amount = amount
-            storage.save()
+            await storage.save()
             return res.json(storage)
         }
     }
@@ -48,10 +54,10 @@ class StorageController {
         })
 
         if(storage === null) {
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
-            storage.destroy()
-            return res.json({message: "Success! Instance gone."})
+            await storage.destroy()
+            return res.json({message: messages.DELETION_SUCCESS})
         }        
     }
 }
