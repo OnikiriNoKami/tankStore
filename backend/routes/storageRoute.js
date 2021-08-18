@@ -1,11 +1,12 @@
 const Router = require('express')
 const storageController = require('../controllers/storageController')
+const authMiddleware = require('../middleware/authMiddleware')
 const router = new Router()
 
 router.get('/:tankId', storageController.getByTankId)
-router.post('/', storageController.create)
-router.put('/', storageController.update)
-router.delete('/', storageController.delete)
+router.post('/',authMiddleware, storageController.create)
+router.put('/',authMiddleware, storageController.update)
+router.delete('/',authMiddleware, storageController.delete)
 
 
 module.exports = router
