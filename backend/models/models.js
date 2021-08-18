@@ -49,7 +49,7 @@ const TankType = sequelize.define('tank_type', {
 
 const Image = sequelize.define('image', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    image: {type: DataTypes.STRING, allowNull: false}
+    title: {type: DataTypes.STRING, allowNull: false}
 })
 
 const Storage = sequelize.define('storage', {
