@@ -1,4 +1,6 @@
 const { Tank } = require("../models/models")
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 
 class TankController {
@@ -19,10 +21,10 @@ class TankController {
             statusId: statusId
         })
 
-        return res.json(tank)
+        return res.status(201).json(tank)
     }
 
-    async update(req, res){
+    async update(req, res, next){
         const new_tank = req.body
         const old_tank = await Tank.findOne({
             where:{
@@ -30,7 +32,7 @@ class TankController {
             }
         })
         if(old_tank === null){
-            return res.json({message:"No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         }
 
         old_tank.title = new_tank.title
@@ -40,11 +42,11 @@ class TankController {
         old_tank.nationId = new_tank.nationId
         old_tank.tankTypeId = new_tank.tankTypeId
         old_tank.statusId = new_tank.statusId
-        old_tank.save()
+        await old_tank.save()
         return res.json(old_tank)
     }
 
-    async delete(req, res){
+    async delete(req, res, next){
         const {id} = req.body
 
         const tank = await Tank.findOne({
@@ -52,12 +54,12 @@ class TankController {
                 id: id
             }
         })
-        if(tank == null) {
-            return res.json({message:"No such instance in database!"})
+        if(tank === null) {
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+        } else {
+            await tank.destroy()
+            return res.json({message: messages.DELETION_SUCCESS})
         }
-
-        tank.destroy()
-        return res.json({message:"Success!"})
     }
 
     async getAll(req, res){
@@ -102,7 +104,7 @@ class TankController {
             }
         })
         if(tank===null){
-            return res.json({message:"No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         }
         return res.json(tank)
     }
