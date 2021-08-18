@@ -1,4 +1,6 @@
 const { Status } = require("../models/models");
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 
 class StatusController {
@@ -9,11 +11,11 @@ class StatusController {
     async create(req, res){
         const {title} = req.body
         const status = await Status.create({title})
-        return res.json(status)
+        return res.status(201).json(status)
 
     }
 
-    async update(req, res){
+    async update(req, res, next){
         const {id, title} = req.body
         const status = await Status.findOne({
             where: {
@@ -22,15 +24,15 @@ class StatusController {
         })
 
         if(status === null){
-            return res.json({message: 'No such instance in database!'})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             status.title = title
-            status.save()
+            await status.save()
             return res.json(status)
         }
     }
 
-    async delete(req, res){
+    async delete(req, res, next){
         const {id} = req.body
         const status = await Status.findOne({
             where: {
@@ -39,10 +41,10 @@ class StatusController {
         })
 
         if(status === null){
-            return res.json({message: 'No such instance in database!'})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
-            status.destroy()
-            return res.json({message: "Success! Instance gone."})
+            await status.destroy()
+            return res.json({message: messages.DELETION_SUCCESS})
         }
     }
 }
