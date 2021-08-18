@@ -1,22 +1,23 @@
 const { Basket, BasketTank } = require("../models/models")
-
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 class BasketController {
-    async getByUserId(req, res){
+    async getByUserId(req, res, next){
         const {userId} = req.params
         const basket = await Basket.findOne({
             where: {
                 userId: userId
             }
         })
-
+        
         if(basket === null) {
-            return res.json({message: "Woah! No basket for no user!"})
+            return next(ApiError.badRequest(messages.BASKET_NOT_FOUND))
         }
 
         return res.json({basket})
     }
-    async getItems(req, res){
+    async getItems(req, res, next){
         const {baskedId} = req.params
         const items = await BasketTank.findAll({
             where: {
@@ -24,7 +25,7 @@ class BasketController {
             }
         })
         if(items === null){
-            return res.json({message: "Nothing in basket."})
+            return next(ApiError.badRequest(messages.BASKET_EMPTY))
         }
 
         return res.json({items})
@@ -33,11 +34,11 @@ class BasketController {
     async addItemInBasket(req, res){
         const {basketId, tankId} = req.body
 
-        const item = BasketTank.create({basketId,tankId})
-        return res.json({item})
+        const item = await BasketTank.create({basketId,tankId})
+        return res.status(201).json({item})
     }
 
-    async deleteItemFromBasket(req, res){
+    async deleteItemFromBasket(req, res, next){
         const {id} = req.body
         const item = BasketTank.findOne({
             where: {
@@ -45,7 +46,7 @@ class BasketController {
             }
         })
         if(item===null){
-            return res.json({message:"No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
 
         }
         await item.destroy()
