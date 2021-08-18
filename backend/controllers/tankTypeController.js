@@ -1,4 +1,6 @@
 const { TankType } = require("../models/models");
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 class TankTypeController {
     async getAll(req, res) {
@@ -9,10 +11,10 @@ class TankTypeController {
     async create(req, res) {
         const {title, title_short} = req.body
         const tankType = await TankType.create({title, title_short})
-        return res.json(tankType)
+        return res.status(201).json(tankType)
     }
 
-    async update(req, res){
+    async update(req, res, next){
         const {id, title, title_short} = req.body
         const tankType = await TankType.findOne({
             where: {
@@ -21,11 +23,11 @@ class TankTypeController {
         })
 
         if(tankType === null){
-            return res.json({message:"No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             tankType.title = title
             tankType.title_short = title_short
-            tankType.save()
+            await tankType.save()
             return res.json(tankType)
         }
     }
@@ -39,14 +41,12 @@ class TankTypeController {
         })
 
         if(tankType === null){
-            return res.json({message:"No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
-            tankType.destroy()
-            return res.json({message: "Success! Instance gone."})
+            await tankType.destroy()
+            return res.json({message: messages.DELETION_SUCCESS})
         }
     }
-
-
 }
 
 module.exports = new TankTypeController()
