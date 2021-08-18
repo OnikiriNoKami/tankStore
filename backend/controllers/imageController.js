@@ -50,3 +50,5 @@ class ImageController {
         }
     }
 }
+
+module.exports = new ImageController()
