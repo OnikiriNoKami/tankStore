@@ -1,5 +1,6 @@
 const { Nation } = require("../models/models");
-
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 class NationController {
     async getAll(req, res){
@@ -10,10 +11,10 @@ class NationController {
     async create(req, res){
         const {title} = req.body
         const nation = await Nation.create({title})
-        return res.json(nation)
+        return res.status(201).json(nation)
     }
 
-    async update(req, res){
+    async update(req, res, next){
         const {id, title} = req.body
         const nation = await Nation.findOne({
             where: {
@@ -22,15 +23,15 @@ class NationController {
         })
 
         if(nation === null){
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             nation.title = title
-            nation.save()
+            await nation.save()
             return res.json(nation)
         }
     }
 
-    async delete(req, res){
+    async delete(req, res, next){
         const {id} = req.body
         const nation = await Nation.findOne({
             where: {
@@ -39,10 +40,10 @@ class NationController {
         })
 
         if(nation === null){
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
-            nation.destroy()
-            return res.json({message: "Success! Instance gone."})
+            await nation.destroy()
+            return res.json({message: messages.DELETION_SUCCESS})
         }
     }
 }
