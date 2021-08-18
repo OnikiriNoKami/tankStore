@@ -33,20 +33,29 @@ class ImageController {
 
     async delete(req, res, next){
         const {id} = req.body
-        const image = Image.findOne({
+        const image = await Image.findOne({
             where: {
                 id: id
             }
         })
-
+        console.log(image)
+        
         if(image === null) {
             return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
-            fs.unlink(path.resolve(__dirname, '..', 'static', image.image), (err) => {
-                err ? console.log(err.message) : console.log(`File ${image.image} deleted`)
-            })
-            await image.destroy()
-            return res.json({message: messages.DELETION_SUCCESS})
+            try {
+                fs.unlink(path.resolve(__dirname,'..','static', image.title), (errs) => {
+                    if(errs){
+                        return res.json({message: errs.message})
+                    }
+                    console.log(`Image ${image.title} deleted`)
+                })
+                await image.destroy()
+                return res.json({message: messages.DELETION_SUCCESS})
+            } catch (err){
+                return res.json({message: err.message})
+            }
+            
         }
     }
 }
