@@ -1,4 +1,6 @@
 const { Role } = require("../models/models")
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
 
 class RoleController {
     async getAll(req, res) {
@@ -9,35 +11,35 @@ class RoleController {
     async create(req, res) {
         const {title, description} = req.body
         const role = await Role.create({title, description})
-        return res.json(role)
+        return res.status(201).json(role)
     }
 
-    async update(req, res) {
+    async update(req, res, next) {
         const {id, title, description} = req.body
         const role = await Role.findOne({ where: {
             id: id
         }})
         if(role === null) {
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
             role.title = title
             role.description = description
-            role.save()
+            await role.save()
+            return res.json(role)
         }
-        return res.json(role)
     }
 
-    async delete(req, res) {
+    async delete(req, res, next) {
         const {id} = req.body
         const role = await Role.findOne({ where: {
             id: id
         }})
         if(role === null) {
-            return res.json({message: "No such instance in database!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } else {
-            role.destroy()
+            await role.destroy()
+            return res.json({message: messages.DELETION_SUCCESS})
         }
-        return res.json({message: "Success! Instance gone."})
     }    
 
 }
