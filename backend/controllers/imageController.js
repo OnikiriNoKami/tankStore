@@ -1,5 +1,5 @@
 const uuid = require('uuid')
-const Image = require('../models/models')
+const {Image} = require('../models/models')
 const path = require('path')
 const ApiError = require('../error/ApiError')
 const messages = require('../message/databaseRelated')
@@ -12,8 +12,8 @@ class ImageController {
         let fileName = uuid.v4() +'.jpg'
 
         file.mv(path.resolve(__dirname, '..', 'static', fileName))
-        const img = await Image.create({
-            tankId, image: fileName
+        const img = await Image.create({tankId,
+            image: fileName
         })
 
         return res.status(201).json(img)
