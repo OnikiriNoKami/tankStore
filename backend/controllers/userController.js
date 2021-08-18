@@ -1,11 +1,14 @@
 const bcrypt = require('bcrypt')
 const {User, Basket} = require('../models/models')
 const Tokenizer = require('./jwtTokenController')
+const messages = require('../message/databaseRelated')
+const ApiError = require('../error/ApiError')
+
 class UserController {
-    async registration(req, res){
+    async registration(req, res, next){
         const {email, password} = req.body
         if(!email || !password){
-            return res.json({message:"Something wrong with data!"})
+            return next(ApiError.badRequest(messages.USER_DATA_PROBLEMS))
         } 
 
         const user_exist = await User.findOne({
@@ -15,7 +18,7 @@ class UserController {
         })
 
         if(user_exist){
-            return res.json({message: "Woah user already exist!"})
+            return next(ApiError.badRequest(messages.USER_EXIST))
         }
 
         const hashPassword = await bcrypt.hash(password, 3)
@@ -28,7 +31,7 @@ class UserController {
 
     }
 
-    async login(req, res){
+    async login(req, res, next){
         const {email, password} = req.body
         const user = await User.findOne({
             where: {
@@ -36,11 +39,11 @@ class UserController {
             }
         })
         if(user === null){
-            return res.json({message:"Woah! No user with this email!"})
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         } 
         let passwordGood = bcrypt.compareSync(password, user.password)
         if(!passwordGood){
-            return res.json({message:"Woah password problems!"})
+            return next(ApiError.badRequest(messages.USER_DATA_PROBLEMS))
         }
 
         const token = Tokenizer.genToken(user.id, user.email)
