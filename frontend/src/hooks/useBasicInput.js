@@ -3,7 +3,7 @@ import { useState } from "react"
 const useBasicInput = (initialValue) => {
     const [value, setValue] = useState(initialValue)
     const changeHandler = (e) => {
-        setValue(e.target/value)
+        setValue(e.target.value)
     }
 
     return {
@@ -11,4 +11,4 @@ const useBasicInput = (initialValue) => {
     }
 }
 
-export default useInput
+export default useBasicInput

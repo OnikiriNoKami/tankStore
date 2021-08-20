@@ -1,12 +1,14 @@
+import { Box } from '@material-ui/core';
 import React from 'react';
+import Login from '../components/Login';
 
 const Auth = () => {
 
 
     return (
-        <div>
-            Auth page
-        </div>
+        <Box display='flex' height='100%' alignItems='center'>
+            <Login />
+        </Box>
     );
 };
 
