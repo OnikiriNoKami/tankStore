@@ -6,7 +6,7 @@ const Auth = () => {
 
 
     return (
-        <Box display='flex' height='100%' alignItems='center'>
+        <Box display='flex' flexGrow={1} height='100%' alignItems='center'>
             <Login />
         </Box>
     );
