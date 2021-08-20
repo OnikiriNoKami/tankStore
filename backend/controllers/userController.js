@@ -22,12 +22,12 @@ class UserController {
         }
 
         const hashPassword = await bcrypt.hash(password, 3)
-        const user = await User.create({email, password:hashPassword})
+        const token = Tokenizer.genToken(user.id, user.email)
+        const user = await User.create({email, password:hashPassword, token})
 
         const basket = await Basket.create({userId: user.id})
-        const token = Tokenizer.genToken(user.id, user.email)
-
-        return res.json({token})
+        
+        return res.json({token, user:{id, email}})
 
     }
 
@@ -45,14 +45,30 @@ class UserController {
         if(!passwordGood){
             return next(ApiError.badRequest(messages.USER_DATA_PROBLEMS))
         }
+        const id = user.id;
 
         const token = Tokenizer.genToken(user.id, user.email)
-        return res.json({token})
+        user.token = token
+        await user.save()
+        return res.json({token, user:{id, email}})
     }
 
-    async verifyToken(req, res){
+    async verifyToken(req, res, next){
+        const old_token = req.headers.authorization.split(' ')[1]
+        const legit = await User.findOne({
+            where: {
+                token: old_token
+            }
+        })
+        if(legit === null)
+        {
+            return res.status(401).json({message: 'Unauthorized'})
+        }
         const token = Tokenizer.genToken(req.user.id, req.user.email)
-        return res.json({token})
+        legit.token = token
+        await legit.save()
+        const {id, email} = legit
+        return res.json({token, user:{id, email}})
     }
 
 }
