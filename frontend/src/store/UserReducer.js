@@ -3,7 +3,6 @@ import { USER_DATA_FETCH, USER_LOGIN, USER_LOGOUT } from '../actions/UserActions
 const defaultState = {
     id : null,
     email: null,
-    roleId: null
 }
 
 export const userReducer = (state= defaultState, action) => {
@@ -14,14 +13,12 @@ export const userReducer = (state= defaultState, action) => {
                 ...state,
                 id: action.payload.id,
                 email: action.payload.email,
-                roleId: action.payload.roleId
             }
         case USER_LOGOUT:
             return {
                 ...state, 
                 id: null,
                 email: null,
-                roleId: null
             }
         default:
             return state
