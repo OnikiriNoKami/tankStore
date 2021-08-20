@@ -12,14 +12,9 @@ export const authByToken = (token) => async (dispatch) => {
     {headers: headers})
     
     
-    return dispatch => {
-        
-        if (result.status === 200)
-        {
-            dispatch(loadTokenAction(result.data.token))
-            dispatch(setUserDataAction(result.data.user))
-        }
-        
+    if(result.status === 200) {
+        dispatch(loadTokenAction(result.data.token))
+        dispatch(setUserDataAction(result.data.user))
     }
 }
 
@@ -29,8 +24,6 @@ export const login = (email, password) => async(dispatch) => {
         password: password
     }
     const result = await axios.post('http://localhost:4221/api/user/login',body)
-    console.log(result.data)
-    console.log(result.status)
     if(result.status === 200) {
         dispatch(loadTokenAction(result.data.token))
         dispatch(setUserDataAction(result.data.user))
