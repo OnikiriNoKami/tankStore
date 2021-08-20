@@ -1,4 +1,4 @@
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_REGISTRATION = 'USER_REGISTRATION';
-export const USER_DATA_FETCH = 'USER_DATA_FETCH';
+export const USER_DATA_SET = 'USER_DATA_SET';
