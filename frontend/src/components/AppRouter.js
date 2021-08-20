@@ -8,7 +8,7 @@ const AppRouter = () => {
     return (
         <Switch>
             {publicRoutes.map(({path, Component}) => 
-                <Route path={path} component={Component}/>
+                <Route key={path} path={path} component={Component}/>
             )}
             <Redirect to={AUTH_ROUTE}/>
         </Switch>
