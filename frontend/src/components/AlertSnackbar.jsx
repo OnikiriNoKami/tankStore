@@ -9,16 +9,17 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant='filled' {...props}/> 
 }
 
-const AlertSnackbar = ({status, type,hideAfter, message, position=defaultPosition}) => {
+const AlertSnackbar = ({handleClose, hideAfter = null,status, type, message, position=defaultPosition}) => {
     
     return (
         <div>
             <Snackbar 
                 open={status} 
                 anchorOrigin={position}
-                autoHideDuration={hideAfter || null}
+                autoHideDuration={hideAfter}
+                onClose={handleClose}
             >
-                <Alert severity={type}>
+                <Alert onClose={handleClose}severity={type}>
                     {message}
                 </Alert>
             </Snackbar>

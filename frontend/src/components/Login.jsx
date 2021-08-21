@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container'
 import TextField from '@material-ui/core/TextField';
 import { Grid, Button} from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../asyncActions/auth';
 import useValidatedInput from '../hooks/useValidatedInput';
 import AlertSnackbar from './AlertSnackbar';
@@ -14,11 +14,21 @@ const Login = () => {
     const handleSubmit = () => {
         dispatch(login(email.value, password.value))
     }
+    const [showSuccess, setShowSuccess] = useState(false)
+    const  authenticated = useSelector(state => state.status.authenticated)
     const [errorStatus, setErrorStatus] = useState(false)
     useEffect(() => {
         setErrorStatus(email.errorStatus||password.errorStatus)
     }, [email.errorStatus, password.errorStatus])
 
+    const handleClose = () => {
+        setShowSuccess(false)
+    }
+    useEffect(() => {
+        if(authenticated){
+            setShowSuccess(true)
+        }
+    }, [authenticated])
     return(
         <Container>
             <Grid 
@@ -63,7 +73,7 @@ const Login = () => {
                 </Grid>
             </Grid>
             <AlertSnackbar status={errorStatus} type='error' message='Check your data!'/>
-            
+            <AlertSnackbar handleClose={handleClose} hideAfter={3000} status={showSuccess} type='success' message="Authenticated!"/>
         </Container>
     );
 };
