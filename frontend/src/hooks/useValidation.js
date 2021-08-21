@@ -5,7 +5,7 @@ const useValidation = (value, validations) => {
     const [minLengthError, setMinLengthError] = useState(false)
     const [maxLengthError, setMaxLengthError] = useState(false)
     const [emailError, setEmailError] = useState(false)
-
+    const [validInput, setValidInput] = useState(false)
     useEffect(() => {
         for(const validation in validations){
             switch(validation){
@@ -39,11 +39,20 @@ const useValidation = (value, validations) => {
         }
     }, [value])
 
+    useEffect(() => {
+        if(isEmpty||minLengthError||maxLengthError||emailError){
+            setValidInput(false)
+        } else {
+            setValidInput(true)
+        }
+    }, [isEmpty, minLengthError, maxLengthError, emailError])
+
     return {
         isEmpty,
         minLengthError,
         maxLengthError,
-        emailError
+        emailError,
+        validInput
     }
 }
 
