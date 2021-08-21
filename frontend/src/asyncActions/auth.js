@@ -7,14 +7,24 @@ export const authByToken = (token) => async (dispatch) => {
     const headers = {
         'Authorization': token
     }
+    try {        
+        const result = await axios.get('http://localhost:4221/api/user/auth', 
+        {headers: headers})
+        if(result.status === 200) {
+            dispatch(loadTokenAction(result.data.token))
+            dispatch(setUserDataAction(result.data.user))
+            dispatch(authUser(true, true))
+        }
 
-    const result = await axios.get('http://localhost:4221/api/user/auth', 
-    {headers: headers})
-    
-    
-    if(result.status === 200) {
-        dispatch(loadTokenAction(result.data.token))
-        dispatch(setUserDataAction(result.data.user))
+    } catch (error){
+        if(error.response) {
+            if(error.response.status === 404) {
+                dispatch(authFail())
+            }
+        }
+        if(error.request) {
+            dispatch(authConnFail(false))
+        }
     }
 }
 
@@ -28,7 +38,7 @@ export const login = (email, password) => async(dispatch) => {
         if(result.status === 200) {
             dispatch(loadTokenAction(result.data.token))
             dispatch(setUserDataAction(result.data.user))
-            dispatch(authUser(true))
+            dispatch(authUser(true, true))
         }
 
     } catch (error){
@@ -38,7 +48,7 @@ export const login = (email, password) => async(dispatch) => {
             }
         }
         if(error.request) {
-            dispatch(authConnFail())
+            dispatch(authConnFail(false))
         }
     }
 }

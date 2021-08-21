@@ -1,26 +1,27 @@
 import {
     AUTHENTICATED, 
     AUTHORIZATION_FAIL, 
-    NOT_AUTHORIZED,
     FAIL_TO_CONNECT
 } from '../actions/StatusActions'
 
 
 const defaultState = {
-    authenticated: false
+    authenticated: false,
+    connection: null
 }
 
 export const statusReducer = (state=defaultState, action) =>{
     switch(action.type){
         case AUTHENTICATED:
-            return {...state, authenticated: action.payload}
-        case AUTHORIZATION_FAIL:
+            return {...state, authenticated: action.payload, connection: action.payload}
         case FAIL_TO_CONNECT:
+            return {...state, connection: action.payload}
+        case AUTHORIZATION_FAIL:
         default:
             return state
     }
 }
 
 export const authUser = (payload) => ({type:AUTHENTICATED, payload})
-export const authConnFail = () => ({type:FAIL_TO_CONNECT})
+export const authConnFail = (payload) => ({type:FAIL_TO_CONNECT, payload})
 export const authFail = () => ({type:AUTHORIZATION_FAIL})
