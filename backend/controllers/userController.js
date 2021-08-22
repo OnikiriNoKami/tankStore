@@ -22,11 +22,13 @@ class UserController {
         }
 
         const hashPassword = await bcrypt.hash(password, 3)
-        const token = Tokenizer.genToken(user.id, user.email)
-        const user = await User.create({email, password:hashPassword, token})
-
-        const basket = await Basket.create({userId: user.id})
         
+        const user = await User.create({email, password:hashPassword})
+        const token = Tokenizer.genToken(user.id, user.email)
+        user.token = token
+        await user.save()
+        const basket = await Basket.create({userId: user.id})
+        const id = user.id
         return res.json({token, user:{id, email}})
 
     }

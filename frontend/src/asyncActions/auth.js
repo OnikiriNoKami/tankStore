@@ -52,3 +52,24 @@ export const login = (email, password) => async(dispatch) => {
         }
     }
 }
+
+export const registrate = (email, password) => async(dispatch) => {
+    const body = {
+        email: email,
+        password: password
+    }
+    try {
+        const result = await axios.post('http://localhost:4221/api/user/registration',body)
+            dispatch(loadTokenAction(result.data.token))
+            dispatch(setUserDataAction(result.data.user))
+            dispatch(authUser(true, true))
+    } catch (error){
+        if(error.response) {
+            if(error.response.status === 404) {
+                dispatch(authFail())
+            }
+        } else if(error.request) {
+            dispatch(authConnFail(false))
+        }
+    }
+}
