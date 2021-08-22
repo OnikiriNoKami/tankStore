@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { loadTokenAction } from '../store/TokenReducer';
 import { setUserDataAction } from '../store/UserReducer';
-import { authFail, authUser, authConnFail } from '../store/StatusReducer';
+import { authFail, authUser, authConnFail, authConnEstablished } from '../store/StatusReducer';
 
 export const authByToken = (token) => async (dispatch) => {    
     const headers = {
@@ -20,6 +20,7 @@ export const authByToken = (token) => async (dispatch) => {
         if(error.response) {
             if(error.response.status === 404) {
                 dispatch(authFail())
+                dispatch(authConnEstablished(true))
             }
         }
         if(error.request) {
@@ -45,6 +46,7 @@ export const login = (email, password) => async(dispatch) => {
         if(error.response) {
             if(error.response.status === 404) {
                 dispatch(authFail())
+                dispatch(authConnEstablished(true))
             }
         }
         if(error.request) {
@@ -67,6 +69,7 @@ export const registrate = (email, password) => async(dispatch) => {
         if(error.response) {
             if(error.response.status === 404) {
                 dispatch(authFail())
+                dispatch(authConnEstablished(true))
             }
         } else if(error.request) {
             dispatch(authConnFail(false))

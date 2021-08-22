@@ -7,6 +7,7 @@ const Messages = () => {
     const status = useSelector(state => state.status)
     const [showSuccess, setShowSuccess] = useState(false)
     const [showConnError, setShowConnError] = useState(false)
+    const [showAuthError, setShowAuthError] = useState(false)
 
     const handleClose = (setter) => {
         setter(false)
@@ -22,7 +23,12 @@ const Messages = () => {
         if(status.connection === false){
             setShowConnError(true)
         }
+        if(status.connection === true && !status.authenticated){
+            setShowAuthError(true)
+        }
     }, [status.connection])
+
+
     return (
         <div>
             <AlertSnackbar 
@@ -30,14 +36,21 @@ const Messages = () => {
                 hideAfter={3000} 
                 status={showSuccess} 
                 type='success' 
-                message="Authenticated!"
+                message="Success!"
             />
             <AlertSnackbar 
                 handleClose={() => handleClose(setShowConnError)} 
                 hideAfter={5000} 
                 status={showConnError} 
-                type='error' 
+                type='warning' 
                 message="No respons from server."
+            />
+            <AlertSnackbar 
+                handleClose={() => handleClose(setShowAuthError)} 
+                hideAfter={5000} 
+                status={showAuthError} 
+                type='error' 
+                message="Bad data provided!"
             />
 
         </div>
