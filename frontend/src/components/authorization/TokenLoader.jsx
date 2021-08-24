@@ -9,7 +9,7 @@ const TokenLoader = () => {
     const history = useHistory() 
     const location = useLocation()
     const token = useTokenFromStorage()
-   
+    console.log('lends token')
     useEffect(()=>{
         token.getToken()
     }, [])

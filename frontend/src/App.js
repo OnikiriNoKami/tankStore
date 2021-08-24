@@ -6,6 +6,7 @@ import { store } from './store';
 import Messages from './components/Messages';
 import StatusMonitor from './components/StatusMonitor';
 import TokenLoader from './components/authorization/TokenLoader';
+import Navbar from './components/Navbar';
 
 
 
@@ -14,7 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <TokenLoader/>
+        <Navbar />
         <Messages/>
         <StatusMonitor/>
         <AppRouter />
