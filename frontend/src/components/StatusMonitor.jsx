@@ -36,7 +36,7 @@ const  StatusMonitor = () => {
                 hideAfter={3000} 
                 status={showSuccess} 
                 type='success' 
-                message="Success!"
+                message="Authentificated!"
             />
             <AlertSnackbar 
                 handleClose={() => handleClose(setShowConnError)} 
