@@ -1,21 +1,23 @@
 import axios from 'axios';
-import { loadTokenAction } from '../store/TokenReducer';
+import { loadTokenAction, tokenFromStorage } from '../store/TokenReducer';
 import { setUserDataAction } from '../store/UserReducer';
 import { authFail, authUser, authConnFail, authConnEstablished } from '../store/StatusReducer';
+import { SetTokenToStorage } from '../storage/tokenActions';
 
 export const authByToken = (token) => async (dispatch) => {    
     const headers = {
-        'Authorization': token
+        'Authorization': 'jwt '+token
     }
     try {        
         const result = await axios.get('http://localhost:4221/api/user/auth', 
         {headers: headers})
-        if(result.status === 200) {
+ 
             dispatch(loadTokenAction(result.data.token))
             dispatch(setUserDataAction(result.data.user))
             dispatch(authUser(true, true))
-        }
-
+            dispatch(tokenFromStorage(false))
+            SetTokenToStorage(result.data.token)
+        
     } catch (error){
         if(error.response) {
             if(error.response.status === 404) {
@@ -40,6 +42,8 @@ export const login = (email, password) => async(dispatch) => {
             dispatch(loadTokenAction(result.data.token))
             dispatch(setUserDataAction(result.data.user))
             dispatch(authUser(true, true))
+            dispatch(tokenFromStorage(false))
+            SetTokenToStorage(result.data.token)
         }
 
     } catch (error){
@@ -65,6 +69,8 @@ export const registrate = (email, password) => async(dispatch) => {
             dispatch(loadTokenAction(result.data.token))
             dispatch(setUserDataAction(result.data.user))
             dispatch(authUser(true, true))
+            dispatch(tokenFromStorage(false))
+            SetTokenToStorage(result.data.token)
     } catch (error){
         if(error.response) {
             if(error.response.status === 404) {
