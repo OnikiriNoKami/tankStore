@@ -1,0 +1,6 @@
+export const SHOW_SUCCESS = 'show_success'
+export const HIDE_SUCCESS = 'hide_success'
+export const SHOW_FAIL = 'show_fail'
+export const HIDE_FAIL = 'hide_fail'
+export const MANIPULATE_SUCCESS = 'manipulate_success'
+export const MANIPULATE_FAIL = 'manipulate_fail'

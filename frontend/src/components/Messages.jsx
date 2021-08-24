@@ -1,56 +1,45 @@
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { failMessage, successMessage } from "../store/MessageStore"
 import AlertSnackbar from "./AlertSnackbar"
 
 
 const Messages = () => {
-    const status = useSelector(state => state.status)
-    const [showSuccess, setShowSuccess] = useState(false)
-    const [showConnError, setShowConnError] = useState(false)
-    const [showAuthError, setShowAuthError] = useState(false)
+    const messages = useSelector(state => state.messages)
+    const dispatch = useDispatch()
 
     const handleClose = (setter) => {
-        setter(false)
+        dispatch(setter(false))
     }
 
     useEffect(()=> {
-        if(status.authenticated){
-            setShowSuccess(true)
+        if(messages.showSuccess){
+            dispatch(successMessage(true))
         }
-    }, [status.authenticated])
+    }, [messages.showSuccess])
 
-    useEffect(() => {
-        if(status.connection === false){
-            setShowConnError(true)
+    useEffect(()=> {
+        if(messages.showFail){
+            dispatch(failMessage(true))
         }
-        if(status.connection === true && !status.authenticated){
-            setShowAuthError(true)
-        }
-    }, [status.connection])
+    }, [messages.failMessage])
 
 
     return (
         <div>
             <AlertSnackbar 
-                handleClose={() => handleClose(setShowSuccess)} 
+                handleClose={() => handleClose(successMessage)} 
                 hideAfter={3000} 
-                status={showSuccess} 
+                status={messages.showSuccess} 
                 type='success' 
                 message="Success!"
             />
             <AlertSnackbar 
-                handleClose={() => handleClose(setShowConnError)} 
+                handleClose={() => handleClose(failMessage)} 
                 hideAfter={5000} 
-                status={showConnError} 
-                type='warning' 
-                message="No respons from server."
-            />
-            <AlertSnackbar 
-                handleClose={() => handleClose(setShowAuthError)} 
-                hideAfter={5000} 
-                status={showAuthError} 
+                status={messages.showFail} 
                 type='error' 
-                message="Bad data provided!"
+                message="Something went wrong..."
             />
 
         </div>
