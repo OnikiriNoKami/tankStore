@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import { store } from './store';
 import Messages from './components/Messages';
 import StatusMonitor from './components/StatusMonitor';
-import TokenLoader from './components/TokenLoader';
+import TokenLoader from './components/authorization/TokenLoader';
 
 
 

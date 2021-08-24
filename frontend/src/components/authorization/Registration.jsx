@@ -3,10 +3,10 @@ import Container from '@material-ui/core/Container'
 import TextField from '@material-ui/core/TextField';
 import { Grid, Button} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { registrate } from '../asyncActions/auth';
-import useValidatedInput from '../hooks/useValidatedInput';
-import AlertSnackbar from './AlertSnackbar';
-import { authResetConn } from '../store/StatusReducer';
+import { registrate } from '../../asyncActions/auth';
+import useValidatedInput from '../../hooks/useValidatedInput';
+import AlertSnackbar from '../AlertSnackbar';
+import { authResetConn } from '../../store/StatusReducer';
 
 const Registration = () => {
     const email = useValidatedInput("", {minLength: 3, isEmpty: true, isEmail: true})

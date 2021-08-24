@@ -1,9 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { LoadTokenFromStorage } from '../storage/tokenActions';
-import { AUTH_ROUTE } from '../utils/consts';
-import useTokenFromStorage from '../hooks/useTokenFromStorage';
+import { AUTH_ROUTE } from '../../utils/consts';
+import useTokenFromStorage from '../../hooks/useTokenFromStorage';
 
 const TokenLoader = () => {
     const fromStorage = useSelector(state => state.token.fromStorage)
