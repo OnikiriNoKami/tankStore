@@ -16,6 +16,7 @@ function App() {
     <BrowserRouter>
       <Provider store={store}>
         <Navbar />
+        <TokenLoader/>
         <Messages/>
         <StatusMonitor/>
         <AppRouter />

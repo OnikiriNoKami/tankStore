@@ -17,3 +17,7 @@ export const SetTokenToStorage = (token) => {
         localStorage.setItem('token', token)
     }
 }
+
+export const RemoveTokenFromStorage = () => {
+    localStorage.removeItem('token')
+}

@@ -28,4 +28,4 @@ export const userReducer = (state= defaultState, action) => {
 
 export const setUserDataAction = (payload) => ({type: USER_DATA_SET, payload})
 export const loginUserAction = (payload) => ({type:USER_LOGIN, payload})
-export const logoutUserAction = (payload) => ({type: USER_LOGOUT})
+export const logoutUserAction = () => ({type: USER_LOGOUT})

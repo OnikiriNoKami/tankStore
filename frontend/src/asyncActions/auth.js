@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { loadTokenAction, tokenFromStorage } from '../store/TokenReducer';
-import { setUserDataAction } from '../store/UserReducer';
-import { authFail, authUser, authConnFail, authConnEstablished } from '../store/StatusReducer';
-import { SetTokenToStorage } from '../storage/tokenActions';
+import { dropTokenAction, loadTokenAction, tokenFromStorage } from '../store/TokenReducer';
+import { logoutUserAction, setUserDataAction } from '../store/UserReducer';
+import { authFail, authUser, authConnFail, authConnEstablished, authResetStatuses } from '../store/StatusReducer';
+import { RemoveTokenFromStorage, SetTokenToStorage } from '../storage/tokenActions';
 
 export const authByToken = (token) => async (dispatch) => {    
     const headers = {
@@ -81,4 +81,11 @@ export const registrate = (email, password) => async(dispatch) => {
             dispatch(authConnFail(false))
         }
     }
+}
+
+export const logout = () => async(dispatch) => {
+    dispatch(logoutUserAction())
+    dispatch(dropTokenAction())
+    dispatch(authResetStatuses())
+    RemoveTokenFromStorage()
 }

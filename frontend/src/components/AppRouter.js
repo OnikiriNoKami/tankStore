@@ -6,6 +6,7 @@ import { AUTH_ROUTE } from '../utils/consts';
 
 
 const AppRouter = () => {
+    
     return (
         <Switch>
             {publicRoutes.map(({path, Component}) => 
