@@ -1,9 +1,11 @@
 import { Drawer } from "@material-ui/core"
 import SidebarStyles from "../styles/SidebarStyles"
+import CreateDropdown from "./creators/CreateDropdown"
 
 
 const Sidebar = () => {
     const classes = SidebarStyles()
+
     return <div>
         <Drawer
             className={classes.drawer}
@@ -11,7 +13,7 @@ const Sidebar = () => {
             anchor='left'
             classes={{paper: classes.drawerPaper}}
         >
-            Some content
+            <CreateDropdown/>
         </Drawer>
     </div>
 }
