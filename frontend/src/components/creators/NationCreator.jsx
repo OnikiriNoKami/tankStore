@@ -3,7 +3,7 @@ import useValidatedInput from "../../hooks/useValidatedInput"
 
 
 const NationCreator = () => {
-    const title = useValidatedInput('', {maxLength: 250, minLength: 2})
+    const title = useValidatedInput('', {maxLength: 250,isEmpty: true, minLength: 2})
 
 
     const handleSubmit = () => {
@@ -11,10 +11,11 @@ const NationCreator = () => {
     }
     return (
         <Container>
-            <Grid container>
-                <Grid item xs={8}>
+            <Grid container spacing={3} justifyContent='center'>
+                <Grid item 
+                    xs={8} >
                     <Typography variant='h4'>
-                        Creation of a Nation
+                        Nation creation
                     </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -23,7 +24,7 @@ const NationCreator = () => {
                         value={title.value} 
                         onChange={title.onChange}
                         autoComplete='off'
-                        onBlur={title.onBluer}
+                        onBlur={title.onBlur}
                         error={title.errorStatus}
                         variant='outlined'
                         fullWidth
@@ -34,6 +35,7 @@ const NationCreator = () => {
                         onClick={handleSubmit}
                         variant='outlined'
                         disabled={!title.validInput}
+                        color='primary'
                     >
                         Create
                     </Button>

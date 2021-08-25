@@ -23,7 +23,7 @@ const Navbar = () => {
 
     return (
         <AppBar>
-            <Toolbar>
+            <Toolbar positiob='fixed'>
                 <Grid container justifyContent='space-evenly'>
                 <Grid item sm={2}>
                         <Typography variant='h4'>

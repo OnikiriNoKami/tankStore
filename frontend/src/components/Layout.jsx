@@ -6,15 +6,16 @@ import StatusMonitor from "./StatusMonitor"
 
 const useStyles = makeStyles((theme) => {
     return {
-        
+        toolbar: theme.mixins.toolbar
     }
 })
 
 const Layout = () => {
-
+    const classes = useStyles()
 
     return <div>
         <Navbar/>
+        <div className={classes.toolbar}/>
         <TokenLoader/>
         <Messages/>
         <StatusMonitor/>

@@ -7,7 +7,13 @@ const useBoxStyles = makeStyles((theme) => {
             flexGrow: 1,
             alignItems: 'center',
             
-            height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
+            height: `calc(100% - 56px)`,
+            [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: { 
+                height: `calc(100% - 48px)` 
+              }, 
+            [theme.breakpoints.up('sm')]: { 
+                height: `calc(100% - 64px)` 
+             }, 
         }
     })
 })
