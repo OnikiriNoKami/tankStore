@@ -13,12 +13,12 @@ const NationCreator = () => {
         <Container>
             <Grid container spacing={3} justifyContent='center'>
                 <Grid item 
-                    xs={8} >
+                    xs={10} sm={8} >
                     <Typography variant='h4'>
                         Nation creation
                     </Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={10} sm={8}>
                     <TextField 
                         label='Title'
                         value={title.value} 
@@ -30,7 +30,7 @@ const NationCreator = () => {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={10} sm={8}>
                     <Button
                         onClick={handleSubmit}
                         variant='outlined'
