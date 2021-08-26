@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 const useValidation = (value, validations) => {
     const [isEmpty, setIsEmpty] = useState(true)
+    const [useIsEmpty, setUseIsEmpty] = useState(false)
     const [minLengthError, setMinLengthError] = useState(false)
     const [maxLengthError, setMaxLengthError] = useState(false)
     const [emailError, setEmailError] = useState(false)
@@ -10,8 +11,9 @@ const useValidation = (value, validations) => {
         for(const validation in validations){
             switch(validation){
                 case 'isEmpty':
+                    setUseIsEmpty(validations[validation])
                     value ? 
-                    setIsEmpty(false) 
+                    setIsEmpty(false)
                     : 
                     setIsEmpty(true)
                     break;
@@ -40,7 +42,7 @@ const useValidation = (value, validations) => {
     }, [value])
 
     useEffect(() => {
-        if(isEmpty||minLengthError||maxLengthError||emailError){
+        if((useIsEmpty&&isEmpty)||minLengthError||maxLengthError||emailError){
             setValidInput(false)
         } else {
             setValidInput(true)
