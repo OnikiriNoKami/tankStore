@@ -58,7 +58,7 @@ const NationCreator = () => {
                                 disabled={title.isEmpty}
                                 color='secondary'
                             >
-                                Clear
+                                Reset
                             </Button>
                         </Grid>
 

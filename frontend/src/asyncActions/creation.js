@@ -18,3 +18,4 @@ export const creator = (data, path, token) => async(dispatch) => {
 
 export const roleCreate = (title, description, token) => (creator({title, description}, 'role', token))
 export const nationCreate = (title, token) => (creator({title}), 'nation', token)
+export const tankTypeCreate = (title, title_short, token) => (creator({title, title_short}, 'tank_type', token))

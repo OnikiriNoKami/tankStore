@@ -1,13 +1,23 @@
 import { Container, Grid, Typography, TextField, Button } from "@material-ui/core"
+import { useDispatch, useSelector } from "react-redux"
+import { tankTypeCreate } from "../../asyncActions/creation"
 import useValidatedInput from "../../hooks/useValidatedInput"
 
 
 const TypeCreator = () => {
     const title = useValidatedInput('', {minLength:2,isEmpty: true, maxLength:250})
     const titleShort = useValidatedInput('', {minLength:2,isEmpty: true, maxLength:10})
+    const token = useSelector(state => state.token.token)
+    const dispatch = useDispatch()
+
+    const handleClear = () => {
+        title.clear()
+        titleShort.clear()
+    }
 
     const handleSubmit = () => {
-        console.log('submited')
+        dispatch(tankTypeCreate(title.value, titleShort.value, token))
+        handleClear()
     }
 
     return (        
@@ -43,14 +53,29 @@ const TypeCreator = () => {
                     />
                 </Grid>
                 <Grid item xs={10} sm={8}>
-                    <Button 
-                        onClick={handleSubmit}
-                        disabled={!title.validInput||!titleShort.validInput}
-                        variant='outlined'
-                        color='primary'
-                    >
-                        Create
-                    </Button>
+                    <Grid container justifyContent='space-between'>
+                        <Grid item>
+                            <Button
+                                onClick={handleSubmit}
+                                variant='outlined'
+                                disabled={!title.validInput||!titleShort.validInput}
+                                color='primary'
+                            >
+                                Create
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                onClick={handleClear}
+                                variant='outlined'
+                                disabled={title.isEmpty&&titleShort.isEmpty}
+                                color='secondary'
+                            >
+                                Reset
+                            </Button>
+                        </Grid>
+
+                    </Grid>
                 </Grid>
 
 

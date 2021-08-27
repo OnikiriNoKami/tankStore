@@ -16,6 +16,7 @@ const useValidatedInput = (initialValue, validations) => {
     }
     const clear = () => {
         setValue('')
+        setIsDirty(false)
     }
 
     useEffect(()=>{
