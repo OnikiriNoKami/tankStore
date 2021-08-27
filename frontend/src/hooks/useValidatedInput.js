@@ -14,13 +14,17 @@ const useValidatedInput = (initialValue, validations) => {
     const onBlur = (e) => {
         setIsDirty(true)
     }
+    const clear = () => {
+        setValue('')
+    }
 
     useEffect(()=>{
         setErrorStatus(isDirty&&!valid.validInput)
     }, [valid.validInput, isDirty])
 
     return {
-        value, 
+        value,
+        clear,
         onChange: changeHandler,
         onBlur, 
         isDirty,

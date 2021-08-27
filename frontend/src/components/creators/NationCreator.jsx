@@ -13,6 +13,10 @@ const NationCreator = () => {
     const handleSubmit = () => {
         dispatch(createNation(title.value, token))
     }
+    const handleClear = () => {
+        title.clear()
+    }
+
     return (
         <Container>
             <Grid container spacing={3} justifyContent='center'>
@@ -35,15 +39,31 @@ const NationCreator = () => {
                     />
                 </Grid>
                 <Grid item xs={10} sm={8}>
-                    <Button
-                        onClick={handleSubmit}
-                        variant='outlined'
-                        disabled={!title.validInput}
-                        color='primary'
-                    >
-                        Create
-                    </Button>
+                    <Grid container justifyContent='space-between'>
+                        <Grid item>
+                            <Button
+                                onClick={handleSubmit}
+                                variant='outlined'
+                                disabled={!title.validInput}
+                                color='primary'
+                            >
+                                Create
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                onClick={handleClear}
+                                variant='outlined'
+                                disabled={title.isEmpty}
+                                color='secondary'
+                            >
+                                Clear
+                            </Button>
+                        </Grid>
+
+                    </Grid>
                 </Grid>
+                
             </Grid>
         </Container>
     )
