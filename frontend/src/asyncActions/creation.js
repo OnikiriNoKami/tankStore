@@ -1,21 +1,20 @@
 import axios from "axios"
 import { failMessage, successMessage } from "../store/MessageStore"
 
-
-export const createNation = (title, token) => async(dispatch) => {
-    console.log('in')
+export const creator = (data, path, token) => async(dispatch) => {
     const headers = {
         'Authorization': 'jwt '+ token
     }
     const body = {
-        title: title
+        ...data
     }
     try{
-        const result = await axios.post('http://localhost:4221/api/nation',body,{headers: headers})
+        const result = await axios.post(`http://localhost:4221/api/`+path,body,{headers: headers})
         dispatch(successMessage(true))
-
     } catch(error){
         dispatch(failMessage(true))
     }
-
 }
+
+export const roleCreate = (title, description, token) => (creator({title, description}, 'role', token))
+export const nationCreate = (title, token) => (creator({title}), 'nation', token)

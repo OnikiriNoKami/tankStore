@@ -1,14 +1,24 @@
 import { Container, Grid, Typography, TextField, Button } from "@material-ui/core"
+import { useDispatch, useSelector } from "react-redux"
+import { roleCreate } from "../../asyncActions/creation"
 import useValidatedInput from "../../hooks/useValidatedInput"
 
 
 const RoleCreator = () => {
 
-    const title = useValidatedInput('', {minLength: 5, isEmpty: true, maxLength: 250})
-    const description = useValidatedInput('', {isEmpty: false, maxLength: 999})
+    const title = useValidatedInput('', {minLength: 2, isEmpty: true, maxLength: 250})
+    const description = useValidatedInput('', {minLength: 2,isEmpty: true, maxLength: 999})
+    const token = useSelector(state => state.token.token)
+    const dispatch = useDispatch()
+
+    const handleClear = () => {
+        title.clear()
+        description.clear()
+    }
 
     const handleSubmit = () => {
-        console.log('submited')
+        dispatch(roleCreate(title.value, description.value, token))
+        handleClear()
     }
 
     return (
@@ -46,14 +56,29 @@ const RoleCreator = () => {
                     />                        
                 </Grid>
                 <Grid item xs={10} sm={8}>
-                    <Button 
-                        onClick={handleSubmit}
-                        disabled={!title.validInput||!description.validInput}
-                        variant='outlined'
-                        color='primary'
-                    >
-                        Create
-                    </Button>
+                    <Grid container justifyContent='space-between'>
+                        <Grid item>
+                            <Button
+                                onClick={handleSubmit}
+                                variant='outlined'
+                                disabled={!title.validInput||!description.validInput}
+                                color='primary'
+                            >
+                                Create
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                onClick={handleClear}
+                                variant='outlined'
+                                disabled={title.isEmpty&&description.isEmpty}
+                                color='secondary'
+                            >
+                                Clear
+                            </Button>
+                        </Grid>
+
+                    </Grid>
                 </Grid>
             </Grid>
 
