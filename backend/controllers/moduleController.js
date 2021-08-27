@@ -27,33 +27,42 @@ class ModuleController {
     }
 
     async getById(req, res, next){
-        const {id} = req.params
-        const module = await Module.findOne({
-            where: {
-                id:id
-            }
-        })
+        try {
+            const {id} = req.params
+            const module = await Module.findOne({
+                where: {
+                    id:id
+                }
+            })
 
-        if(module === null) {
-            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
-        } else {
-            return res.json(module)
-        }  
+            if(module === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(module)
+            }  
+        } catch (err){
+            console.log(err.message)
+        }
     }
 
     async getByTankId(req, res, next){
-        const {tankId} = req.params
-        const modules = await Module.findAll({
-            where: {
-                tankId: tankId
-            }
-        })
+        try {
+            const {tankId} = req.params
+            const modules = await Module.findAll({
+                where: {
+                    tankId: tankId
+                }
+            })
 
-        if(modules === null) {
-            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
-        } else {
-            return res.json(modules)
-        }  
+            if(modules === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(modules)
+            } 
+
+        } catch (err){
+            console.log(err.message)
+        }
     }
 
     async update(req, res, next){
@@ -96,19 +105,23 @@ class ModuleController {
     }
 
     async delete(req, res, next){
-        const {id} = req.body
-        const module = await Module.findOne({
-            where: {
-                id: id
-            }
-        })
+        try {
+            const {id} = req.body
+            const module = await Module.findOne({
+                where: {
+                    id: id
+                }
+            })
 
-        if(module === null) {
-            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
-        } else {
-            module.destroy()
-            return res.json({message: messages.DELETION_SUCCESS})
-        }  
+            if(module === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                module.destroy()
+                return res.json({message: messages.DELETION_SUCCESS})
+            }  
+        } catch (err){
+            console.log(err.message)
+        }
     }
 }
 
