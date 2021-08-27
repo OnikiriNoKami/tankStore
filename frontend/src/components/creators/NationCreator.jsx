@@ -1,13 +1,17 @@
 import { Button, Container, TextField,Grid, Typography } from "@material-ui/core"
+import { useDispatch, useSelector } from "react-redux"
+import { createNation } from "../../asyncActions/creation"
 import useValidatedInput from "../../hooks/useValidatedInput"
 
 
 const NationCreator = () => {
     const title = useValidatedInput('', {maxLength: 250,isEmpty: true, minLength: 2})
+    const token = useSelector(state => state.token.token)
+    const dispatch = useDispatch()
 
 
     const handleSubmit = () => {
-        console.log('submited')
+        dispatch(createNation(title.value, token))
     }
     return (
         <Container>

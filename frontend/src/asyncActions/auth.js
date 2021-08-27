@@ -11,12 +11,16 @@ export const authByToken = (token) => async (dispatch) => {
     try {        
         const result = await axios.get('http://localhost:4221/api/user/auth', 
         {headers: headers})
+        if(result.data.token){
  
             dispatch(loadTokenAction(result.data.token))
             dispatch(setUserDataAction(result.data.user))
             dispatch(authUser(true, true))
             dispatch(tokenFromStorage(false))
             SetTokenToStorage(result.data.token)
+        }else
+        {dispatch(authFail())
+        dispatch(authConnEstablished(true))}
         
     } catch (error){
         if(error.response) {
