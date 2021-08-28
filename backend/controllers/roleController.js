@@ -17,7 +17,7 @@ class RoleController {
 
     async getBySubstring(req, res, next){
         try {
-            const {serch}= req.params
+            const {search}= req.params
 
             const result = await Role.findAll({
                 attributes:['id','title','description'],
