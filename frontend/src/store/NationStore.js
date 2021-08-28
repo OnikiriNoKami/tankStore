@@ -16,7 +16,7 @@ export const nationReducer = (state=defaultState, action) => {
         case NATION_DROP:
             return {...state, nations: []}
         case NATION_SET:
-            return {...state, nations: [...state.nations.nations, action.payload]}
+            return {...state, nations: [...state.nations, action.payload]}
         case NATION_RESET_STATUSES:
             return {...state, loading: false, loaded:null}
 
