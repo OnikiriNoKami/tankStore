@@ -6,7 +6,9 @@ const {Op, Sequelize} = require('sequelize')
 class RoleController {
     async getAll(req, res) {
         try{
-            const roles = await Role.findAll()
+            const roles = await Role.findAll({
+                attributes:['id','title','description']
+            })
             return res.json(roles)
         } catch (err){
             console.log(err.message)
@@ -18,6 +20,7 @@ class RoleController {
             const {serch}= req.params
 
             const result = await Role.findAll({
+                attributes:['id','title','description'],
                 where: {
                     title: {
                         [Sequelize.Op.iLike]: `%${search}%`
@@ -49,7 +52,9 @@ class RoleController {
     async update(req, res, next) {
         try{
             const {id, title, description} = req.body
-            const role = await Role.findOne({ where: {
+            const role = await Role.findOne({ 
+                attributes:['id','title','description'],
+                where: {
                 id: id
             }})
             if(role === null) {

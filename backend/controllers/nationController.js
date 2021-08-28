@@ -6,7 +6,9 @@ const { Op, Sequelize } = require('sequelize')
 class NationController {
     async getAll(req, res){
         try{
-            const nations = await Nation.findAll()
+            const nations = await Nation.findAll({
+                attributes:['id, title']
+            })
         return res.json(nations)
         } catch (err){
             console.log(err.message)
@@ -27,6 +29,7 @@ class NationController {
         try{
             const {search} = req.params
             const result = await Nation.findAll({
+                attributes:['id, title'],
                 where:{
                     title: {
                         [Sequelize.Op.iLike]: `%${search}%`
@@ -49,6 +52,7 @@ class NationController {
         try{
             const {id, title} = req.body
         const nation = await Nation.findOne({
+            attributes:['id, title'],
             where: {
                 id: id
             }
