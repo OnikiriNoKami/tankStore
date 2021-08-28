@@ -71,7 +71,7 @@ const TypeCreator = () => {
                                 disabled={title.isEmpty&&titleShort.isEmpty}
                                 color='secondary'
                             >
-                                Reset
+                                Clear
                             </Button>
                         </Grid>
 

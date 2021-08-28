@@ -74,7 +74,7 @@ const RoleCreator = () => {
                                 disabled={title.isEmpty&&description.isEmpty}
                                 color='secondary'
                             >
-                                Reset
+                                Clear
                             </Button>
                         </Grid>
 
