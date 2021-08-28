@@ -1,6 +1,7 @@
 const { Role } = require("../models/models")
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
+const {Op, Sequelize} = require('sequelize')
 
 class RoleController {
     async getAll(req, res) {
@@ -10,6 +11,29 @@ class RoleController {
         } catch (err){
             console.log(err.message)
         }        
+    }
+
+    async getBySubstring(req, res, next){
+        try {
+            const {serch}= req.params
+
+            const result = await Role.findAll({
+                where: {
+                    title: {
+                        [Sequelize.Op.iLike]: `%${search}%`
+                    }
+                }
+            })
+
+            if(result.length===0){
+                return next(ApiError.badRequest(message.NOT_IN_DATABASE))
+            }else{
+                return res.json(result)
+            }
+
+        } catch {
+            console.log(err.message)
+        }
     }
 
     async create(req, res) {

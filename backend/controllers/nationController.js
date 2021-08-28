@@ -34,7 +34,7 @@ class NationController {
                 }
             })
 
-            if(result===null){
+            if(result.length===0){
                 return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
             } else {
                 return res.json(result)
