@@ -1,6 +1,7 @@
 const { Nation } = require("../models/models");
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
+const { Op, Sequelize } = require('sequelize')
 
 class NationController {
     async getAll(req, res){
@@ -20,6 +21,28 @@ class NationController {
        } catch (err){
            console.log(err.message)
        }
+    }
+
+    async getBySubstring(req, res, next){
+        try{
+            const {search} = req.params
+            const result = await Nation.findAll({
+                where:{
+                    title: {
+                        [Sequelize.Op.iLike]: `%${search}%`
+                    }
+                }
+            })
+
+            if(result===null){
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(result)
+            }
+
+        } catch (err){
+            console.log(err.message)
+        }
     }
 
     async update(req, res, next){
