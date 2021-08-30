@@ -6,13 +6,15 @@ import { tokenReducer } from "./TokenReducer";
 import { statusReducer } from "./StatusReducer";
 import { messageReducer } from "./MessageStore";
 import { nationReducer } from "./NationStore";
+import { roleReducer } from "./RoleStore";
 
 const mainReducer = combineReducers({
     user: userReducer,
     token: tokenReducer,
     status: statusReducer,
     messages: messageReducer,
-    nations: nationReducer
+    nations: nationReducer,
+    roles: roleReducer
 })
 
 export const store = createStore(mainReducer, composeWithDevTools(applyMiddleware(thunk)))

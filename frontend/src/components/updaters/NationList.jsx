@@ -12,6 +12,7 @@ const NationList = () => {
         dispatch(nationFetch())
     }
 
+
     return (<Button onClick={handleClick}>
         Update
     </Button>)
