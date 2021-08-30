@@ -1,4 +1,4 @@
-import { TANK_TYPE_LOADED, TANK_TYPE_LOADING, TANK_TYPE_RESET_STATUSES, TANK_TYPE_SET, TANK_TYPE_DROP } from "../actions/RoleActions"
+import { TANK_TYPE_LOADED, TANK_TYPE_LOADING, TANK_TYPE_RESET_STATUSES, TANK_TYPE_SET, TANK_TYPE_DROP } from "../actions/TankTypeActions"
 
 
 const defaultState = {
@@ -7,7 +7,7 @@ const defaultState = {
     tankTypes: []
 }
 
-export const roleReducer = (state=defaultState, action) => {
+export const tankTypeReducer = (state=defaultState, action) => {
     switch(action.type){
         case TANK_TYPE_LOADING:
             return {...state, loading: action.payload}
@@ -25,8 +25,8 @@ export const roleReducer = (state=defaultState, action) => {
     }
 }
 
-export const tankTypesLoading = (payload) => ({type: ROLES_LOADING, payload})
-export const tankTypesLoaded = (payload) => ({type: ROLES_LOADED, payload})
-export const tankTypesDrop = () => ({type: ROLES_DROP})
-export const tankTypesSet = (payload) => ({type:ROLES_SET, payload})
-export const tankTypesStatuses = () => ({type: ROLES_RESET_STATUSES})
+export const tankTypesLoading = (payload) => ({type: TANK_TYPE_LOADING, payload})
+export const tankTypesLoaded = (payload) => ({type: TANK_TYPE_LOADED, payload})
+export const tankTypesDrop = () => ({type: TANK_TYPE_DROP})
+export const tankTypesSet = (payload) => ({type: TANK_TYPE_SET, payload})
+export const tankTypesStatuses = () => ({type: TANK_TYPE_RESET_STATUSES})

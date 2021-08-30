@@ -7,6 +7,7 @@ import { statusReducer } from "./StatusReducer";
 import { messageReducer } from "./MessageStore";
 import { nationReducer } from "./NationStore";
 import { roleReducer } from "./RoleStore";
+import { tankTypeReducer } from "./TankTypeStore";
 
 const mainReducer = combineReducers({
     user: userReducer,
@@ -14,7 +15,8 @@ const mainReducer = combineReducers({
     status: statusReducer,
     messages: messageReducer,
     nations: nationReducer,
-    roles: roleReducer
+    roles: roleReducer,
+    tankTypes: tankTypeReducer
 })
 
 export const store = createStore(mainReducer, composeWithDevTools(applyMiddleware(thunk)))
