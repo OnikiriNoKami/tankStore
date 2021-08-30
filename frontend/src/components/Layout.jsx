@@ -2,9 +2,9 @@ import { makeStyles } from "@material-ui/core"
 import AppRouter from "./AppRouter"
 import TokenLoader from "./authorization/TokenLoader"
 import Messages from "./Messages"
+import CombinedMonitors from "./monitors/CombinedMonitors"
 import Navbar from "./Navbar"
 import Sidebar from "./Sidebar"
-import StatusMonitor from "./StatusMonitor"
 
 
 const useStyles = makeStyles((theme) => {
@@ -26,7 +26,7 @@ const Layout = () => {
         <Sidebar/>
         <TokenLoader/>
         <Messages/>
-        <StatusMonitor/>
+        <CombinedMonitors/>
         <AppRouter/>
 
     </div>
