@@ -17,7 +17,7 @@ const SearchBar = ({ label, callBack }) => {
 
   return (
     <Container>
-      <form>
+      <form onSubmit={(e)=> {handleClick(e)}}>
         <Grid container spacing={2} direction="row">
           <Grid item xs={10}>
             <TextField

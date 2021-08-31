@@ -2,14 +2,18 @@ import axios from "axios"
 import { failMessage, successMessage } from "../store/MessageStore"
 import { nationsLoaded, nationsSet, nationsLoading } from "../store/NationStore"
 
+const nationFetchEnd = (data) => async(dispatch) => {
+    dispatch(nationsSet(data))
+    dispatch(nationsLoading(false))
+    dispatch(nationsLoaded(true))
+}
+
 export const fetcher = (path) => async(dispatch) => {
     try{
         const result = await axios.get(`http://localhost:4221/api/`+path)
         switch(path){
             case 'nation':
-                dispatch(nationsSet(result.data))
-                dispatch(nationsLoading(false))
-                dispatch(nationsLoaded(true))
+                dispatch(nationFetchEnd(result.data))
                 break
 
         }
