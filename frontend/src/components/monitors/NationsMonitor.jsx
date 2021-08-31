@@ -13,7 +13,7 @@ const NationsMonitor = () => {
         if(loading){
             snack.open()
         }
-        if(loaded){
+        if(loaded === true || loaded === false){
             snack.close()
         }
     }, [loading, loaded])
