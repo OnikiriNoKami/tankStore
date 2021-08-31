@@ -12,13 +12,23 @@ const Admin = () => {
     let {action, type} = useParams()
 
     return (
-        <Box className={classes.box}>
+        <div style={{width:'100%'}}>
 
-            {action==='create'&&type==='Nation'&&<NationCreator/>}
-            {action==='create'&&type==='Type'&&<TypeCreator/>}
-            {action==='create'&&type==='Role'&&<RoleCreator/>}
-            {action==='change'&&type==='Nation'&&<NationList/>}
-        </Box>
+            {action==='create'&&<Box className={classes.box}>
+
+                {type==='Nation'&&<NationCreator/>}
+                {type==='Type'&&<TypeCreator/>}
+                {type==='Role'&&<RoleCreator/>}
+            </Box>
+            }
+
+            {action==='change'&&<Box className={classes.boxUpdater}>
+                {type==='Nation'&&<NationList/>}
+            </Box>            
+            }
+            
+
+        </div>
     );
 };
 

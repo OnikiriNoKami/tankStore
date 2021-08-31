@@ -16,7 +16,7 @@ export const tankTypeReducer = (state=defaultState, action) => {
         case TANK_TYPE_DROP:
             return {...state, tankTypes: []}
         case TANK_TYPE_SET:
-            return {...state, tankTypes: [...state.tankTypes, action.payload]}
+            return {...state, tankTypes: action.payload}
         case TANK_TYPE_RESET_STATUSES:
             return {...state, loading: false, loaded:null}
 

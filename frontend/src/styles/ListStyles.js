@@ -7,6 +7,7 @@ const ListStyles = makeStyles((theme) => {
             padding: 0,
             margin: 0,
             width: "100%",
+
         },
         item: {
             paddingLeft: '30px'

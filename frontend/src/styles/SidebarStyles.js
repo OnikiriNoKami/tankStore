@@ -15,6 +15,7 @@ const SidebarStyles = makeStyles((theme) => {
             [theme.breakpoints.up('sm')]: { 
                 marginTop: `64px`
              },
+
             
         },
         drawerPaper: {
@@ -29,6 +30,7 @@ const SidebarStyles = makeStyles((theme) => {
                 height: `calc(100% - 64px)`,
                 marginTop: `64px`
              },
+
         }
     }
 })

@@ -17,14 +17,15 @@ const CreateDropdown = () => {
 
     return (
         <Accordion className={classesAccordion.accordion}>
-            <AccordionSummary
+            <AccordionSummary 
                 expandIcon={<ArrowDropDownOutlinedIcon/>}    
             >
                 <Typography variant='h6'>
                     Create
                 </Typography>
             </AccordionSummary>
-            <AccordionDetails className={classesAccordion.details}>
+            <AccordionDetails 
+                className={classesAccordion.details}>
                 <List 
                     className={classesList.list}
                 >

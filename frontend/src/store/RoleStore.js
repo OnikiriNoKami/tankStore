@@ -16,7 +16,7 @@ export const roleReducer = (state=defaultState, action) => {
         case ROLES_DROP:
             return {...state, roles: []}
         case ROLES_SET:
-            return {...state, roles: [...state.roles, action.payload]}
+            return {...state, roles: action.payload}
         case ROLES_RESET_STATUSES:
             return {...state, loading: false, loaded:null}
 
