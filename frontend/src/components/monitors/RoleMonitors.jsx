@@ -4,10 +4,10 @@ import { useEffect } from "react";
 
 
 
-const NationsMonitor = () => {
-    const snack = useSnack('Loading nations...')
-    const loading = useSelector(state => state.nations.loading)
-    const loaded = useSelector(state => state.nations.loaded)
+const RolesMonitor = () => {
+    const snack = useSnack('Loading roles...')
+    const loading = useSelector(state => state.roles.loading)
+    const loaded = useSelector(state => state.roles.loaded)
 
     useEffect(()=>{
         if(loading){
@@ -21,4 +21,4 @@ const NationsMonitor = () => {
     return null;
 }
 
-export default NationsMonitor
+export default RolesMonitor
