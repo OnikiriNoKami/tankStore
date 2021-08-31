@@ -1,7 +1,8 @@
-import { Button, Container, Grid, Typography } from "@material-ui/core"
+import { Button, Container, Grid, TextField, Typography } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
 import { nationFetch } from "../../asyncActions/fetcher"
 import { useEffect } from "react"
+import SearchBar from "./SearcBar"
 
 
 const NationList = () => {
@@ -12,8 +13,13 @@ const NationList = () => {
         dispatch(nationFetch())
     },[])
 
+    const callBack =(hmm)=>{
+        console.log(hmm)
+    }
+
     return (
         <Container>
+            <SearchBar label='Search by title...' callBack={callBack} />
             <Grid container spacing={3} justifyContent='center'>
 
             {nations.length !== 0 ? nations.map((nation) => {
