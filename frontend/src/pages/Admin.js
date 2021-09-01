@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import NationCreator from '../components/creators/NationCreator';
+import NationCRUD from '../components/creators/NationCreator';
 import RoleCreator from '../components/creators/RoleCreator';
 import TypeCreator from '../components/creators/TypeCreator';
 import NationList from '../components/updaters/NationList';
@@ -16,7 +16,7 @@ const Admin = () => {
 
             {action==='create'&&<Box className={classes.box}>
 
-                {type==='Nation'&&<NationCreator/>}
+                {type==='Nation'&&<NationCRUD role='creator'/>}
                 {type==='Type'&&<TypeCreator/>}
                 {type==='Role'&&<RoleCreator/>}
             </Box>

@@ -2,9 +2,11 @@ import { Button, Container, TextField,Grid, Typography } from "@material-ui/core
 import { useDispatch, useSelector } from "react-redux"
 import { nationCreate } from "../../asyncActions/creation"
 import useValidatedInput from "../../hooks/useValidatedInput"
+import { failMessage } from "../../store/MessageStore"
 
+const defaultRole = 'creator'
 
-const NationCreator = () => {
+const NationCRUD = ({role = defaultRole, id=null}) => {
     const title = useValidatedInput('', {maxLength: 250,isEmpty: true, minLength: 2})
     const token = useSelector(state => state.token.token)
     const dispatch = useDispatch()
@@ -14,7 +16,12 @@ const NationCreator = () => {
     }
 
     const handleSubmit = () => {
-        dispatch(nationCreate(title.value, token))
+        if(role === 'creator'){
+                dispatch(nationCreate(title.value, token))         
+        }
+        if(role === 'updater'){
+            console.log('update')
+        }  
         handleClear()
     }
 
@@ -70,4 +77,4 @@ const NationCreator = () => {
     )
 }
 
-export default NationCreator
+export default NationCRUD

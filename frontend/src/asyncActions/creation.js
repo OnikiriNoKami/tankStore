@@ -10,6 +10,7 @@ export const creator = (data, path, token) => async(dispatch) => {
     }
     try{
         const result = await axios.post(`http://localhost:4221/api/`+path,body,{headers: headers})
+        console.log(result.status)
         dispatch(successMessage(true))
     } catch(error){
         dispatch(failMessage(true))
@@ -17,5 +18,5 @@ export const creator = (data, path, token) => async(dispatch) => {
 }
 
 export const roleCreate = (title, description, token) => (creator({title, description}, 'role', token))
-export const nationCreate = (title, token) => (creator({title}), 'nation', token)
+export const nationCreate = (title, token) => (creator({title}, 'nation', token))
 export const tankTypeCreate = (title, title_short, token) => (creator({title, title_short}, 'tank_type', token))

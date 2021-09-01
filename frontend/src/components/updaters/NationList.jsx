@@ -4,6 +4,7 @@ import { nationFetch } from "../../asyncActions/fetcher"
 import { useEffect } from "react"
 import SearchBar from "./SearcBar"
 import { nationSearch } from "../../asyncActions/searchFetcher"
+import NationRow from "./NationRow"
 
 
 const NationList = () => {
@@ -29,20 +30,8 @@ const NationList = () => {
 
             {nations.length !== 0 ? nations.map((nation) => {
                 return (
-                    <Grid key={nation.id} item xs={10} sm={7}>
-                        <Grid container>
-                            <Grid item xs={2} sm={3}>
-                                <Typography  variant='h4'>{nation.id}</Typography>
-                            </Grid>
-                            <Grid item xs={10} sm={9}>
-                                <Typography  variant='h4'>{nation.title}</Typography>
-                            </Grid>
-
-                        </Grid>
-
-
-                        
-                        
+                    <Grid key={nation.id} item xs={11} sm={10}>
+                           <NationRow id={nation.id} title={nation.title}/>
                     </Grid>
                 )
             })

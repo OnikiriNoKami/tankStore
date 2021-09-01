@@ -24,7 +24,7 @@ const SearchBar = ({ label, callBack, callReset }) => {
     <Container>
       <form onSubmit={(e)=> {handleClick(e)}}>
         <Grid container spacing={2} direction="row">
-          <Grid item xs={10}>
+          <Grid item xs={12} lg={10} >
             <TextField
               size="small"
               onChange={searchQuery.onChange}
@@ -36,7 +36,7 @@ const SearchBar = ({ label, callBack, callReset }) => {
               label={label}
             ></TextField>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={6} lg={1}>
             <Button
               onClick={(e) => {
                 handleClick(e);
@@ -49,7 +49,7 @@ const SearchBar = ({ label, callBack, callReset }) => {
               FIND
             </Button>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={6} lg={1}>
             <Button
               onClick={(e) => {
                 handleReset(e);

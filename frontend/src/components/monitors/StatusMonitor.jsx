@@ -50,7 +50,7 @@ const  StatusMonitor = () => {
                 hideAfter={5000} 
                 status={showAuthError} 
                 type='error' 
-                message="Bad data provided!"
+                message="Authentication fail!"
             />
 
         </div>
