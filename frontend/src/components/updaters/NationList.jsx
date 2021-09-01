@@ -3,23 +3,28 @@ import { useDispatch, useSelector } from "react-redux"
 import { nationFetch } from "../../asyncActions/fetcher"
 import { useEffect } from "react"
 import SearchBar from "./SearcBar"
+import { nationSearch } from "../../asyncActions/searchFetcher"
 
 
 const NationList = () => {
     const dispatch = useDispatch()
     const nations = useSelector(state => state.nations.nations)
 
-    useEffect(()=>{
+    const loadNations = () => {
         dispatch(nationFetch())
+    }
+
+    useEffect(()=>{
+        loadNations()
     },[])
 
-    const callBack =(hmm)=>{
-        console.log(hmm)
+    const callBack =(query)=>{
+        dispatch(nationSearch(query))
     }
 
     return (
         <Container>
-            <SearchBar label='Search by title...' callBack={callBack} />
+            <SearchBar label='Search by title...' callBack={callBack} callReset={loadNations}/>
             <Grid container spacing={3} justifyContent='center'>
 
             {nations.length !== 0 ? nations.map((nation) => {

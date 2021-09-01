@@ -2,7 +2,7 @@ import { Container, Grid, Button, TextField } from "@material-ui/core";
 import useValidatedInput from "../../hooks/useValidatedInput";
 import ButtonStyles from "../../styles/ButtonStyles";
 
-const SearchBar = ({ label, callBack }) => {
+const SearchBar = ({ label, callBack, callReset }) => {
   const classes = ButtonStyles();
   const searchQuery = useValidatedInput("", {
     isEmpty: true,
@@ -14,6 +14,11 @@ const SearchBar = ({ label, callBack }) => {
     e.preventDefault();
     callBack(searchQuery.value)
   };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    callReset();
+  }
 
   return (
     <Container>
@@ -31,15 +36,29 @@ const SearchBar = ({ label, callBack }) => {
               label={label}
             ></TextField>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <Button
               onClick={(e) => {
                 handleClick(e);
               }}
+              color='primary'
+              className={classes.searchButton}
+              variant="outlined"
+              disabled={!searchQuery.validInput}
+            >
+              FIND
+            </Button>
+          </Grid>
+          <Grid item xs={1}>
+            <Button
+              onClick={(e) => {
+                handleReset(e);
+              }}
+              color='secondary'
               className={classes.searchButton}
               variant="outlined"
             >
-              FIND
+              RELOAD
             </Button>
           </Grid>
         </Grid>
