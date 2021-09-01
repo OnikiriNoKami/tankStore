@@ -15,13 +15,13 @@ const NationRow = ({ id, title, clickHandle, props }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={6} md={7}>
         <Grid container spacing={1}>
           <Grid item xs={4} sm={4}>
             <Typography variant="h5">Title:</Typography>
           </Grid>
           <Grid item xs={8} sm={8}>
-            <Typography variant="h5">{title}</Typography>
+            <Typography noWrap={true} variant="h5">{title}</Typography>
           </Grid>
         </Grid>
       </Grid>
