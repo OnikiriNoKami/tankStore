@@ -21,6 +21,6 @@ module.exports = function (req, res, next){
             return res.status(401).json({message: messages.NO_TOKEN})
         }
     } catch (e) {
-        return res.json({message: e.message})
+        return res.status(401).json({message: e.message})
     }
 }
