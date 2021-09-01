@@ -23,6 +23,10 @@ const NationList = () => {
         dispatch(nationSearch(query))
     }
 
+    const handleClick = (id) => {
+        console.log(id)
+    }
+
     return (
         <Container>
             <SearchBar label='Search by title...' callBack={callBack} callReset={loadNations}/>
@@ -31,7 +35,7 @@ const NationList = () => {
             {nations.length !== 0 ? nations.map((nation) => {
                 return (
                     <Grid key={nation.id} item xs={11} sm={10}>
-                           <NationRow id={nation.id} title={nation.title}/>
+                           <NationRow id={nation.id} title={nation.title} clickHandle={handleClick}/>
                     </Grid>
                 )
             })
