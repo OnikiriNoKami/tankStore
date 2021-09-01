@@ -5,9 +5,11 @@ import { rolesLoading } from "../store/RoleStore";
 import { tankTypesLoading } from "../store/TankTypeStore";
 import { nationFetchEnd, roleFetchEnd, tankTypesFetchEnd } from "./fetcherEnd";
 
-const fetcher = (path) => async (dispatch) => {
+const fetcher = (query, path) => async (dispatch) => {
   try {
-    const result = await axios.get(`http://localhost:4221/api/` + path);
+    const result = await axios.get(
+      `http://localhost:4221/api/${path}/${query}`
+    );
     switch (path) {
       case "nation":
         dispatch(nationFetchEnd(result.data, true));
@@ -20,7 +22,6 @@ const fetcher = (path) => async (dispatch) => {
         break;
     }
     dispatch(successMessage(true));
-    
   } catch (error) {
     switch (path) {
       case "nation":
@@ -37,18 +38,17 @@ const fetcher = (path) => async (dispatch) => {
   }
 };
 
-export const nationFetch = () => async (dispatch) => {
+export const nationSearch = (query) => async (dispatch) => {
   dispatch(nationsLoading(true));
-  dispatch(fetcher("nation"));
+  dispatch(fetcher(query, "nation"));
 };
 
-export const roleFetch = () => async (dispatch) => {
+export const roleSearch = (query) => async (dispatch) => {
   dispatch(rolesLoading(true));
-  dispatch(fetcher("role"));
+  dispatch(fetcher(query, "role"));
 };
 
-export const tankTypeFetch = () => async (dispatch) => {
+export const tankTypeSearch = (query) => async (dispatch) => {
   dispatch(tankTypesLoading(true));
-  dispatch(fetcher("tank_type"));
+  dispatch(fetcher(query, "tank_type"));
 };
-
