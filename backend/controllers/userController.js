@@ -32,7 +32,7 @@ class UserController {
             const id = user.id
             return res.json({token, user:{id, email}})
         } catch (err){
-            console.log(err.message)
+            return next(ApiError(err))
         }
 
     }
@@ -59,7 +59,7 @@ class UserController {
             await user.save()
             return res.json({token, user:{id, email}})
         } catch (err){
-            console.log(err.message)
+            return next(ApiError(err))
         }
     }
 
@@ -82,7 +82,7 @@ class UserController {
             return res.json({token, user:{id, email}})
     
         } catch (err){
-            console.log(err.message)
+            return next(ApiError(err))
         }
     }
 
