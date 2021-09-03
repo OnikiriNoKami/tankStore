@@ -4,6 +4,8 @@ import useValidation from "./useValidation"
 const useValidatedInput = (initialValue, validations) => {
     const [value, setValue] = useState(initialValue)
     const [isDirty, setIsDirty] = useState(false)
+    const [def, setDefault] = useState(initialValue)
+    const [isDefault, setIsDefault] = useState(true)
     const valid = useValidation(value, validations)
     const [errorStatus, setErrorStatus] = useState(false)
 
@@ -22,11 +24,21 @@ const useValidatedInput = (initialValue, validations) => {
     useEffect(()=>{
         setErrorStatus(isDirty&&!valid.validInput)
     }, [valid.validInput, isDirty])
+    useEffect(()=>{
+        if(def === value){
+            setIsDefault(true)
+        } else {
+            setIsDefault(false)
+        }
+    }, [def, value])
 
     return {
         value,
         clear,
         onChange: changeHandler,
+        isDefault,
+        setDefault,
+        setValue,
         onBlur, 
         isDirty,
         errorStatus,
