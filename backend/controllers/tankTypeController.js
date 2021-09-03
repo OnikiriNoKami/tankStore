@@ -14,7 +14,7 @@ class TankTypeController {
             return res.json(tankTypes)
 
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
     
@@ -25,7 +25,7 @@ class TankTypeController {
             return res.status(201).json(tankType)
 
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
     async getBySubstring(req, res, next){
@@ -58,7 +58,7 @@ class TankTypeController {
             }
 
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -84,7 +84,7 @@ class TankTypeController {
             }
 
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -104,7 +104,7 @@ class TankTypeController {
                 return res.json({message: messages.DELETION_SUCCESS})
             }
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 }
