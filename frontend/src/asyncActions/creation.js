@@ -1,7 +1,7 @@
 import axios from "axios"
 import { failMessage, successMessage } from "../store/MessageStore"
 
-export const creator = (data, path, token) => async(dispatch) => {
+const creator = (data, path, token) => async(dispatch) => {
     const headers = {
         'Authorization': 'jwt '+ token
     }

@@ -1,15 +1,20 @@
-import { Button, Container, Grid, TextField, Typography } from "@material-ui/core"
+import { Backdrop, Button, Container, Grid, TextField,Paper, Typography, ClickAwayListener, Modal } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
 import { nationFetch } from "../../asyncActions/fetcher"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import SearchBar from "./SearcBar"
 import { nationSearch } from "../../asyncActions/searchFetcher"
 import NationRow from "./NationRow"
+import NationCRUD from "../creators/NationCreator"
+import BackdropStyles from "../../styles/BackdropStyles"
 
 
 const NationList = () => {
+    const classes = BackdropStyles()
     const dispatch = useDispatch()
     const nations = useSelector(state => state.nations.nations)
+    const [currentNation, setCurrentNation] = useState(null)
+    const [open, setOpen] = useState(false)
 
     const loadNations = () => {
         dispatch(nationFetch())
@@ -24,7 +29,16 @@ const NationList = () => {
     }
 
     const handleClick = (id) => {
-        console.log(id)
+        setOpen(true)
+        setCurrentNation(id)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const handleChangeSubmit = () => {
+        setOpen(false)        
     }
 
     return (
@@ -43,6 +57,16 @@ const NationList = () => {
             <Typography variant='h4'>No nations</Typography>
             }
             </Grid>
+            <Modal
+                open={open}
+                onClose={handleClose}  
+            >
+                <Paper className={classes.root}>
+                        <NationCRUD role='updater' reloadCallback={loadNations} updaterCallback={handleChangeSubmit} clearLabel='reset' submitLabel='save' id={currentNation} xs={12} sm={10}/>
+                    </Paper> 
+                
+            </Modal>
+
         </Container>
     )
 }
