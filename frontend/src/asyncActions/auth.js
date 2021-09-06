@@ -18,9 +18,10 @@ export const authByToken = (token) => async (dispatch) => {
             dispatch(authUser(true, true))
             dispatch(tokenFromStorage(false))
             SetTokenToStorage(result.data.token)
-        }else
-        {dispatch(authFail())
-        dispatch(authConnEstablished(true))}
+        }else{
+            dispatch(authFail())
+            dispatch(authConnEstablished(true))
+        }
         
     } catch (error){
         if(error.response) {
@@ -30,7 +31,13 @@ export const authByToken = (token) => async (dispatch) => {
             }
         }
         if(error.request) {
+            if(error.response.status === 401)
+            {
+                dispatch(authFail())
+                dispatch(authConnEstablished(true))
+            } else {
             dispatch(authConnFail(false))
+            }
         }
     }
 }

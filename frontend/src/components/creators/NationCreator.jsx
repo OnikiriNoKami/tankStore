@@ -9,7 +9,6 @@ import CreatorStyles from "../../styles/CreatorStyles"
 const defaultRole = 'creator'
 
 const NationCRUD = ({role = defaultRole, reloadCallback=null, id=null, clearLabel='update', updaterCallback=null, submitLabel='create', xs=10, sm=8}) => {
-    const classes = CreatorStyles()
     const title = useValidatedInput('', {maxLength: 250,isEmpty: true, minLength: 2})
     const token = useSelector(state => state.token.token)
     const nationData = useSelector(state => state.nations.nations.filter(nation => nation.id === id)[0])

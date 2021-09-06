@@ -5,6 +5,7 @@ import NationCRUD from '../components/creators/NationCreator';
 import RoleCreator from '../components/creators/RoleCreator';
 import TypeCreator from '../components/creators/TypeCreator';
 import NationList from '../components/updaters/NationList';
+import TankTypeList from '../components/updaters/TankTypeList';
 import useBoxStyles from '../styles/BoxStyles';
 
 const Admin = () => {
@@ -24,6 +25,7 @@ const Admin = () => {
 
             {action==='change'&&<Box className={classes.boxUpdater}>
                 {type==='Nation'&&<NationList/>}
+                {type==='Type'&&<TankTypeList/>}
             </Box>            
             }
             

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const messages = require('../message/authRelated')
 
 module.exports = function (req, res, next){
+    console.log('Authentication try.')
     if(req.method === "OPTIONS"){
         next()
     }
