@@ -1,28 +1,33 @@
 import { Grid, Typography, Button } from "@material-ui/core";
 import ButtonStyles from "../../styles/ButtonStyles";
 
-const NationRow = ({ id, title, clickHandle, props }) => {
+const RoleRow = ({ id, title, description, clickHandle, props }) => {
     const buttonStyles = ButtonStyles();
     return (
         <Grid container justifyContent="center" spacing={1}>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={2}>
                 <Grid container spacing={1}>
-                    <Grid item xs={4}>
-                        <Typography variant="h5">ID:</Typography>
+                    <Grid item xs={5}>
+                        <Typography variant="h6">ID:</Typography>
                     </Grid>
-                    <Grid item xs={8}>
-                        <Typography variant="h5">{id}</Typography>
+                    <Grid item xs={7}>
+                        <Typography variant="h6">{id}</Typography>
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} sm={6} md={7}>
+            <Grid item xs={12} sm={7} md={8}>
                 <Grid container spacing={1}>
-                    <Grid item xs={4} sm={4}>
-                        <Typography variant="h5">Title:</Typography>
+                    <Grid item xs={3} sm={3} md={2}>
+                        <Typography variant="h6">Title:</Typography>
                     </Grid>
-                    <Grid item xs={8} sm={8}>
-                        <Typography noWrap={true} variant="h5">
+                    <Grid item xs={9} sm={4} md={4}>
+                        <Typography noWrap={true} variant="h6">
                             {title}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={5} md={6}>
+                        <Typography noWrap={true} variant='h6'>
+                            {description}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -41,4 +46,4 @@ const NationRow = ({ id, title, clickHandle, props }) => {
         </Grid>
     );
 };
-export default NationRow;
+export default RoleRow;
