@@ -1,7 +1,7 @@
 const { Status } = require("../models/models");
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
-
+const {Op} = require('sequelize')
 
 class StatusController {
     async getAll(req, res, next){
@@ -20,6 +20,32 @@ class StatusController {
             return res.status(201).json(status)
 
         }catch (err){
+            return next(err)
+        }
+    }
+
+    async getBySubstring(req, res, next){
+        try{
+            const {search} = req.params
+
+            const result = await Status.findAll({
+                attributes: ['id', 'title'],
+                where: {
+                    title: {
+                        [Op.iLike]: `%${search}%`
+                    }
+
+                }
+            })
+
+            if (result.length === 0){
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(result)
+            }
+
+
+        } catch (err) {
             return next(err)
         }
     }

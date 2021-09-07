@@ -20,7 +20,7 @@ class StorageController {
             }
 
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -33,7 +33,7 @@ class StorageController {
 
             return res.status(201).json(storage)
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -54,7 +54,7 @@ class StorageController {
                 return res.json(storage)
             }
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -74,7 +74,7 @@ class StorageController {
                 return res.json({message: messages.DELETION_SUCCESS})
             }   
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 }
