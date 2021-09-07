@@ -4,7 +4,7 @@ import { nationFetch } from "../../asyncActions/fetcher";
 import { useEffect, useState } from "react";
 import SearchBar from "./SearcBar";
 import { nationSearch } from "../../asyncActions/searchFetcher";
-import NationRow from "./NationRow";
+import NationRow from "./rows/NationRow";
 import NationCRUD from "../creators/NationCreator";
 import BackdropStyles from "../../styles/BackdropStyles";
 

@@ -1,5 +1,5 @@
 import { Grid, Typography, Button } from "@material-ui/core";
-import ButtonStyles from "../../styles/ButtonStyles";
+import ButtonStyles from "../../../styles/ButtonStyles";
 
 const TypeRow = ({ id, title, titleShort, clickHandle, props }) => {
     const buttonStyles = ButtonStyles();
