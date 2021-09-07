@@ -3,52 +3,66 @@ import { failMessage, successMessage } from "../store/MessageStore";
 import { nationsLoading } from "../store/NationStore";
 import { rolesLoading } from "../store/RoleStore";
 import { tankTypesLoading } from "../store/TankTypeStore";
-import { nationFetchEnd, roleFetchEnd, tankTypesFetchEnd } from "./fetcherEnd";
+import {
+    nationFetchEnd,
+    roleFetchEnd,
+    tankStatusesFetchEnd,
+    tankTypesFetchEnd,
+} from "./fetcherEnd";
 
 const fetcher = (path) => async (dispatch) => {
-  try {
-    const result = await axios.get(`http://localhost:4221/api/` + path);
-    switch (path) {
-      case "nation":
-        dispatch(nationFetchEnd(result.data, true));
-        break;
-      case "role":
-        dispatch(roleFetchEnd(result.data, true));
-        break;
-      case "tank_type":
-        dispatch(tankTypesFetchEnd(result.data, true));
-        break;
+    try {
+        const result = await axios.get(`http://localhost:4221/api/` + path);
+        switch (path) {
+            case "nation":
+                dispatch(nationFetchEnd(result.data, true));
+                break;
+            case "role":
+                dispatch(roleFetchEnd(result.data, true));
+                break;
+            case "tank_type":
+                dispatch(tankTypesFetchEnd(result.data, true));
+                break;
+            case "tank_status":
+                dispatch(tankStatusesFetchEnd(result.data, true));
+                break;
+        }
+        dispatch(successMessage(true));
+    } catch (error) {
+        switch (path) {
+            case "nation":
+                dispatch(nationFetchEnd(null, false));
+                break;
+            case "role":
+                dispatch(roleFetchEnd(null, false));
+                break;
+            case "tank_type":
+                dispatch(tankTypesFetchEnd(null, false));
+                break;
+            case "tank_type":
+                dispatch(tankStatusesFetchEnd(null, false));
+                break;
+        }
+        dispatch(failMessage(true));
     }
-    dispatch(successMessage(true));
-    
-  } catch (error) {
-    switch (path) {
-      case "nation":
-        dispatch(nationFetchEnd(null, false));
-        break;
-      case "role":
-        dispatch(roleFetchEnd(null, false));
-        break;
-      case "tank_type":
-        dispatch(tankTypesFetchEnd(null, false));
-        break;
-    }
-    dispatch(failMessage(true));
-  }
 };
 
 export const nationFetch = () => async (dispatch) => {
-  dispatch(nationsLoading(true));
-  dispatch(fetcher("nation"));
+    dispatch(nationsLoading(true));
+    dispatch(fetcher("nation"));
 };
 
 export const roleFetch = () => async (dispatch) => {
-  dispatch(rolesLoading(true));
-  dispatch(fetcher("role"));
+    dispatch(rolesLoading(true));
+    dispatch(fetcher("role"));
 };
 
 export const tankTypeFetch = () => async (dispatch) => {
-  dispatch(tankTypesLoading(true));
-  dispatch(fetcher("tank_type"));
+    dispatch(tankTypesLoading(true));
+    dispatch(fetcher("tank_type"));
 };
 
+export const tankStatusFetch = () => async (dispatch) => {
+    dispatch(tankStatusesLoading(true));
+    dispatch(fetcher("tank_status"));
+};
