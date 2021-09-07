@@ -26,7 +26,7 @@ const fetcher = (query, path) => async (dispatch) => {
             case "tank_type":
                 dispatch(tankTypesFetchEnd(result.data, true));
                 break;
-            case "tank_status":
+            case "status":
                 dispatch(tankStatusesFetchEnd(result.data, true));
                 break;
         }
@@ -42,7 +42,7 @@ const fetcher = (query, path) => async (dispatch) => {
             case "tank_type":
                 dispatch(tankTypesFetchEnd(null, false));
                 break;
-            case "tank_status":
+            case "status":
                 dispatch(tankStatusesFetchEnd(null, false));
                 break;
         }
@@ -67,5 +67,5 @@ export const tankTypeSearch = (query) => async (dispatch) => {
 
 export const tankStatusSearch = (query) => async (dispatch) => {
     dispatch(tankStatusesLoading(true));
-    dispatch(fetcher(query, "tank_status"));
+    dispatch(fetcher(query, "status"));
 };
