@@ -31,10 +31,12 @@ export const authByToken = (token) => async (dispatch) => {
             }
         }
         if(error.request) {
-            if(error.response.status === 401)
+            if(error.response){
+                if(error.response.status === 401)
             {
                 dispatch(authFail())
                 dispatch(authConnEstablished(true))
+            }
             } else {
             dispatch(authConnFail(false))
             }
