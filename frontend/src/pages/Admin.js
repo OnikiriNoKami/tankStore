@@ -7,6 +7,7 @@ import TankStatusCreator from '../components/creators/TankStatusCreator';
 import TypeCreator from '../components/creators/TypeCreator';
 import NationList from '../components/updaters/NationList';
 import RoleList from '../components/updaters/RoleList';
+import TankStatusList from '../components/updaters/TankStatusList';
 import TankTypeList from '../components/updaters/TankTypeList';
 import useBoxStyles from '../styles/BoxStyles';
 
@@ -30,6 +31,7 @@ const Admin = () => {
                 {type==='Nation'&&<NationList/>}
                 {type==='Type'&&<TankTypeList/>}
                 {type==='Role'&&<RoleList/>}
+                {type==='Status'&&<TankStatusList/>}
             </Box>            
             }
             
