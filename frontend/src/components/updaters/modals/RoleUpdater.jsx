@@ -1,8 +1,8 @@
 import { Container, Grid, Typography, TextField, Button } from "@material-ui/core"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { roleUpdater } from "../../asyncActions/updating"
-import useValidatedInput from "../../hooks/useValidatedInput"
+import { roleUpdater } from "../../../asyncActions/updating"
+import useValidatedInput from "../../../hooks/useValidatedInput"
 
 
 const RoleUpdater = ({id=null, callBack= null, reloadCallback=null}) => {

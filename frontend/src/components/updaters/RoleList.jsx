@@ -6,7 +6,7 @@ import { roleSearch } from "../../asyncActions/searchFetcher"
 import SearchBar from "./SearcBar"
 import { Container, Grid, Typography, Modal, Paper } from "@material-ui/core"
 import RoleRow from "./rows/RoleRow"
-import RoleUpdater from './RoleUpdater';
+import RoleUpdater from './modals/RoleUpdater';
 
 
 const RoleList = () => {

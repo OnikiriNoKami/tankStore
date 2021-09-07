@@ -5,8 +5,8 @@ import { tankTypeFetch } from "../../asyncActions/fetcher"
 import { tankTypeSearch } from "../../asyncActions/searchFetcher"
 import SearchBar from "./SearcBar"
 import { Container, Grid, Typography, Modal, Paper } from "@material-ui/core"
-import TypeRow from "./TypeRow"
-import TypeUpdater from "./TypeUpdater"
+import TypeRow from "./rows/TypeRow"
+import TypeUpdater from "./modals/TypeUpdater"
 
 
 const TankTypeList = () => {
