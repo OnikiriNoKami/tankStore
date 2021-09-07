@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import NationCRUD from '../components/creators/NationCreator';
 import RoleCreator from '../components/creators/RoleCreator';
+import TankStatusCreator from '../components/creators/TankStatusCreator';
 import TypeCreator from '../components/creators/TypeCreator';
 import NationList from '../components/updaters/NationList';
 import RoleList from '../components/updaters/RoleList';
@@ -21,6 +22,7 @@ const Admin = () => {
                 {type==='Nation'&&<NationCRUD role='creator'/>}
                 {type==='Type'&&<TypeCreator/>}
                 {type==='Role'&&<RoleCreator/>}
+                {type==='Status'&&<TankStatusCreator/>}
             </Box>
             }
 

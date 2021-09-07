@@ -8,3 +8,4 @@ export const drawerWidth = 200;
 export const NATION_CODE = 'nation'
 export const ROLE_CODE = 'role'
 export const TYPE_CODE = 'type'
+export const TANK_STATUS_CODE = 'tankStatus'
