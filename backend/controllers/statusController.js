@@ -4,23 +4,23 @@ const ApiError = require('../error/ApiError')
 
 
 class StatusController {
-    async getAll(req, res){
+    async getAll(req, res, next){
         try {
             const statuses = await Status.findAll()
             return res.json(statuses)
 
         } catch (err) {
-            console.log(err.message)
+            return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
         }
     }
-    async create(req, res){
+    async create(req, res, next){
         try{
             const {title} = req.body
             const status = await Status.create({title})
             return res.status(201).json(status)
 
         }catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -41,7 +41,7 @@ class StatusController {
                 return res.json(status)
             }
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -61,7 +61,7 @@ class StatusController {
                 return res.json({message: messages.DELETION_SUCCESS})
             }
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 }
