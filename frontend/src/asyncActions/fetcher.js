@@ -3,6 +3,7 @@ import { failMessage, successMessage } from "../store/MessageStore";
 import { nationsLoading } from "../store/NationStore";
 import { rolesLoading } from "../store/RoleStore";
 import { tankTypesLoading } from "../store/TankTypeStore";
+import { tankStatusesLoading } from "../store/TankStatusReducer";
 import {
     nationFetchEnd,
     roleFetchEnd,
