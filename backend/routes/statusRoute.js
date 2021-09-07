@@ -4,6 +4,7 @@ const StatusController = require('../controllers/statusController')
 const authMiddleware = require('../middleware/authMiddleware')
 
 router.get('/', StatusController.getAll)
+router.get('/:search', StatusController.getBySubstring)
 router.post('/',authMiddleware, StatusController.create)
 router.put('/',authMiddleware, StatusController.update)
 router.delete('/',authMiddleware, StatusController.delete)
