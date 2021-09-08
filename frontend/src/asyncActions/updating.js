@@ -24,3 +24,4 @@ export const roleUpdater = (id, title, description, token, reloadCallback) => (u
 export const nationUpdater = (id, title, token, reloadCallback) => (updater({id, title}, 'nation', token, reloadCallback))
 export const tankTypeUpdater = (id, title, title_short, token, reloadCallback) => (updater({id, title, title_short}, 'tank_type', token, reloadCallback))
 export const tankStatusUpdater = (id, title, token, reloadCallback) => (updater({id, title},'status', token, reloadCallback ))
+export const moduleTypeUpdater = (id, title, token, reloadCallback) => (updater({id, title}, "module_type", token ,reloadCallback))
