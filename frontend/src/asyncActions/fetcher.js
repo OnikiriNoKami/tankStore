@@ -5,11 +5,13 @@ import { rolesLoading } from "../store/RoleStore";
 import { tankTypesLoading } from "../store/TankTypeStore";
 import { tankStatusesLoading } from "../store/TankStatusReducer";
 import {
+    moduleTypesFetchEnd,
     nationFetchEnd,
     roleFetchEnd,
     tankStatusesFetchEnd,
     tankTypesFetchEnd,
 } from "./fetcherEnd";
+import { moduleTypesLoading } from "../store/ModuleTypeReducer";
 
 const fetcher = (path) => async (dispatch) => {
     try {
@@ -27,6 +29,9 @@ const fetcher = (path) => async (dispatch) => {
             case "status":
                 dispatch(tankStatusesFetchEnd(result.data, true));
                 break;
+            case "module_type":
+                dispatch(moduleTypesFetchEnd(result.data, true));
+                break;
         }
         dispatch(successMessage(true));
     } catch (error) {
@@ -42,6 +47,9 @@ const fetcher = (path) => async (dispatch) => {
                 break;
             case "status":
                 dispatch(tankStatusesFetchEnd(null, false));
+                break;
+            case "module_type":
+                dispatch(moduleTypesFetchEnd(null, false));
                 break;
         }
         dispatch(failMessage(true));
@@ -66,4 +74,9 @@ export const tankTypeFetch = () => async (dispatch) => {
 export const tankStatusFetch = () => async (dispatch) => {
     dispatch(tankStatusesLoading(true));
     dispatch(fetcher("status"));
+};
+
+export const moduleTypesFetch = () => async(dispatch) => {
+    dispatch(moduleTypesLoading(true));
+    dispatch(fetcher('module_type'));
 };

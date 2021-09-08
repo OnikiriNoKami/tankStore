@@ -1,10 +1,19 @@
 import {
+    moduleTypesLoaded,
+    moduleTypesLoading,
+    moduleTypesSet,
+} from "../store/ModuleTypeReducer";
+import {
     nationsLoaded,
     nationsSet,
     nationsLoading,
 } from "../store/NationStore";
 import { rolesLoaded, rolesLoading, rolesSet } from "../store/RoleStore";
-import { tankStatusesLoaded, tankStatusesLoading, tankStatusesSet } from "../store/TankStatusReducer";
+import {
+    tankStatusesLoaded,
+    tankStatusesLoading,
+    tankStatusesSet,
+} from "../store/TankStatusReducer";
 import {
     tankTypesLoading,
     tankTypesLoaded,
@@ -44,8 +53,8 @@ export const tankTypesFetchEnd = (data, success) => async (dispatch) => {
     }
 };
 
-export const tankStatusesFetchEnd = (data, success) => async(dispatch) => {
-    if(success){
+export const tankStatusesFetchEnd = (data, success) => async (dispatch) => {
+    if (success) {
         dispatch(tankStatusesSet(data));
         dispatch(tankStatusesLoading(false));
         dispatch(tankStatusesLoaded(true));
@@ -53,4 +62,15 @@ export const tankStatusesFetchEnd = (data, success) => async(dispatch) => {
         dispatch(tankStatusesLoading(false));
         dispatch(tankStatusesLoaded(false));
     }
-}
+};
+
+export const moduleTypesFetchEnd = (data, success) => async (dispatch) => {
+    if (success) {
+        dispatch(moduleTypesSet(data));
+        dispatch(moduleTypesLoading(false));
+        dispatch(moduleTypesLoaded(true));
+    } else {
+        dispatch(moduleTypesLoading(false));
+        dispatch(moduleTypesLoaded(false));
+    }
+};
