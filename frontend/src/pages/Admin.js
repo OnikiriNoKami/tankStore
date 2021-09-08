@@ -11,6 +11,7 @@ import RoleList from '../components/updaters/RoleList';
 import TankStatusList from '../components/updaters/TankStatusList';
 import TankTypeList from '../components/updaters/TankTypeList';
 import useBoxStyles from '../styles/BoxStyles';
+import ModuleTypeCreator from '../components/creators/ModuleTypeCreator';
 
 const Admin = () => {
     const classes = useBoxStyles()
@@ -25,6 +26,7 @@ const Admin = () => {
                 {type===TYPE_CODE&&<TypeCreator/>}
                 {type===ROLE_CODE&&<RoleCreator/>}
                 {type===TANK_STATUS_CODE&&<TankStatusCreator/>}
+                {type===MODULE_TYPE_CODE&&<ModuleTypeCreator/>}
             </Box>
             }
 
