@@ -1,7 +1,7 @@
 const { ModuleType } = require("../models/models")
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
-const { Op } = require("sequelize/types")
+const { Op } = require("sequelize")
 
 class ModuleTypeController {
     async getAll(req, res, next) {
