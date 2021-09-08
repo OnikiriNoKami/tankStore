@@ -21,3 +21,4 @@ export const roleCreate = (title, description, token) => (creator({title, descri
 export const nationCreate = (title, token) => (creator({title}, 'nation', token))
 export const tankTypeCreate = (title, title_short, token) => (creator({title, title_short}, 'tank_type', token))
 export const tankStatusCreate = (title, token) => (creator({title}, 'status', token))
+export const moduleTypeCreate = (title, token) =>(creator({title}, 'module_type', token))
