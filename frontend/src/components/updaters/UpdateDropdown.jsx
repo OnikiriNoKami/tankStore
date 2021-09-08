@@ -33,7 +33,7 @@ const UpdateDropdown = () => {
                             className={classesList.item}
                             button
                             key={item.text}
-                            onClick={()=>handleCreateClick(item.text)}                     
+                            onClick={()=>handleCreateClick(item.code)}                     
                         >
                             <ListItemText  primary={item.text}/>
                         </ListItem>
