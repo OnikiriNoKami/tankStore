@@ -1,24 +1,48 @@
 const { ModuleType } = require("../models/models")
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
+const { Op } = require("sequelize/types")
 
 class ModuleTypeController {
-    async getAll(req, res) {
+    async getAll(req, res, next) {
         try {
             const moduleTypes = await ModuleType.findAll()
             return res.json(moduleTypes)
         } catch (err) {
-            console.log(err.message)
+            return next(err)
         }
     }
 
-    async create(req, res) {
+    async create(req, res, next) {
         try {
             const {title} = req.body
             const moduleType = await ModuleType.create({title})
             return res.status(201).json(moduleType)
         } catch (err){
-            console.log(err.message)
+            return next(err)
+        }
+    }
+
+    async getBySubstring(req, res, next){
+        try{
+            const {search} = req.params
+            const result = await ModuleType.findAll({
+                attributes: ['id','title'],
+                where: {
+                    title:{
+                        [Op.iLike]: `%${search}%`
+                    }
+                }
+            })
+
+            if(result.length === 0){
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(result)
+            }
+
+        } catch (err){
+            return next(err)
         }
     }
 
@@ -36,7 +60,7 @@ class ModuleTypeController {
                 return res.json(moduleType)
             }
         }   catch (err) {
-            console.log(err.message)
+            return next(err)
         }     
     }
 
@@ -54,7 +78,7 @@ class ModuleTypeController {
             }
 
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }    
 
