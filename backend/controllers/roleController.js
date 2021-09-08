@@ -4,14 +4,14 @@ const ApiError = require('../error/ApiError')
 const {Op, Sequelize} = require('sequelize')
 
 class RoleController {
-    async getAll(req, res) {
+    async getAll(req, res, next) {
         try{
             const roles = await Role.findAll({
                 attributes:['id','title','description']
             })
             return res.json(roles)
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }        
     }
 
@@ -35,17 +35,17 @@ class RoleController {
             }
 
         } catch {
-            console.log(err.message)
+            return next(err)
         }
     }
 
-    async create(req, res) {
+    async create(req, res, next) {
         try {
             const {title, description} = req.body
             const role = await Role.create({title, description})
             return res.status(201).json(role)
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -66,7 +66,7 @@ class RoleController {
                 return res.json(role)
             }
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -84,7 +84,7 @@ class RoleController {
             }
 
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }    
 
