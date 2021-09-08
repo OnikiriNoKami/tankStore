@@ -1,12 +1,12 @@
 import { Container, Grid, Typography, Modal, Paper } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { tankStatusFetch } from "../../asyncActions/fetcher";
-import { tankTypeSearch } from "../../asyncActions/searchFetcher";
-import BackdropStyles from "../../styles/BackdropStyles";
-import TankStatusRow from "./rows/TankStatusRow";
-import TankStatusUpdater from "./modals/TankStatusUpdater";
-import SearchBar from "./SearcBar";
+import { tankStatusFetch } from "../../../asyncActions/fetcher";
+import { tankTypeSearch } from "../../../asyncActions/searchFetcher";
+import BackdropStyles from "../../../styles/BackdropStyles";
+import TankStatusRow from "../rows/TankStatusRow";
+import TankStatusUpdater from "../modals/TankStatusUpdater";
+import SearchBar from "../SearcBar";
 
 const TankStatusList = () => {
     const classes = BackdropStyles();

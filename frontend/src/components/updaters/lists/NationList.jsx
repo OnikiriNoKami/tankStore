@@ -1,12 +1,12 @@
 import { Container, Grid, Paper, Typography, Modal } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { nationFetch } from "../../asyncActions/fetcher";
+import { nationFetch } from "../../../asyncActions/fetcher";
 import { useEffect, useState } from "react";
-import SearchBar from "./SearcBar";
-import { nationSearch } from "../../asyncActions/searchFetcher";
-import NationRow from "./rows/NationRow";
-import NationCRUD from "../creators/NationCreator";
-import BackdropStyles from "../../styles/BackdropStyles";
+import SearchBar from "../SearcBar";
+import { nationSearch } from "../../../asyncActions/searchFetcher";
+import NationRow from "../rows/NationRow";
+import NationCRUD from "../../creators/NationCreator";
+import BackdropStyles from "../../../styles/BackdropStyles";
 
 const NationList = () => {
     const classes = BackdropStyles();

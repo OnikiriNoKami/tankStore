@@ -1,36 +1,36 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
-import BackdropStyles from "../../styles/BackdropStyles"
-import { tankTypeFetch } from "../../asyncActions/fetcher"
-import { tankTypeSearch } from "../../asyncActions/searchFetcher"
-import SearchBar from "./SearcBar"
+import BackdropStyles from "../../../styles/BackdropStyles"
+import { roleFetch } from "../../../asyncActions/fetcher"
+import { roleSearch } from "../../../asyncActions/searchFetcher"
+import SearchBar from "../SearcBar"
 import { Container, Grid, Typography, Modal, Paper } from "@material-ui/core"
-import TypeRow from "./rows/TypeRow"
-import TypeUpdater from "./modals/TypeUpdater"
+import RoleRow from "../rows/RoleRow"
+import RoleUpdater from '../modals/RoleUpdater';
 
 
-const TankTypeList = () => {
+const RoleList = () => {
     const classes = BackdropStyles()
     const dispatch = useDispatch()
-    const tankTypes = useSelector(state=> state.tankTypes.tankTypes)
+    const roles = useSelector(state=> state.roles.roles)
     const [open, setOpen] = useState(false)
-    const [currentType, setCurrentType] = useState(null)
+    const [currentRole, setCurrentRole] = useState(null)
 
-    const loadTypes = () => {
-        dispatch(tankTypeFetch())
+    const loadRoles = () => {
+        dispatch(roleFetch())
     }
 
     useEffect(()=> {
-        loadTypes()
+        loadRoles()
     }, [])
 
     const handleClick = (id) => {
-        setCurrentType(id)
+        setCurrentRole(id)
         setOpen(true)
     }
 
     const searchCallBack = (query) => {
-        dispatch(tankTypeSearch(query))
+        dispatch(roleSearch(query))
     }
 
     const handleClose = () => {
@@ -39,44 +39,45 @@ const TankTypeList = () => {
     return (
         <Container>
             <SearchBar
-                label='Search in types...'
+                label='Search in roles...'
                 callBack={searchCallBack}
-                callReset={loadTypes}
+                callReset={loadRoles}
             />
             <Grid container spacing={3} justifyContent="center">
-                {tankTypes.length !== 0 ? (
-                    tankTypes.map((type) => {
+                {roles.length !== 0 ? (
+                    roles.map((role) => {
                         return (
-                        <Grid key={type.id} item xs={11} sm={10}>
-                            <TypeRow
-                                id={type.id}
-                                title={type.title}
-                                titleShort={type.title_short}
+                        <Grid key={role.id} item xs={11} sm={10}>
+                            <RoleRow
+                                id={role.id}
+                                title={role.title}
+                                description={role.description}
                                 clickHandle={handleClick}
                             />
                         </Grid>
                         );
                     })
                 ) : (
-                    <Typography variant="h4">No types</Typography>
+                    <Typography variant="h4">No roles</Typography>
                 )}
             </Grid>
             <Modal open={open} onClose={handleClose}>
                 <Paper className={classes.root}>
-                    <TypeUpdater
-                        reloadCallback={loadTypes}
+                    <RoleUpdater
+                        reloadCallback={loadRoles}
                         callBack={handleClose}
                         clearLabel="reset"
                         submitLabel="save"
-                        id={currentType}
+                        id={currentRole}
                         xs={12}
                         sm={10}
                     />
                 </Paper>
             </Modal>
+            
 
         </Container>
     )
 }
 
-export default TankTypeList
+export default RoleList

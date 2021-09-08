@@ -1,4 +1,4 @@
-import { NATION_CODE, ROLE_CODE, TANK_STATUS_CODE, TYPE_CODE } from "./consts";
+import { NATION_CODE, ROLE_CODE, TANK_STATUS_CODE, TYPE_CODE, MODULE_TYPE_CODE } from "./consts";
 
 const updateItems = [
     {
@@ -16,6 +16,10 @@ const updateItems = [
     {
         text: 'Status',
         code: TANK_STATUS_CODE
+    },
+    {
+        text: 'Module type',
+        code: MODULE_TYPE_CODE
     }
 ]
 

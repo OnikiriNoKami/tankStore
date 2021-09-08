@@ -6,10 +6,10 @@ import NationCRUD from '../components/creators/NationCreator';
 import RoleCreator from '../components/creators/RoleCreator';
 import TankStatusCreator from '../components/creators/TankStatusCreator';
 import TypeCreator from '../components/creators/TypeCreator';
-import NationList from '../components/updaters/NationList';
-import RoleList from '../components/updaters/RoleList';
-import TankStatusList from '../components/updaters/TankStatusList';
-import TankTypeList from '../components/updaters/TankTypeList';
+import NationList from '../components/updaters/lists/NationList';
+import RoleList from '../components/updaters/lists/RoleList';
+import TankStatusList from '../components/updaters/lists/TankStatusList';
+import TankTypeList from '../components/updaters/lists/TankTypeList';
 import useBoxStyles from '../styles/BoxStyles';
 import ModuleTypeCreator from '../components/creators/ModuleTypeCreator';
 
