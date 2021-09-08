@@ -4,7 +4,9 @@ import { nationsLoading } from "../store/NationStore";
 import { rolesLoading } from "../store/RoleStore";
 import { tankStatusesLoading } from "../store/TankStatusReducer";
 import { tankTypesLoading } from "../store/TankTypeStore";
+import { moduleTypesLoading } from "../store/ModuleTypeReducer";
 import {
+    moduleTypesFetchEnd,
     nationFetchEnd,
     roleFetchEnd,
     tankStatusesFetchEnd,
@@ -29,6 +31,9 @@ const fetcher = (query, path) => async (dispatch) => {
             case "status":
                 dispatch(tankStatusesFetchEnd(result.data, true));
                 break;
+            case "module_type":
+                dispatch(moduleTypesFetchEnd(result.data, true));
+                break;
         }
         dispatch(successMessage(true));
     } catch (error) {
@@ -44,6 +49,9 @@ const fetcher = (query, path) => async (dispatch) => {
                 break;
             case "status":
                 dispatch(tankStatusesFetchEnd(null, false));
+                break;
+            case "module_type":
+                dispatch(moduleTypesFetchEnd(null, false));
                 break;
         }
         dispatch(failMessage(true));
@@ -68,4 +76,9 @@ export const tankTypeSearch = (query) => async (dispatch) => {
 export const tankStatusSearch = (query) => async (dispatch) => {
     dispatch(tankStatusesLoading(true));
     dispatch(fetcher(query, "status"));
+};
+
+export const moduleTypesSearch = (query) => async (dispatch) => {
+    dispatch(moduleTypesLoading(true));
+    dispatch(fetcher(query, "module_type"));
 };
