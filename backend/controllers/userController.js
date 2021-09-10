@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt')
-const {User, Basket} = require('../models/models')
+const {User, Basket, Role} = require('../models/models')
 const Tokenizer = require('./jwtTokenController')
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
+const { badRequest } = require('../error/ApiError')
 
 class UserController {
     async registration(req, res, next){
@@ -35,6 +36,88 @@ class UserController {
             return next(ApiError(err))
         }
 
+    }
+
+    async getUsers(req,res,next){
+        try{
+            const users = await User.findAll({
+                attributes: ['id', 'email']
+            })
+            if(users.length === 0){
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(users)
+            }
+
+        } catch (err) {
+            return next(err)
+        }
+    }
+
+    async getUserById(req, res, next){
+        try {
+            const {id} = req.params
+
+            const user = await User.findByPk(id, {
+                attributes: ['id', 'email'],
+                include:{
+                    model: Role,
+                    as: 'roles',
+                    attributes: ['id', 'title', 'description'],
+                    through:{
+                        attributes:[]
+                    }
+                }
+            })
+            if (user === null){
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(user)
+            }
+
+        } catch (err){
+            return next(err)
+        }
+    }
+
+    async addUserRoles(req, res, next){
+        try {
+            const {id, roles} = req.body
+
+            const user = await User.findByPk(id, {
+                attributes: ['id', 'email'],
+                include: {
+                    model: Role,
+                    as: 'roles',
+                    attributes: ['id']
+                }
+            })
+
+            if(user === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                const rolesToSet = roles.filter((role) => {
+                    
+                    if(user.roles.some(elem => elem.id===role)){
+                        return false
+                    } else {
+                        return true
+                    }
+                })
+
+                if( rolesToSet.length !== 0){
+                    for (const role of rolesToSet){
+                        await user.addRole(role)
+                    }
+                    return res.status(201).json('Success.')
+                } else {
+                    return next(ApiError.badRequest('No roles to add.'))
+                }
+            }
+
+        } catch (err){
+            return next(err)
+        }
     }
 
     async login(req, res, next){
