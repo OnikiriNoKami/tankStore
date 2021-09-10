@@ -1,5 +1,8 @@
+import ModuleTypeMonitor from "./ModuleTypeMonitor"
 import NationsMonitor from "./NationsMonitor"
 import StatusMonitor from "./StatusMonitor"
+import TankStatusMonitor from "./TankStatusMonitor"
+import TankTypesMonitor from "./TankTypesMonitor"
 
 
 const CombinedMonitors = () => {
@@ -8,6 +11,9 @@ const CombinedMonitors = () => {
         <div>
             <StatusMonitor/>
             <NationsMonitor/>
+            <TankTypesMonitor/>
+            <TankStatusMonitor/>
+            <ModuleTypeMonitor/>
         </div>
     )
 }

@@ -2,12 +2,10 @@ import useSnack from "../../hooks/useSnack";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-
-
-const TankTypesMonitor = () => {
+const TankStatusMonitor = () => {
     const snack = useSnack('Loading tank statuses...')
-    const loading = useSelector(state => state.tankTypes.loading)
-    const loaded = useSelector(state => state.tankTypes.loaded)
+    const loading = useSelector(state => state.tankStatuses.loading)
+    const loaded = useSelector(state => state.tankStatuses.loaded)
 
     useEffect(()=>{
         if(loading){
@@ -21,4 +19,4 @@ const TankTypesMonitor = () => {
     return null;
 }
 
-export default TankTypesMonitor
+export default TankStatusMonitor
