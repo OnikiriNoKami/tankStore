@@ -85,7 +85,7 @@ class UserController {
             const {id, roles} = req.body
 
             const user = await User.findByPk(id, {
-                attributes: ['id', 'email'],
+                attributes: ['id'],
                 include: {
                     model: Role,
                     as: 'roles',
@@ -113,6 +113,39 @@ class UserController {
                 } else {
                     return next(ApiError.badRequest('No roles to add.'))
                 }
+            }
+
+        } catch (err){
+            return next(err)
+        }
+    }
+
+    async removeUserRole(req, res, next){
+        try{
+            const {id, role} = req.body
+
+            const user = await User.findByPk(id,{
+                attributes: ['id'],
+                include: {
+                    model: Role,
+                    as:'roles',
+                    attributes:['id'],
+                    through: {
+                        attributes:[]
+                    }
+                }
+            })
+
+            if(user === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                if(user.roles.some(rl => rl.id===role)){
+                    await user.removeRole(role)
+                    return res.status(200).json('Ok.')
+                } else {
+                    return next(ApiError.internal("Can't delete."))
+                }
+                
             }
 
         } catch (err){
