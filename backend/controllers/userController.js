@@ -4,6 +4,7 @@ const Tokenizer = require('./jwtTokenController')
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
 const { badRequest } = require('../error/ApiError')
+const { Op } = require( 'sequelize');
 
 class UserController {
     async registration(req, res, next){
@@ -40,8 +41,11 @@ class UserController {
 
     async getUsers(req,res,next){
         try{
-            const users = await User.findAll({
-                attributes: ['id', 'email']
+            const {limit, offset} = req.query
+            const users = await User.findAndCountAll({
+                attributes: ['id', 'email'],
+                offset: offset,
+                limit: limit
             })
             if(users.length === 0){
                 return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
@@ -73,6 +77,33 @@ class UserController {
                 return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
             } else {
                 return res.json(user)
+            }
+
+        } catch (err){
+            return next(err)
+        }
+    }
+
+    async getUserBySubstring(req, res, next){
+        try{
+            const { search } = req.params
+            const {limit, offset} = req.query
+
+            const result = await User.findAndCountAll({
+                attributes: ['id', 'email'],
+                where:{
+                    email: {
+                        [Op.iLike]: `%${search}%`
+                    }
+                },
+                offset: offset,
+                limit: limit,
+            })
+
+            if(result.length === 0){
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                return res.json(result)
             }
 
         } catch (err){
