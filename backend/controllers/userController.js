@@ -151,6 +151,35 @@ class UserController {
         }
     }
 
+    async addUserRole(req, res, next){
+        try{
+            const { id, role } = req.body
+
+            const user = await User.findByPk(id, {
+                attributes: ['id'],
+                include: {
+                    model: Role,
+                    as: 'roles',
+                    attributes: ['id']
+                }
+            })
+
+            if(user === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+            } else {
+                if(user.roles.includes(role)){
+                    return next(ApiError.badRequest('Role is already appointed.'))
+                } else {
+                    await user.addRole(role)
+                    return res.status(201).json('Success.')
+                }
+            }
+
+        } catch (err){
+            return next(err)
+        }
+    }
+
     async removeUserRole(req, res, next){
         try{
             const {id, role} = req.body
