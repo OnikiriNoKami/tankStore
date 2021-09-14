@@ -14,46 +14,32 @@ import {
 } from "./fetcherEnd";
 
 const fetcher = (query, path) => async (dispatch) => {
+    const cases ={
+        'nation': (data, success) => {
+            dispatch(nationFetchEnd(data, success))
+        },
+        'role': (data, success) => {
+            dispatch(roleFetchEnd(data, success))
+        },
+        'tank_type': (data, success) => {
+            dispatch(tankTypesFetchEnd(data, success))
+        },
+        'status': (data, success) => {
+            dispatch(tankStatusesFetchEnd(data, success))
+        },
+        'module_type': (data, success) => {
+            dispatch(tankStatusesFetchEnd(data, success))
+        }
+    }
+
     try {
         const result = await axios.get(
             `http://localhost:4221/api/${path}/${query}`
         );
-        switch (path) {
-            case "nation":
-                dispatch(nationFetchEnd(result.data, true));
-                break;
-            case "role":
-                dispatch(roleFetchEnd(result.data, true));
-                break;
-            case "tank_type":
-                dispatch(tankTypesFetchEnd(result.data, true));
-                break;
-            case "status":
-                dispatch(tankStatusesFetchEnd(result.data, true));
-                break;
-            case "module_type":
-                dispatch(moduleTypesFetchEnd(result.data, true));
-                break;
-        }
+        cases[path](result.data, true)
         dispatch(successMessage(true));
     } catch (error) {
-        switch (path) {
-            case "nation":
-                dispatch(nationFetchEnd(null, false));
-                break;
-            case "role":
-                dispatch(roleFetchEnd(null, false));
-                break;
-            case "tank_type":
-                dispatch(tankTypesFetchEnd(null, false));
-                break;
-            case "status":
-                dispatch(tankStatusesFetchEnd(null, false));
-                break;
-            case "module_type":
-                dispatch(moduleTypesFetchEnd(null, false));
-                break;
-        }
+        cases[path](null, false)
         dispatch(failMessage(true));
     }
 };
