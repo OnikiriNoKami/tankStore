@@ -5,15 +5,26 @@ import { rolesLoading } from "../store/RoleStore";
 import { tankStatusesLoading } from "../store/TankStatusReducer";
 import { tankTypesLoading } from "../store/TankTypeStore";
 import { moduleTypesLoading } from "../store/ModuleTypeReducer";
+import { usersLoading } from "../store/AdminUsers";
 import {
     moduleTypesFetchEnd,
     nationFetchEnd,
     roleFetchEnd,
     tankStatusesFetchEnd,
     tankTypesFetchEnd,
+    usersFetchEnd
 } from "./fetcherEnd";
 
-const fetcher = (query, path) => async (dispatch) => {
+const defPagination = {
+    used: false,
+    offset: null,
+    limit: null,
+};
+
+const fetcher = (query, path, pagination=defPagination, token=null) => async (dispatch) => {
+    const headers = {
+        Authorization: 'jwt '+ token
+    }
     const cases ={
         'nation': (data, success) => {
             dispatch(nationFetchEnd(data, success))
@@ -28,13 +39,19 @@ const fetcher = (query, path) => async (dispatch) => {
             dispatch(tankStatusesFetchEnd(data, success))
         },
         'module_type': (data, success) => {
-            dispatch(tankStatusesFetchEnd(data, success))
+            dispatch(moduleTypesFetchEnd(data, success))
+        },
+        'user/find': (data, success) => {
+            dispatch(usersFetchEnd(data, success))
         }
     }
 
     try {
         const result = await axios.get(
-            `http://localhost:4221/api/${path}/${query}`
+            `http://localhost:4221/api/${path}/${query}`+ 
+            (pagination.used? `?limit=${pagination.limit}&offset=${pagination.offset}`
+            : ""), 
+            {headers: headers}
         );
         cases[path](result.data, true)
         dispatch(successMessage(true));
@@ -67,4 +84,11 @@ export const tankStatusSearch = (query) => async (dispatch) => {
 export const moduleTypesSearch = (query) => async (dispatch) => {
     dispatch(moduleTypesLoading(true));
     dispatch(fetcher(query, "module_type"));
+};
+
+export const usersSearch = (query, limit, offset, token) => async (dispatch) => {
+    dispatch(usersLoading(true));
+    dispatch(
+        fetcher(query, "user/find", { used: true, limit, offset }, token)
+    );
 };
