@@ -11,6 +11,7 @@ import { tankTypeReducer } from "./TankTypeStore";
 import { sidebarReducer } from "./SidebarReducer";
 import { tankStatusReducer } from "./TankStatusReducer";
 import { moduleTypeReducer } from "./ModuleTypeReducer";
+import { adminUsers } from "./AdminUsers";
 
 const mainReducer = combineReducers({
     user: userReducer,
@@ -18,6 +19,7 @@ const mainReducer = combineReducers({
     status: statusReducer,
     messages: messageReducer,
     sidebar: sidebarReducer,
+    users: adminUsers,
     nations: nationReducer,
     roles: roleReducer,
     tankTypes: tankTypeReducer,
