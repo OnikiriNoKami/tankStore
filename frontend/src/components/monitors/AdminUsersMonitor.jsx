@@ -1,11 +1,16 @@
 import useSnack from "../../hooks/useSnack";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { usersSetCurrentPage, usersSetOffset, usersSetTotalPages } from "../../store/AdminUsers";
 
 const AdminUsersMonitor = () => {
     const snack = useSnack('Loading users...')
+    const dispatch = useDispatch()
     const loading = useSelector(state => state.users.loading)
     const loaded = useSelector(state => state.users.loaded)
+    const totalCount = useSelector(state => state.users.totalCount)
+    const page = useSelector(state => state.users.page)
+    const limit = useSelector(state => state.users.limit)
 
     useEffect(()=>{
         if(loading){
@@ -15,6 +20,16 @@ const AdminUsersMonitor = () => {
             snack.close()
         }
     }, [loading, loaded])
+
+    useEffect(() => {
+        if(totalCount !== null){
+            dispatch(usersSetOffset((page-1)*(limit > 0? limit : 25))) 
+            dispatch(usersSetTotalPages(Math.ceil(totalCount/(limit > 0? limit: 25))))
+        }
+        if(page < 1){
+            dispatch(usersSetCurrentPage(1))
+        }
+    }, [totalCount, page])
 
     return null;
 }
