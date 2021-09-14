@@ -1,3 +1,4 @@
+import AdminUsersMonitor from "./AdminUsersMonitor"
 import ModuleTypeMonitor from "./ModuleTypeMonitor"
 import NationsMonitor from "./NationsMonitor"
 import StatusMonitor from "./StatusMonitor"
@@ -14,6 +15,7 @@ const CombinedMonitors = () => {
             <TankTypesMonitor/>
             <TankStatusMonitor/>
             <ModuleTypeMonitor/>
+            <AdminUsersMonitor/>
         </div>
     )
 }
