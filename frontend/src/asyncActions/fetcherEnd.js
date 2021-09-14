@@ -19,6 +19,12 @@ import {
     tankTypesLoaded,
     tankTypesSet,
 } from "../store/TankTypeStore";
+import {
+    usersSet,
+    usersLoading,
+    usersLoaded,
+    usersSetTotalCount
+} from "../store/AdminUsers";
 
 export const nationFetchEnd = (data, success) => async (dispatch) => {
     if (success) {
@@ -72,5 +78,18 @@ export const moduleTypesFetchEnd = (data, success) => async (dispatch) => {
     } else {
         dispatch(moduleTypesLoading(false));
         dispatch(moduleTypesLoaded(false));
+    }
+};
+
+export const usersFetchEnd = (data, success) => async (dispatch) => {
+    if (success) {
+        dispatch(usersSet(data.rows));
+        dispatch(usersSetTotalCount(data.count));
+        dispatch(usersLoading(false));
+        dispatch(usersLoaded(true));
+    } else {
+        dispatch(usersLoading(false));
+        dispatch(usersSetTotalCount(null));
+        dispatch(usersLoaded(false));
     }
 };

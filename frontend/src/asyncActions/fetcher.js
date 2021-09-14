@@ -10,36 +10,54 @@ import {
     roleFetchEnd,
     tankStatusesFetchEnd,
     tankTypesFetchEnd,
+    usersFetchEnd,
 } from "./fetcherEnd";
 import { moduleTypesLoading } from "../store/ModuleTypeReducer";
+import { usersLoading } from "../store/AdminUsers";
 
-const fetcher = (path) => async (dispatch) => {
-    const cases ={
-        'nation': (data, success) => {
-            dispatch(nationFetchEnd(data, success))
-        },
-        'role': (data, success) => {
-            dispatch(roleFetchEnd(data, success))
-        },
-        'tank_type': (data, success) => {
-            dispatch(tankTypesFetchEnd(data, success))
-        },
-        'status': (data, success) => {
-            dispatch(tankStatusesFetchEnd(data, success))
-        },
-        'module_type': (data, success) => {
-            dispatch(tankStatusesFetchEnd(data, success))
-        }
-    }
-    try {
-        const result = await axios.get(`http://localhost:4221/api/` + path);
-        cases[path](result.data, true)
-        dispatch(successMessage(true));
-    } catch (error) {
-        cases[path](null, false)
-        dispatch(failMessage(true));
-    }
+const defPagination = {
+    used: false,
+    offset: null,
+    limit: null,
 };
+
+const fetcher = (path,pagination = defPagination, token=null) => async (dispatch) => {
+        const headers = {
+            Authorization: 'jwt ' + token
+        }
+        const cases = {
+            nation: (data, success) => {
+                dispatch(nationFetchEnd(data, success));
+            },
+            role: (data, success) => {
+                dispatch(roleFetchEnd(data, success));
+            },
+            tank_type: (data, success) => {
+                dispatch(tankTypesFetchEnd(data, success));
+            },
+            status: (data, success) => {
+                dispatch(tankStatusesFetchEnd(data, success));
+            },
+            module_type: (data, success) => {
+                dispatch(moduleTypesFetchEnd(data, success));
+            },
+            "user/users/": (data, success) => {
+                dispatch(usersFetchEnd(data, success));
+            },
+        };
+        try {
+            const result = await axios.get(`http://localhost:4221/api/` + path +
+                    (pagination.used
+                        ? `?limit=${pagination.limit}&offset=${pagination.offset}`
+                        : ""), 
+                {headers: headers});
+            cases[path](result.data, true);
+            dispatch(successMessage(true));
+        } catch (error) {
+            cases[path](null, false);
+            dispatch(failMessage(true));
+        }
+    };
 
 export const nationFetch = () => async (dispatch) => {
     dispatch(nationsLoading(true));
@@ -61,7 +79,14 @@ export const tankStatusFetch = () => async (dispatch) => {
     dispatch(fetcher("status"));
 };
 
-export const moduleTypesFetch = () => async(dispatch) => {
+export const moduleTypesFetch = () => async (dispatch) => {
     dispatch(moduleTypesLoading(true));
-    dispatch(fetcher('module_type'));
+    dispatch(fetcher("module_type"));
+};
+
+export const usersFetch = (limit, offset, token) => async (dispatch) => {
+    dispatch(usersLoading(true));
+    dispatch(
+        fetcher("user/users/", { used: true, limit, offset }, token)
+    );
 };
