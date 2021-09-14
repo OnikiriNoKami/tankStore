@@ -258,7 +258,7 @@ class UserController {
             return res.json({token, user:{id, email}})
     
         } catch (err){
-            return next(ApiError(err))
+            return next(err)
         }
     }
 
