@@ -25,6 +25,8 @@ const AdminUsersMonitor = () => {
         if(totalCount !== null){
             dispatch(usersSetOffset((page-1)*(limit > 0? limit : 25))) 
             dispatch(usersSetTotalPages(Math.ceil(totalCount/(limit > 0? limit: 25))))
+        } else {
+            dispatch(usersSetTotalPages(0))
         }
         if(page < 1){
             dispatch(usersSetCurrentPage(1))
