@@ -8,6 +8,7 @@ import {
     USERS_SET_LIMIT,
     USERS_SET_OFFSET,
     USERS_SET_TOTAL_COUNT,
+    USERS_SET_TOTAL_PAGES,
 } from "../actions/UserAdminActions";
 
 const defaultState = {
@@ -18,6 +19,7 @@ const defaultState = {
     offset: 0,
     page: 1,
     limit: 25,
+    totalPages: null
 };
 
 export const adminUsers = (state = defaultState, action) => {
@@ -40,6 +42,8 @@ export const adminUsers = (state = defaultState, action) => {
             return { ...state, offset: action.payload };
         case USERS_SET_TOTAL_COUNT:
             return { ...state, totalCount: action.payload };
+        case USERS_SET_TOTAL_PAGES:
+            return { ...state, totalPages: action.payload };
 
         default:
             return state;
@@ -55,3 +59,4 @@ export const usersSetCurrentPage = (payload) => ({type: USERS_SET_CURRENT_PAGE, 
 export const usersSetOffset = (payload) => ({type: USERS_SET_OFFSET, payload})
 export const usersSetLimit = (payload) => ({type: USERS_SET_LIMIT, payload})
 export const usersSetTotalCount = (payload) => ({type: USERS_SET_TOTAL_COUNT, payload})
+export const usersSetTotalPages = (payload) => ({type: USERS_SET_TOTAL_PAGES, payload})
