@@ -17,4 +17,4 @@ const deleter = (data, path, token) => async(dispatch) => {
     }
 }
 
-export const remoweRoleFromUser = (userId, roleId, token) => (deleter({id: userId, role:roleId}, 'user/roles', token))
+export const removeRoleFromUser = (userId, roleId, token) => (deleter({id: userId, role:roleId}, 'user/roles', token))
