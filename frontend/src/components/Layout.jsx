@@ -26,7 +26,6 @@ const Layout = () => {
         <Sidebar/>
         <TokenLoader/>
         <Messages/>
-        <CombinedMonitors/>
         <AppRouter/>
 
     </div>

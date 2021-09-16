@@ -5,9 +5,12 @@ import { usersSetCurrentPage, usersSetOffset, usersSetTotalPages } from "../../s
 
 const AdminUsersMonitor = () => {
     const snack = useSnack('Loading users...')
+    const userSnack = useSnack('Loading user...')
     const dispatch = useDispatch()
     const loading = useSelector(state => state.users.loading)
     const loaded = useSelector(state => state.users.loaded)
+    const userLoading = useSelector(state => state.users.userByIdLoading)
+    const userLoaded = useSelector( state => state.users.userByIdLoaded)
     const totalCount = useSelector(state => state.users.totalCount)
     const page = useSelector(state => state.users.page)
     const limit = useSelector(state => state.users.limit)
@@ -20,6 +23,15 @@ const AdminUsersMonitor = () => {
             snack.close()
         }
     }, [loading, loaded])
+
+    useEffect(() => {
+        if(userLoading){
+            userSnack.open()
+        }
+        if(userLoaded === true || userLoaded === false) {
+            userSnack.close()
+        }
+    }, [userLoading, userLoaded])
 
     useEffect(() => {
         if(totalCount !== null){
