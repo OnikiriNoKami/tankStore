@@ -6,6 +6,7 @@ import SearchBar from "../SearcBar";
 import { nationSearch, usersSearch } from "../../../asyncActions/searchFetcher";
 import BackdropStyles from "../../../styles/BackdropStyles";
 import { usersSetLimit } from "../../../store/AdminUsers";
+import UsersRow from "../rows/UsersRow";
 
 const AdminUsersList = () => {
     const classes = BackdropStyles();
@@ -37,6 +38,10 @@ const AdminUsersList = () => {
         dispatch(usersSearch(query, limit, offset, token));
     };
 
+    const handleClick = () => {
+        console.log('click')
+    }
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -48,6 +53,23 @@ const AdminUsersList = () => {
                 callBack={searchCallBack}
                 callReset={loadUsers}
             />
+            <Grid container spacing={3} justifyContent="center">
+                {users.length !== 0 ? (
+                    users.map((user) => {
+                        return (
+                            <Grid key={user.id} item xs={11}>
+                                <UsersRow
+                                    id={user.id}
+                                    email={user.email}
+                                    clickHandle={handleClick}
+                                />
+                            </Grid>
+                        );
+                    })
+                ) : (
+                    <Typography variant="h4">No users</Typography>
+                )}
+            </Grid>
         </Container>
     );
 };

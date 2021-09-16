@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { NATION_CODE, ROLE_CODE, TYPE_CODE, TANK_STATUS_CODE, MODULE_TYPE_CODE } from "../utils/consts";
+import { NATION_CODE, ROLE_CODE, TYPE_CODE, TANK_STATUS_CODE, MODULE_TYPE_CODE, USERS_MANAGING_CODE } from "../utils/consts";
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import NationCRUD from '../components/creators/NationCreator';
@@ -13,6 +13,8 @@ import TankTypeList from '../components/updaters/lists/TankTypeList';
 import useBoxStyles from '../styles/BoxStyles';
 import ModuleTypeCreator from '../components/creators/ModuleTypeCreator';
 import ModuleTypeList from '../components/updaters/lists/ModuleTypeList';
+import AdminUsersList from '../components/updaters/lists/AdminUsersList';
+import CombinedMonitors from '../components/monitors/CombinedMonitors';
 
 const Admin = () => {
     const classes = useBoxStyles()
@@ -20,6 +22,7 @@ const Admin = () => {
 
     return (
         <div style={{width:'100%'}}>
+            <CombinedMonitors/>
 
             {action==='create'&&<Box className={classes.box}>
 
@@ -37,6 +40,7 @@ const Admin = () => {
                 {type===ROLE_CODE&&<RoleList/>}
                 {type===TANK_STATUS_CODE&&<TankStatusList/>}
                 {type===MODULE_TYPE_CODE&&<ModuleTypeList/>}
+                {type===USERS_MANAGING_CODE&&<AdminUsersList/>}
             </Box>            
             }
             
