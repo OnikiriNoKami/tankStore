@@ -51,7 +51,7 @@ const fetcher = (path,pagination = defPagination, token=null, params=null) => as
             }
         };
         try {
-            const result = await axios.get(`http://localhost:4221/api/` + path + params +
+            const result = await axios.get(`http://localhost:4221/api/` + path + (params? params : '') +
                     (pagination.used
                         ? `?limit=${pagination.limit}&offset=${pagination.offset}`
                         : ""), 
