@@ -15,6 +15,15 @@ import {
     usersFetchEnd
 } from "./fetcherEnd";
 
+import {
+    ROLE_PATH,
+    NATION_PATH,
+    TANK_TYPE_PATH,
+    STATUS_PATH,
+    MODULE_TYPE_PATH,
+    GET_USERS_BY_QUERY
+} from "../utils/routes";
+
 const defPagination = {
     used: false,
     offset: null,
@@ -25,26 +34,26 @@ const fetcher = (query, path, pagination=defPagination, token=null) => async (di
     const headers = {
         Authorization: 'jwt '+ token
     }
-    const cases ={
-        'nation': (data, success) => {
-            dispatch(nationFetchEnd(data, success))
+    const cases = {
+        [NATION_PATH]: (data, success) => {
+            dispatch(nationFetchEnd(data, success));
         },
-        'role': (data, success) => {
-            dispatch(roleFetchEnd(data, success))
+        [ROLE_PATH]: (data, success) => {
+            dispatch(roleFetchEnd(data, success));
         },
-        'tank_type': (data, success) => {
-            dispatch(tankTypesFetchEnd(data, success))
+        [TANK_TYPE_PATH]: (data, success) => {
+            dispatch(tankTypesFetchEnd(data, success));
         },
-        'status': (data, success) => {
-            dispatch(tankStatusesFetchEnd(data, success))
+        [STATUS_PATH]: (data, success) => {
+            dispatch(tankStatusesFetchEnd(data, success));
         },
-        'module_type': (data, success) => {
-            dispatch(moduleTypesFetchEnd(data, success))
+        [MODULE_TYPE_PATH]: (data, success) => {
+            dispatch(moduleTypesFetchEnd(data, success));
         },
-        'user/find': (data, success) => {
-            dispatch(usersFetchEnd(data, success))
-        }
-    }
+        [GET_USERS_BY_QUERY]: (data, success) => {
+            dispatch(usersFetchEnd(data, success));
+        },
+    };
 
     try {
         const result = await axios.get(
@@ -63,32 +72,32 @@ const fetcher = (query, path, pagination=defPagination, token=null) => async (di
 
 export const nationSearch = (query) => async (dispatch) => {
     dispatch(nationsLoading(true));
-    dispatch(fetcher(query, "nation"));
+    dispatch(fetcher(query, NATION_PATH));
 };
 
 export const roleSearch = (query) => async (dispatch) => {
     dispatch(rolesLoading(true));
-    dispatch(fetcher(query, "role"));
+    dispatch(fetcher(query, ROLE_PATH));
 };
 
 export const tankTypeSearch = (query) => async (dispatch) => {
     dispatch(tankTypesLoading(true));
-    dispatch(fetcher(query, "tank_type"));
+    dispatch(fetcher(query, TANK_TYPE_PATH));
 };
 
 export const tankStatusSearch = (query) => async (dispatch) => {
     dispatch(tankStatusesLoading(true));
-    dispatch(fetcher(query, "status"));
+    dispatch(fetcher(query, STATUS_PATH));
 };
 
 export const moduleTypesSearch = (query) => async (dispatch) => {
     dispatch(moduleTypesLoading(true));
-    dispatch(fetcher(query, "module_type"));
+    dispatch(fetcher(query, MODULE_TYPE_PATH));
 };
 
 export const usersSearch = (query, limit, offset, token) => async (dispatch) => {
     dispatch(usersLoading(true));
     dispatch(
-        fetcher(query, "user/find", { used: true, limit, offset }, token)
+        fetcher(query, GET_USERS_BY_QUERY, { used: true, limit, offset }, token)
     );
 };

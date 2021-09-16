@@ -1,5 +1,6 @@
 import axios from "axios"
 import { failMessage, successMessage } from "../store/MessageStore"
+import { ROLE_PATH, NATION_PATH, TANK_TYPE_PATH, STATUS_PATH, MODULE_TYPE_PATH, ADD_ROLE_TO_USER_PATH } from "../utils/routes"
 
 const creator = (data, path, token) => async(dispatch) => {
     const headers = {
@@ -17,9 +18,9 @@ const creator = (data, path, token) => async(dispatch) => {
     }
 }
 
-export const roleCreate = (title, description, token) => (creator({title, description}, 'role', token))
-export const nationCreate = (title, token) => (creator({title}, 'nation', token))
-export const tankTypeCreate = (title, title_short, token) => (creator({title, title_short}, 'tank_type', token))
-export const tankStatusCreate = (title, token) => (creator({title}, 'status', token))
-export const moduleTypeCreate = (title, token) =>(creator({title}, 'module_type', token))
-export const userSetRole = (userId, roleId, token) => (creator({id: userId, role: roleId}, 'user/singleRole', token))
+export const roleCreate = (title, description, token) => (creator({title, description}, ROLE_PATH, token))
+export const nationCreate = (title, token) => (creator({title}, NATION_PATH, token))
+export const tankTypeCreate = (title, title_short, token) => (creator({title, title_short}, TANK_TYPE_PATH, token))
+export const tankStatusCreate = (title, token) => (creator({title}, STATUS_PATH, token))
+export const moduleTypeCreate = (title, token) =>(creator({title}, MODULE_TYPE_PATH, token))
+export const userSetRole = (userId, roleId, token) => (creator({id: userId, role: roleId}, ADD_ROLE_TO_USER_PATH, token))

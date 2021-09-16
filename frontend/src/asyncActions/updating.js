@@ -1,6 +1,14 @@
 import axios from "axios"
 import { failMessage, successMessage } from "../store/MessageStore"
 
+import {
+    ROLE_PATH,
+    NATION_PATH,
+    TANK_TYPE_PATH,
+    STATUS_PATH,
+    MODULE_TYPE_PATH,
+} from "../utils/routes";
+
 const updater = (data, path, token, reloadCallback=null) => async(dispatch) => {
     const headers = {
         'Authorization': 'jwt '+ token
@@ -20,8 +28,8 @@ const updater = (data, path, token, reloadCallback=null) => async(dispatch) => {
     }
 }
 
-export const roleUpdater = (id, title, description, token, reloadCallback) => (updater({id, title, description}, 'role', token, reloadCallback))
-export const nationUpdater = (id, title, token, reloadCallback) => (updater({id, title}, 'nation', token, reloadCallback))
-export const tankTypeUpdater = (id, title, title_short, token, reloadCallback) => (updater({id, title, title_short}, 'tank_type', token, reloadCallback))
-export const tankStatusUpdater = (id, title, token, reloadCallback) => (updater({id, title},'status', token, reloadCallback ))
-export const moduleTypeUpdater = (id, title, token, reloadCallback) => (updater({id, title}, "module_type", token ,reloadCallback))
+export const roleUpdater = (id, title, description, token, reloadCallback) => (updater({id, title, description}, ROLE_PATH, token, reloadCallback))
+export const nationUpdater = (id, title, token, reloadCallback) => (updater({id, title}, NATION_PATH, token, reloadCallback))
+export const tankTypeUpdater = (id, title, title_short, token, reloadCallback) => (updater({id, title, title_short}, TANK_TYPE_PATH, token, reloadCallback))
+export const tankStatusUpdater = (id, title, token, reloadCallback) => (updater({id, title},STATUS_PATH, token, reloadCallback ))
+export const moduleTypeUpdater = (id, title, token, reloadCallback) => (updater({id, title}, MODULE_TYPE_PATH, token ,reloadCallback))

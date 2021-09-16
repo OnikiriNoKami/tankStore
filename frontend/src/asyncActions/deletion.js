@@ -1,5 +1,6 @@
 import axios from "axios"
 import { failMessage, successMessage } from "../store/MessageStore"
+import { USER_ROLES_PATH } from "../utils/routes"
 
 const deleter = (data, path, token) => async(dispatch) => {
     const headers = {
@@ -17,4 +18,4 @@ const deleter = (data, path, token) => async(dispatch) => {
     }
 }
 
-export const removeRoleFromUser = (userId, roleId, token) => (deleter({id: userId, role:roleId}, 'user/roles', token))
+export const removeRoleFromUser = (userId, roleId, token) => (deleter({id: userId, role:roleId}, USER_ROLES_PATH, token))
