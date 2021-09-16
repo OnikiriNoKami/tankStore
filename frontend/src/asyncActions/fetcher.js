@@ -11,9 +11,11 @@ import {
     tankStatusesFetchEnd,
     tankTypesFetchEnd,
     usersFetchEnd,
+    userByIdFetchEnd,
 } from "./fetcherEnd";
 import { moduleTypesLoading } from "../store/ModuleTypeReducer";
 import { usersLoading } from "../store/AdminUsers";
+import { usersByIdLoading } from "../store/AdminUsers";
 
 const defPagination = {
     used: false,
@@ -21,7 +23,7 @@ const defPagination = {
     limit: null,
 };
 
-const fetcher = (path,pagination = defPagination, token=null) => async (dispatch) => {
+const fetcher = (path,pagination = defPagination, token=null, params=null) => async (dispatch) => {
         const headers = {
             Authorization: 'jwt ' + token
         }
@@ -44,9 +46,12 @@ const fetcher = (path,pagination = defPagination, token=null) => async (dispatch
             "user/users/": (data, success) => {
                 dispatch(usersFetchEnd(data, success));
             },
+            'user/byId/': (data, success) => {
+                dispatch(userByIdFetchEnd(data, success));
+            }
         };
         try {
-            const result = await axios.get(`http://localhost:4221/api/` + path +
+            const result = await axios.get(`http://localhost:4221/api/` + path + params +
                     (pagination.used
                         ? `?limit=${pagination.limit}&offset=${pagination.offset}`
                         : ""), 
@@ -90,3 +95,8 @@ export const usersFetch = (limit, offset, token) => async (dispatch) => {
         fetcher("user/users/", { used: true, limit, offset }, token)
     );
 };
+
+export const userByIdFetch = (id, token) => async(dispatch) => {
+    dispatch(usersByIdLoading(true));
+    dispatch(fetcher('users/byId/', {token:token, params: id}));
+}

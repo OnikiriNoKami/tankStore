@@ -23,7 +23,12 @@ import {
     usersSet,
     usersLoading,
     usersLoaded,
-    usersSetTotalCount
+    usersSetTotalCount,
+} from "../store/AdminUsers";
+import {
+    usersByIdLoading,
+    usersByIdLoaded,
+    usersSetUserById,
 } from "../store/AdminUsers";
 
 export const nationFetchEnd = (data, success) => async (dispatch) => {
@@ -91,5 +96,16 @@ export const usersFetchEnd = (data, success) => async (dispatch) => {
         dispatch(usersLoading(false));
         dispatch(usersSetTotalCount(null));
         dispatch(usersLoaded(false));
+    }
+};
+
+export const userByIdFetchEnd = (data, success) => async (dispatch) => {
+    if (success) {
+        dispatch(usersSetUserById(data));
+        dispatch(usersByIdLoading(false));
+        dispatch(usersByIdLoaded(true));
+    } else {
+        dispatch(usersByIdLoading(false));
+        dispatch(usersByIdLoaded(false));
     }
 };

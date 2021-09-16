@@ -9,12 +9,18 @@ import {
     USERS_SET_OFFSET,
     USERS_SET_TOTAL_COUNT,
     USERS_SET_TOTAL_PAGES,
+    USERS_SET_USER_BY_ID,
+    USERS_BY_ID_LOADED,
+    USERS_BY_ID_LOADING
 } from "../actions/UserAdminActions";
 
 const defaultState = {
     loading: false,
     loaded: null,
     users: [],
+    userById: null,
+    userByIdLoading: false,
+    userByIdLoaded: null,
     totalCount: null,
     offset: 0,
     page: 1,
@@ -44,6 +50,12 @@ export const adminUsers = (state = defaultState, action) => {
             return { ...state, totalCount: action.payload };
         case USERS_SET_TOTAL_PAGES:
             return { ...state, totalPages: action.payload };
+        case USERS_BY_ID_LOADING:
+            return { ...state, userByIdLoading: action.payload}
+        case USERS_BY_ID_LOADED:
+            return { ...state, userByIdLoaded: action.payload}
+        case USERS_SET_USER_BY_ID:
+            return { ...state, userById: action.payload}
 
         default:
             return state;
@@ -60,3 +72,6 @@ export const usersSetOffset = (payload) => ({type: USERS_SET_OFFSET, payload})
 export const usersSetLimit = (payload) => ({type: USERS_SET_LIMIT, payload})
 export const usersSetTotalCount = (payload) => ({type: USERS_SET_TOTAL_COUNT, payload})
 export const usersSetTotalPages = (payload) => ({type: USERS_SET_TOTAL_PAGES, payload})
+export const usersSetUserById = (payload) => ({type: USERS_SET_USER_BY_ID, payload})
+export const usersByIdLoading = (payload) => ({type: USERS_BY_ID_LOADING, payload})
+export const usersByIdLoaded = (payload) => ({type: USERS_BY_ID_LOADED, payload})
