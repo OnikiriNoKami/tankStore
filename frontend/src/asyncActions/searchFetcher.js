@@ -63,7 +63,7 @@ const fetcher = (query, path, pagination=defPagination, token=null) => async (di
             {headers: headers}
         );
         cases[path](result.data, true)
-        dispatch(successMessage(true));
+        //dispatch(successMessage(true));
     } catch (error) {
         cases[path](null, false)
         dispatch(failMessage(true));
