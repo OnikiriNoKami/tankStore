@@ -32,8 +32,7 @@ const defPagination = {
     limit: null,
 };
 
-const fetcher =
-    (path, pagination = defPagination, token = null, params = null) =>
+const fetcher = (path, {pagination = defPagination, token=null, id=null}={}) =>
     async (dispatch) => {
         const headers = {
             Authorization: "jwt " + token,
@@ -65,7 +64,7 @@ const fetcher =
             const result = await axios.get(
                 `http://localhost:4221/api/` +
                     path +
-                    (params ? params : "") +
+                    (id ? id : "") +
                     (pagination.used
                         ? `?limit=${pagination.limit}&offset=${pagination.offset}`
                         : ""),
@@ -106,10 +105,10 @@ export const moduleTypesFetch = () => async (dispatch) => {
 
 export const usersFetch = (limit, offset, token) => async (dispatch) => {
     dispatch(usersLoading(true));
-    dispatch(fetcher(GET_USERS_PATH, { used: true, limit, offset }, token));
+    dispatch(fetcher(GET_USERS_PATH, { pagination:{used: true, limit, offset}, token }));
 };
 
 export const userByIdFetch = (id, token) => async (dispatch) => {
     dispatch(usersByIdLoading(true));
-    dispatch(fetcher(GET_USER_BY_ID_PATH, { token: token, params: id }));
+    dispatch(fetcher(GET_USER_BY_ID_PATH, {token: token, id: id}));
 };

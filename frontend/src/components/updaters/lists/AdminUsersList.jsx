@@ -12,6 +12,7 @@ import {
 } from "../../../store/AdminUsers";
 import UsersRow from "../rows/UsersRow";
 import PaginationStyles from "../../../styles/PaginationStyles";
+import UsersRoleUpdater from "../modals/UsersRoleUpdater";
 
 const AdminUsersList = () => {
     const classes = BackdropStyles();
@@ -28,7 +29,6 @@ const AdminUsersList = () => {
     const [lastQuery, setLastQuery] = useState('');
     const [lastAction, setLastAction] = useState(null);
     const [open, setOpen] = useState(false);
-    dispatch(usersSetLimit(2));
 
     const loadUsers = () => {
         if (token) {
@@ -75,8 +75,9 @@ const AdminUsersList = () => {
         dispatch(usersSearch(query, limit, offset, token));
     }
 
-    const handleClick = () => {
-        console.log(offset);
+    const handleClick = (id) => {
+        setCurrentUser(id)
+        setOpen(true);
     };
 
     const handleClose = () => {
@@ -124,6 +125,16 @@ const AdminUsersList = () => {
                     
                 </Grid>
             </Grid>
+            <Modal open={open} onClose={handleClose}>
+                <Paper className={classes.root}>
+                    <UsersRoleUpdater
+                        reloadCallback={loadUsers}
+                        callBack={handleClose}
+                        id={currentUser}
+                        
+                    />
+                </Paper>
+            </Modal>
         </Container>
     );
 };

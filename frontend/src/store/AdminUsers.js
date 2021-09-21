@@ -11,14 +11,19 @@ import {
     USERS_SET_TOTAL_PAGES,
     USERS_SET_USER_BY_ID,
     USERS_BY_ID_LOADED,
-    USERS_BY_ID_LOADING
+    USERS_BY_ID_LOADING,
+    USERS_BY_ID_RESET_STATUSES
 } from "../actions/UserAdminActions";
 
 const defaultState = {
     loading: false,
     loaded: null,
     users: [],
-    userById: null,
+    userById: {
+        id: null,
+        email: null,
+        roles: []
+    },
     userByIdLoading: false,
     userByIdLoaded: null,
     totalCount: null,
@@ -54,8 +59,10 @@ export const adminUsers = (state = defaultState, action) => {
             return { ...state, userByIdLoading: action.payload}
         case USERS_BY_ID_LOADED:
             return { ...state, userByIdLoaded: action.payload}
+        case USERS_BY_ID_RESET_STATUSES:
+            return { ...state, userByIdLoading: false, userByIdLoaded: null}
         case USERS_SET_USER_BY_ID:
-            return { ...state, userById: action.payload}
+            return { ...state, userById: {id: action.payload.id, email: action.payload.email, roles: action.payload.roles}}
 
         default:
             return state;
@@ -75,3 +82,4 @@ export const usersSetTotalPages = (payload) => ({type: USERS_SET_TOTAL_PAGES, pa
 export const usersSetUserById = (payload) => ({type: USERS_SET_USER_BY_ID, payload})
 export const usersByIdLoading = (payload) => ({type: USERS_BY_ID_LOADING, payload})
 export const usersByIdLoaded = (payload) => ({type: USERS_BY_ID_LOADED, payload})
+export const usersByIdResetStatuses = (payload) => ({type: USERS_BY_ID_RESET_STATUSES})
