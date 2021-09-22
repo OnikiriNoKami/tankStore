@@ -3,6 +3,7 @@ import AppRouter from "./AppRouter"
 import TokenLoader from "./authorization/TokenLoader"
 import Messages from "./Messages"
 import CombinedMonitors from "./monitors/CombinedMonitors"
+import StatusMonitor from "./monitors/StatusMonitor"
 import Navbar from "./Navbar"
 import Sidebar from "./Sidebar"
 
@@ -26,6 +27,7 @@ const Layout = () => {
         <Sidebar/>
         <TokenLoader/>
         <Messages/>
+        <StatusMonitor/>
         <AppRouter/>
 
     </div>

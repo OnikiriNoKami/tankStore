@@ -10,7 +10,6 @@ const CombinedMonitors = () => {
 
     return (
         <div>
-            <StatusMonitor/>
             <NationsMonitor/>
             <TankTypesMonitor/>
             <TankStatusMonitor/>
