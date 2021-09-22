@@ -9,15 +9,18 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
+import { useEffect } from "react";
+import useArrayEquals from "../hooks/useArrayEquels";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        margin: "auto",
-    },
     paper: {
         width: 200,
-        height: 230,
+        height: 250,
         overflow: "auto",
+        "::-webkit-scrollbar": {
+            all: "auto",
+        },
+        margin: "auto",
     },
     button: {
         margin: theme.spacing(0.5, 0),
@@ -32,11 +35,12 @@ function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function Transfer({ toChoose, chosen }) {
+export default function Transfer({ choose, chosen }) {
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState([0, 1, 2, 3]);
-    const [right, setRight] = React.useState([4, 5, 6, 7]);
+    const [left, setLeft] = React.useState([]);
+    const [right, setRight] = React.useState([]);
+    const asDefault = useArrayEquals(right, chosen)
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -53,6 +57,11 @@ export default function Transfer({ toChoose, chosen }) {
 
         setChecked(newChecked);
     };
+
+    const setDefault = () => {
+        setLeft([...choose])
+        setRight([...chosen])
+    }
 
     const handleAllRight = () => {
         setRight([...right, ...left]);
@@ -76,31 +85,40 @@ export default function Transfer({ toChoose, chosen }) {
         setRight([]);
     };
 
+    useEffect(() => {
+        if (chosen.length !== 0) {
+            setRight([...chosen]);
+        }
+    }, [chosen]);
+
+    useEffect(() => {
+        if (choose.length !== 0) {
+            setLeft([...choose]);
+        }
+    }, [choose]);
+
     const customList = (items) => (
         <Paper className={classes.paper}>
             <List dense component="div" role="list">
-                {items.map((value) => {
-                    const labelId = `transfer-list-item-${value}-label`;
+                {items.map((role) => {
+                    const labelId = `transfer-list-item-${role.id}-label`;
 
                     return (
                         <ListItem
-                            key={value}
+                            key={role.id}
                             role="listitem"
                             button
-                            onClick={handleToggle(value)}
+                            onClick={handleToggle(role)}
                         >
                             <ListItemIcon>
                                 <Checkbox
-                                    checked={checked.indexOf(value) !== -1}
+                                    checked={checked.indexOf(role) !== -1}
                                     tabIndex={-1}
                                     disableRipple
                                     inputProps={{ "aria-labelledby": labelId }}
                                 />
                             </ListItemIcon>
-                            <ListItemText
-                                id={labelId}
-                                primary={`List item ${value + 1}`}
-                            />
+                            <ListItemText id={labelId} primary={role.title} />
                         </ListItem>
                     );
                 })}
@@ -117,8 +135,18 @@ export default function Transfer({ toChoose, chosen }) {
             alignItems="center"
             className={classes.root}
         >
-            <Grid item>{customList(left)}</Grid>
-            <Grid item>
+            <Grid item xs={12} sm={5}>
+                <Grid container justifyContent='flex-end'>
+                        <Grid item xs={11}>
+                            <Typography variant="h5">Not applyed</Typography>
+                        </Grid>
+                    
+                    <Grid item xs={12}>
+                        {customList(left)}
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={2}>
                 <Grid container direction="column" alignItems="center">
                     <Button
                         variant="outlined"
@@ -162,7 +190,41 @@ export default function Transfer({ toChoose, chosen }) {
                     </Button>
                 </Grid>
             </Grid>
-            <Grid item>{customList(right)}</Grid>
+            <Grid item xs={12} sm={5}>
+                <Grid container justifyContent='flex-end'>
+                    <Grid item xs={11}>
+
+                            <Typography variant="h5">Applyed</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {customList(right)}
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+                    <Grid container justifyContent='space-between'>
+                        <Grid item>
+                            <Button
+                                variant='outlined'
+                                color='primary'
+                            >
+                                save
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                onClick={setDefault}
+                                variant='outlined'
+                                color='secondary'
+                                disabled={asDefault.equal}
+                            >
+                                reset
+                            </Button>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+            
         </Grid>
     );
 }
