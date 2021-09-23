@@ -1,6 +1,6 @@
 import axios from "axios"
 import { failMessage, successMessage } from "../store/MessageStore"
-import { ROLE_PATH, NATION_PATH, TANK_TYPE_PATH, STATUS_PATH, MODULE_TYPE_PATH, ADD_ROLE_TO_USER_PATH } from "../utils/routes"
+import { ROLE_PATH, NATION_PATH, TANK_TYPE_PATH, STATUS_PATH, MODULE_TYPE_PATH, ADD_ROLE_TO_USER_PATH, ADD_ROLES_TO_USER_PATH } from "../utils/routes"
 
 const creator = (data, path, token) => async(dispatch) => {
     const headers = {
@@ -24,3 +24,6 @@ export const tankTypeCreate = (title, title_short, token) => (creator({title, ti
 export const tankStatusCreate = (title, token) => (creator({title}, STATUS_PATH, token))
 export const moduleTypeCreate = (title, token) =>(creator({title}, MODULE_TYPE_PATH, token))
 export const userSetRole = (userId, roleId, token) => (creator({id: userId, role: roleId}, ADD_ROLE_TO_USER_PATH, token))
+export const userSetRoles = (userId, roles, token) => (creator({id: userId, roles: roles}, ADD_ROLES_TO_USER_PATH, token))
+
+
