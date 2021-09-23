@@ -9,8 +9,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
-import { useEffect } from "react";
-import useArrayEquals from "../hooks/useArrayEquels";
+import { useEffect, useState } from "react";
+import useArrayEquals from "../../../hooks/useArrayEquals";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,12 +35,21 @@ function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function Transfer({ choose, chosen }) {
+export default function Transfer({
+    choose,
+    chosen,
+    handleSubmit = (applyArr, removeArr) => {},
+}) {
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
     const [left, setLeft] = React.useState([]);
     const [right, setRight] = React.useState([]);
-    const asDefault = useArrayEquals(right, chosen)
+    const [toRemove, setToRemove] = useState([])
+    const [toAdd, setToAdd] = useState([])
+    const [removeDirty, setRemoveDirty] = useState(false)
+    const [addDirty, setAddDirty] = useState(false);
+    const [save, setSave] = useState(false);
+    const asDefault = useArrayEquals(right, chosen);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -59,9 +68,9 @@ export default function Transfer({ choose, chosen }) {
     };
 
     const setDefault = () => {
-        setLeft([...choose])
-        setRight([...chosen])
-    }
+        setLeft([...choose]);
+        setRight([...chosen]);
+    };
 
     const handleAllRight = () => {
         setRight([...right, ...left]);
@@ -96,6 +105,48 @@ export default function Transfer({ choose, chosen }) {
             setLeft([...choose]);
         }
     }, [choose]);
+
+    const collectToRemove = async () => {
+        if (!asDefault.equal) {
+            const tmpArray = chosen.filter((chosenRole) => {
+                return !right.some((role) => role.id === chosenRole.id);
+            });
+            setToRemove(tmpArray.map((role)=> role.id))
+        }
+    };
+
+    const collectToAdd = async () => {
+        if (!asDefault.equal) {
+            const tmpArray = right.filter((role) => {
+                return !chosen.some((chosenRole) => role.id === chosenRole.id);
+            });
+            setToAdd(tmpArray.map((role) => role.id))
+            
+        
+        }
+    };
+
+    const handleSave =() => {
+        collectToRemove();
+        collectToAdd(); 
+        setSave(true)  
+    };
+
+    useEffect(()=>{
+        if(save){
+        setRemoveDirty(true)}
+    }, [toRemove, save])
+    useEffect(()=>{
+        if(save){
+        setAddDirty(true)}
+    }, [toAdd, save])
+
+    useEffect(()=>{
+        if(addDirty&&removeDirty){
+            handleSubmit(toAdd, toRemove)
+        }
+    }, [addDirty, removeDirty])
+   
 
     const customList = (items) => (
         <Paper className={classes.paper}>
@@ -136,11 +187,11 @@ export default function Transfer({ choose, chosen }) {
             className={classes.root}
         >
             <Grid item xs={12} sm={5}>
-                <Grid container justifyContent='flex-end'>
-                        <Grid item xs={11}>
-                            <Typography variant="h5">Not applyed</Typography>
-                        </Grid>
-                    
+                <Grid container justifyContent="flex-end">
+                    <Grid item xs={11}>
+                        <Typography variant="h5">Not applyed</Typography>
+                    </Grid>
+
                     <Grid item xs={12}>
                         {customList(left)}
                     </Grid>
@@ -191,10 +242,9 @@ export default function Transfer({ choose, chosen }) {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={5}>
-                <Grid container justifyContent='flex-end'>
+                <Grid container justifyContent="flex-end">
                     <Grid item xs={11}>
-
-                            <Typography variant="h5">Applyed</Typography>
+                        <Typography variant="h5">Applyed</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         {customList(right)}
@@ -202,29 +252,29 @@ export default function Transfer({ choose, chosen }) {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={10}>
-                    <Grid container justifyContent='space-between'>
-                        <Grid item>
-                            <Button
-                                variant='outlined'
-                                color='primary'
-                            >
-                                save
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                onClick={setDefault}
-                                variant='outlined'
-                                color='secondary'
-                                disabled={asDefault.equal}
-                            >
-                                reset
-                            </Button>
-                        </Grid>
-
+                <Grid container justifyContent="space-between">
+                    <Grid item>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            disabled={asDefault.equal}
+                            onClick={handleSave}
+                        >
+                            save
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            onClick={setDefault}
+                            variant="outlined"
+                            color="secondary"
+                            disabled={asDefault.equal}
+                        >
+                            reset
+                        </Button>
                     </Grid>
                 </Grid>
-            
+            </Grid>
         </Grid>
     );
 }

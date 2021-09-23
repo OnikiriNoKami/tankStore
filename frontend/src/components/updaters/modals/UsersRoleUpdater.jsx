@@ -8,10 +8,10 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useValidatedInput from "../../../hooks/useValidatedInput";
-import { userSetRole } from "../../../asyncActions/creation";
+import { userSetRole, userSetRoles } from "../../../asyncActions/creation";
 import { removeRoleFromUser } from "../../../asyncActions/deletion";
 import { roleFetch, userByIdFetch } from "../../../asyncActions/fetcher";
-import Transfer from "../../Transfer";
+import Transfer from "./UserRoleTransfer";
 import useTransferForRoles from "../../../hooks/useTransferForRoles";
 import { usersByIdResetStatuses } from "../../../store/AdminUsers";
 
@@ -36,7 +36,15 @@ const UsersRoleUpdater = ({
         dispatch(roleFetch());
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (applyArr, removeArr) => {
+        if(applyArr.length !== 0){
+            dispatch(userSetRoles(id, applyArr,token))
+        }
+        if(removeArr.length !== 0){
+            for (let role of removeArr){
+                dispatch(removeRoleFromUser(id, role, token))
+            }
+        }
         //dispatch(tankTypeUpdater(id, title.value, titleShort.value, token, reloadCallback))
         if (callBack) {
             callBack();
@@ -80,6 +88,7 @@ const UsersRoleUpdater = ({
                     <Transfer
                         choose={transfer.choose}
                         chosen={transfer.chosen}
+                        handleSubmit={handleSubmit}
                     />
                 </Grid>
             </Grid>
