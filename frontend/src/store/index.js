@@ -12,19 +12,23 @@ import { sidebarReducer } from "./SidebarReducer";
 import { tankStatusReducer } from "./TankStatusReducer";
 import { moduleTypeReducer } from "./ModuleTypeReducer";
 import { adminUsers } from "./AdminUsers";
+import { tankReducer } from "./TankStore";
+import { tanksReducer } from "./TanksStore";
 
 const mainReducer = combineReducers({
     user: userReducer,
     token: tokenReducer,
     status: statusReducer,
-    messages: messageReducer,
-    sidebar: sidebarReducer,
+    tank: tankReducer,
+    tanks: tanksReducer,
     users: adminUsers,
     nations: nationReducer,
     roles: roleReducer,
     tankTypes: tankTypeReducer,
     tankStatuses: tankStatusReducer,
-    moduleTypes: moduleTypeReducer
+    moduleTypes: moduleTypeReducer,
+    messages: messageReducer,
+    sidebar: sidebarReducer,
 })
 
 export const store = createStore(mainReducer, composeWithDevTools(applyMiddleware(thunk)))
