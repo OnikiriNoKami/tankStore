@@ -24,7 +24,7 @@ class TankController {
     
             return res.status(201).json(tank)
         } catch (err){
-            console.log(err.message)
+            return res.json({error_message:err.message})
         }
     }
 
@@ -32,6 +32,7 @@ class TankController {
         try{
             const new_tank = req.body
             const old_tank = await Tank.findOne({
+                attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
                 where:{
                     id: new_tank.id
                 }
@@ -50,7 +51,7 @@ class TankController {
             await old_tank.save()
             return res.json(old_tank)
         } catch (err){
-            console.log(err.message)
+            return res.json({error_message:err.message})
         }
     }
 
@@ -69,45 +70,26 @@ class TankController {
                 return res.json({message: messages.DELETION_SUCCESS})
             }
         } catch (err){
-            console.log(err.message)
+            return res.json({error_message:err.message})
         }
     }
 
-    async getAll(req, res){
+
+
+    async getAll (req,res,next) {
         try {
-            const {tankTypeId, nationId} = req.query
             let tanks;
-            if(!tankTypeId && !nationId){
-                tanks = await Tank.findAll()
-            }
-            if(tankTypeId && !nationId){
-                tanks = await Tank.findAll({
-                    where:{
-                        tankTypeId: tankTypeId
-                    }
-                })
-            }
-            if(!tankTypeId && nationId){
-                tanks = await Tank.findAll({
-                    where:{
-                        nationId: nationId
-                    }
-                })
-            }
-            if(tankTypeId && nationId){
-                tanks = await Tank.findAll({
-                    where:{
-                        tankTypeId: tankTypeId,
-                        nationId: nationId
-                    }
-                })
-            }
+            const filter = {...req.query}
+            tanks = await Tank.findAll({
+                attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
+                    where:filter
+            })
+            
 
             return res.json(tanks)
         } catch (err){
-            console.log(err.message)
+            return res.json({error_message:err.message})
         }
-
     }
 
     async getOne(req, res){
@@ -115,6 +97,7 @@ class TankController {
             const {id} = req.params
 
             const tank = await Tank.findOne({
+                attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
                 where: {
                     id: id
                 }
@@ -124,7 +107,7 @@ class TankController {
             }
             return res.json(tank)
         } catch (err) {
-            console.log(err.message)
+            return res.json({error_message:err.message})
         }
     }
 }
