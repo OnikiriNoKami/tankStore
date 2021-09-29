@@ -10,7 +10,7 @@ import {
     ADD_ROLES_TO_USER_PATH,
     TANK_PATH,
 } from "../utils/routes";
-import { isRequired } from "../utils/utilitiFunctions";
+import { isRequired } from "../utils/errors";
 
 const creator = (data, path, token) => async (dispatch) => {
     const headers = {
