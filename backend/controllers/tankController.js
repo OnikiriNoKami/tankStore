@@ -1,6 +1,7 @@
 const { Tank } = require("../models/models")
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
+const { renameProp } = require('../utils/utils')
 
 
 class TankController {
@@ -31,6 +32,8 @@ class TankController {
     async update(req,res,next){
         try{
             const newTank = req.body
+            renameProp(newTank, 'priceSilver', 'price_silver')
+            renameProp(newTank, 'priceExp', 'price_exp')
             const oldTank = await Tank.findOne({
                 attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
                 where:{
