@@ -82,7 +82,7 @@ class TankController {
             const {limit, offset} = req.query
             delete filter.limit
             delete filter.offset
-            tanks = await Tank.findAll({
+            tanks = await Tank.findAndCountAll({
                 attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
                 where: filter,
                 limit: limit,
