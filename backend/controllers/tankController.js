@@ -79,15 +79,23 @@ class TankController {
         try {
             let tanks;
             const filter = {...req.query}
+            const {limit, offset} = req.query
+            delete filter.limit
+            delete filter.offset
             tanks = await Tank.findAll({
                 attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
-                    where:filter
+                where: filter,
+                limit: limit,
+                offset: offset,
+                order: [
+                    ['id','ASC']
+                ]
             })
             
 
             return res.json(tanks)
         } catch (err){
-            return res.json({error_message:err.message})
+            return next(err)
         }
     }
 
