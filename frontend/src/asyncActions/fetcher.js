@@ -12,6 +12,7 @@ import {
     tankTypesFetchEnd,
     usersFetchEnd,
     userByIdFetchEnd,
+    tankByIdFetchEnd,
 } from "./fetcherEnd";
 import { moduleTypesLoading } from "../store/ModuleTypeReducer";
 import { usersLoading } from "../store/AdminUsers";
@@ -24,7 +25,9 @@ import {
     MODULE_TYPE_PATH,
     GET_USERS_PATH,
     GET_USER_BY_ID_PATH,
+    TANK_PATH,
 } from "../utils/routes";
+import { tankLoading } from "../store/TankStore";
 
 const defPagination = {
     used: false,
@@ -59,6 +62,9 @@ const fetcher = (path, {pagination = defPagination, token=null, id=null}={}) =>
             [GET_USER_BY_ID_PATH]: (data, success) => {
                 dispatch(userByIdFetchEnd(data, success));
             },
+            [TANK_PATH]: (data, success) => {
+                dispatch(tankByIdFetchEnd(data, success))
+            }
         };
         try {
             const result = await axios.get(
@@ -111,4 +117,9 @@ export const usersFetch = (limit, offset, token) => async (dispatch) => {
 export const userByIdFetch = (id, token) => async (dispatch) => {
     dispatch(usersByIdLoading(true));
     dispatch(fetcher(GET_USER_BY_ID_PATH, {token: token, id: id}));
+};
+
+export const tankByIdFetch = (id) => async (dispatch) => {
+    dispatch(tankLoading(true))
+    dispatch(fetcher(TANK_PATH, {id: id}))
 };

@@ -10,6 +10,7 @@ import {
     moduleTypesFetchEnd,
     nationFetchEnd,
     roleFetchEnd,
+    tanksFetchEnd,
     tankStatusesFetchEnd,
     tankTypesFetchEnd,
     usersFetchEnd
@@ -21,16 +22,12 @@ import {
     TANK_TYPE_PATH,
     STATUS_PATH,
     MODULE_TYPE_PATH,
-    GET_USERS_BY_QUERY
+    GET_USERS_BY_QUERY,
+    TANK_PATH
 } from "../utils/routes";
+import { tanksLoading } from "../store/TanksStore";
 
-const defPagination = {
-    used: false,
-    offset: null,
-    limit: null,
-};
-
-const fetcher = (query, path, pagination=defPagination, token=null) => async (dispatch) => {
+const fetcher = (path, pathFull, token=null) => async (dispatch) => {
     const headers = {
         Authorization: 'jwt '+ token
     }
@@ -53,13 +50,14 @@ const fetcher = (query, path, pagination=defPagination, token=null) => async (di
         [GET_USERS_BY_QUERY]: (data, success) => {
             dispatch(usersFetchEnd(data, success));
         },
+        [TANK_PATH]: (data, success)=>{
+            dispatch(tanksFetchEnd(data, success));
+        },
     };
 
     try {
         const result = await axios.get(
-            `http://localhost:4221/api/${path}/${query}`+ 
-            (pagination.used? `?limit=${pagination.limit}&offset=${pagination.offset}`
-            : ""), 
+            `http://localhost:4221/api/${pathFull}`,
             {headers: headers}
         );
         cases[path](result.data, true)
@@ -70,34 +68,53 @@ const fetcher = (query, path, pagination=defPagination, token=null) => async (di
     }
 };
 
+
+
+
 export const nationSearch = (query) => async (dispatch) => {
+    const pathFull = `${NATION_PATH}/${query}`;
     dispatch(nationsLoading(true));
-    dispatch(fetcher(query, NATION_PATH));
+    dispatch(fetcher(NATION_PATH, pathFull));
 };
 
 export const roleSearch = (query) => async (dispatch) => {
+    const pathFull = `${ROLE_PATH}/${query}`;
     dispatch(rolesLoading(true));
-    dispatch(fetcher(query, ROLE_PATH));
+    dispatch(fetcher(ROLE_PATH, pathFull));
 };
 
 export const tankTypeSearch = (query) => async (dispatch) => {
+    const pathFull = `${TANK_TYPE_PATH}/${query}`;
     dispatch(tankTypesLoading(true));
-    dispatch(fetcher(query, TANK_TYPE_PATH));
+    dispatch(fetcher(TANK_TYPE_PATH, pathFull));
 };
 
 export const tankStatusSearch = (query) => async (dispatch) => {
+    const pathFull = `${STATUS_PATH}/${query}`;
     dispatch(tankStatusesLoading(true));
-    dispatch(fetcher(query, STATUS_PATH));
+    dispatch(fetcher(STATUS_PATH, pathFull));
 };
 
 export const moduleTypesSearch = (query) => async (dispatch) => {
+    const pathFull = `${MODULE_TYPE_PATH}/${query}`;
     dispatch(moduleTypesLoading(true));
-    dispatch(fetcher(query, MODULE_TYPE_PATH));
+    dispatch(fetcher(MODULE_TYPE_PATH, pathFull));
 };
 
 export const usersSearch = (query, limit, offset, token) => async (dispatch) => {
+    const pathFull = `${GET_USERS_BY_QUERY}/${query}?limit=${limit}&offset=${offset}`;
     dispatch(usersLoading(true));
-    dispatch(
-        fetcher(query, GET_USERS_BY_QUERY, { used: true, limit, offset }, token)
-    );
+    dispatch(fetcher(GET_USERS_BY_QUERY, pathFull, token));
 };
+
+export const tanksFilterGet = (filter, limit, offset) => async(dispatch) => {
+    const pathMain = `${TANK_PATH}/?limit=${limit}&offset=${offset}`
+    let pathFilter = ''
+    for(let field of filter){
+        pathFilter += `&${field.key}=${field.value}`
+    }
+    dispatch(tanksLoading(true));
+    dispatch(fetcher(TANK_PATH, pathMain+pathFilter))
+}
+
+

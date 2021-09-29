@@ -30,6 +30,8 @@ import {
     usersByIdLoaded,
     usersSetUserById,
 } from "../store/AdminUsers";
+import { tanksLoaded, tanksLoading, tanksSet, tanksSetTotalCount } from "../store/TanksStore";
+import { tankLoaded, tankLoading, tankSet } from "../store/TankStore";
 
 export const nationFetchEnd = (data, success) => async (dispatch) => {
     if (success) {
@@ -109,3 +111,27 @@ export const userByIdFetchEnd = (data, success) => async (dispatch) => {
         dispatch(usersByIdLoaded(false));
     }
 };
+
+export const tanksFetchEnd = (data, success) => async (dispatch) => {
+    if(success){
+        dispatch(tanksSet(data.rows));
+        dispatch(tanksSetTotalCount(data.count));
+        dispatch(tanksLoading(false));
+        dispatch(tanksLoaded(true));
+    } else {
+        dispatch(tanksLoading(false));
+        dispatch(tanksSetTotalCount(null));
+        dispatch(tanksLoaded(false));
+    }
+}
+
+export const tankByIdFetchEnd = (data, success) => async (dispatch) => {
+    if(success) {
+        dispatch(tankSet(data));
+        dispatch(tankLoading(false));
+        dispatch(tankLoaded(true));
+    } else {
+        dispatch(tankLoaded(false));
+        dispatch(tankLoading(false));
+    }
+}
