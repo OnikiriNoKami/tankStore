@@ -28,30 +28,26 @@ class TankController {
         }
     }
 
-    async update(req, res, next){
+    async update(req,res,next){
         try{
-            const new_tank = req.body
-            const old_tank = await Tank.findOne({
+            const newTank = req.body
+            const oldTank = await Tank.findOne({
                 attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
                 where:{
-                    id: new_tank.id
+                    id: newTank.id
                 }
             })
-            if(old_tank === null){
+            if(oldTank === null){
                 return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
             }
+            for(let [key, value] of Object.entries(newTank)){
+                oldTank[key]? oldTank[key]=value : null
+            }
+            await oldTank.save()
+            return res.json(oldTank)
 
-            old_tank.title = new_tank.title
-            old_tank.descriotion = new_tank.descriotion
-            old_tank.price_silver = new_tank.price_silver
-            old_tank.price_exp = new_tank.price_exp
-            old_tank.nationId = new_tank.nationId
-            old_tank.tankTypeId = new_tank.tankTypeId
-            old_tank.statusId = new_tank.statusId
-            await old_tank.save()
-            return res.json(old_tank)
         } catch (err){
-            return res.json({error_message:err.message})
+            return next(err)
         }
     }
 
