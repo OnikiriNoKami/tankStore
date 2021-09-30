@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { NATION_CODE, ROLE_CODE, TYPE_CODE, TANK_STATUS_CODE, MODULE_TYPE_CODE, USERS_MANAGING_CODE } from "../utils/consts";
+import { NATION_CODE, ROLE_CODE, TYPE_CODE, TANK_STATUS_CODE, MODULE_TYPE_CODE, USERS_MANAGING_CODE, TANK_CODE } from "../utils/consts";
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import NationCRUD from '../components/creators/NationCreator';
@@ -15,6 +15,7 @@ import ModuleTypeCreator from '../components/creators/ModuleTypeCreator';
 import ModuleTypeList from '../components/updaters/lists/ModuleTypeList';
 import AdminUsersList from '../components/updaters/lists/AdminUsersList';
 import CombinedMonitors from '../components/monitors/CombinedMonitors';
+import TankCreator from '../components/creators/TankCreator';
 
 const Admin = () => {
     const classes = useBoxStyles()
@@ -31,6 +32,7 @@ const Admin = () => {
                 {type===ROLE_CODE&&<RoleCreator/>}
                 {type===TANK_STATUS_CODE&&<TankStatusCreator/>}
                 {type===MODULE_TYPE_CODE&&<ModuleTypeCreator/>}
+                {type===TANK_CODE&&<TankCreator/>}
             </Box>
             }
 
