@@ -28,6 +28,11 @@ const useTankStatusSelect = () => {
         setDirty(true);
     };
 
+    const clear = () => {
+        setDirty(false)
+        setSelected('')
+    };
+
     useEffect(() => {
         loadStatuses();
     }, []);
@@ -71,6 +76,7 @@ const useTankStatusSelect = () => {
         render,
         selected,
         dirty,
+        clear
     };
 };
 

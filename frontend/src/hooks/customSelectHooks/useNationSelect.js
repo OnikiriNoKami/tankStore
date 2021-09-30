@@ -28,6 +28,11 @@ const useNationSelect = () => {
         setDirty(true)
     };
 
+    const clear = () => {
+        setDirty(false)
+        setSelected('')
+    };
+
     useEffect(() => {
         loadNations();
     }, []);
@@ -65,6 +70,7 @@ const useNationSelect = () => {
         render,
         selected,
         dirty,
+        clear,
     }
 
 };

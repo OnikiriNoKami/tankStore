@@ -28,6 +28,11 @@ const useTankTypeSelect = () => {
         setDirty(true);
     };
 
+    const clear = () => {
+        setDirty(false)
+        setSelected('')
+    };
+
     useEffect(() => {
         loadTypes();
     }, []);
@@ -71,6 +76,7 @@ const useTankTypeSelect = () => {
         render,
         selected,
         dirty,
+        clear
     };
 };
 
