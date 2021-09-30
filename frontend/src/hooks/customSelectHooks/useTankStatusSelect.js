@@ -29,8 +29,9 @@ const useTankStatusSelect = () => {
     };
 
     const clear = () => {
+        if(dirty){
         setDirty(false)
-        setSelected('')
+        setSelected('')}
     };
 
     useEffect(() => {
