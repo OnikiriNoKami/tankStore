@@ -1,4 +1,4 @@
-import { NATION_CODE, ROLE_CODE, TYPE_CODE, TANK_STATUS_CODE, MODULE_TYPE_CODE } from "./consts";
+import { NATION_CODE, ROLE_CODE, TYPE_CODE, TANK_STATUS_CODE, MODULE_TYPE_CODE, TANK_CODE } from "./consts";
 
 const createItems = [
     {
@@ -20,6 +20,10 @@ const createItems = [
     {
         text: 'Module type',
         code: MODULE_TYPE_CODE
+    },
+    {
+        text: 'Tank',
+        code: TANK_CODE
     }
 ]
 
