@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 const useTankTypeSelect = () => {
-    const [selected, setSelected] = useState('');
+    const [selected, setSelected] = useState("");
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const useTankTypeSelect = () => {
     };
 
     const handleDirty = () => {
-        setDirty(true)
+        setDirty(true);
     };
 
     useEffect(() => {
@@ -33,15 +33,16 @@ const useTankTypeSelect = () => {
     }, []);
 
     useEffect(() => {
-        if(dirty&&selected===''){
-            setError(true)
+        if (dirty && selected === "") {
+            setError(true);
         } else {
-            setError(false)
+            setError(false);
         }
-    }, [selected, dirty])
+    }, [selected, dirty]);
 
     const render = () => (
-            <Box sx={{ minWidth: 120, width: 230}}>
+        <Box sx={{ minWidth: 120, display: "flex", justifyContent: "center" }}>
+            <Box style={{ width: 230 }}>
                 <FormControl fullWidth>
                     <InputLabel id="type-select-label">Type</InputLabel>
                     <Select
@@ -52,19 +53,25 @@ const useTankTypeSelect = () => {
                         onChange={handleChange}
                         error={error}
                     >
-                        {tankTypes.length !== 0 ? tankTypes.map(type => (<MenuItem key={type.id} value={type.id}>{type.title}</MenuItem>)) 
-                        : 
-                        <MenuItem value='None'>None</MenuItem>}
+                        {tankTypes.length !== 0 ? (
+                            tankTypes.map((type) => (
+                                <MenuItem key={type.id} value={type.id}>
+                                    {type.title}
+                                </MenuItem>
+                            ))
+                        ) : (
+                            <MenuItem value="None">None</MenuItem>
+                        )}
                     </Select>
                 </FormControl>
             </Box>
+        </Box>
     );
     return {
         render,
         selected,
         dirty,
-    }
-
+    };
 };
 
-export default useTankTypeSelect
+export default useTankTypeSelect;

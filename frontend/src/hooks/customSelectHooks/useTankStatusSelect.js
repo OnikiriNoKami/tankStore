@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 const useTankStatusSelect = () => {
-    const [selected, setSelected] = useState('');
+    const [selected, setSelected] = useState("");
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const useTankStatusSelect = () => {
     };
 
     const handleDirty = () => {
-        setDirty(true)
+        setDirty(true);
     };
 
     useEffect(() => {
@@ -33,15 +33,16 @@ const useTankStatusSelect = () => {
     }, []);
 
     useEffect(() => {
-        if(dirty&&selected===''){
-            setError(true)
+        if (dirty && selected === "") {
+            setError(true);
         } else {
-            setError(false)
+            setError(false);
         }
-    }, [selected, dirty])
+    }, [selected, dirty]);
 
     const render = () => (
-            <Box sx={{ minWidth: 120, width: 230}}>
+        <Box sx={{ minWidth: 120, display: "flex", justifyContent: "center" }}>
+            <Box style={{ width: 230 }}>
                 <FormControl fullWidth>
                     <InputLabel id="status-select-label">Status</InputLabel>
                     <Select
@@ -52,19 +53,25 @@ const useTankStatusSelect = () => {
                         onChange={handleChange}
                         error={error}
                     >
-                        {statuses.length !== 0 ? statuses.map(statuses => (<MenuItem key={statuses.id} value={statuses.id}>{statuses.title}</MenuItem>)) 
-                        : 
-                        <MenuItem value='None'>None</MenuItem>}
+                        {statuses.length !== 0 ? (
+                            statuses.map((statuses) => (
+                                <MenuItem key={statuses.id} value={statuses.id}>
+                                    {statuses.title}
+                                </MenuItem>
+                            ))
+                        ) : (
+                            <MenuItem value="None">None</MenuItem>
+                        )}
                     </Select>
                 </FormControl>
             </Box>
+        </Box>
     );
     return {
         render,
         selected,
         dirty,
-    }
-
+    };
 };
 
-export default useTankStatusSelect
+export default useTankStatusSelect;

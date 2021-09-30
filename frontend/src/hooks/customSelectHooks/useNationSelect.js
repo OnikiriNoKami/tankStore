@@ -41,22 +41,24 @@ const useNationSelect = () => {
     }, [selected, dirty])
 
     const render = () => (
-            <Box sx={{ minWidth: 120, width: 230}}>
-                <FormControl fullWidth>
-                    <InputLabel id="nation-select-label">Nation</InputLabel>
-                    <Select
-                        id="nation-select"
-                        value={selected}
-                        label="Nation"
-                        onBlur={handleDirty}
-                        onChange={handleChange}
-                        error={error}
-                    >
-                        {nations.length !== 0 ? nations.map(nation => (<MenuItem key={nation.id} value={nation.id}>{nation.title}</MenuItem>)) 
-                        : 
-                        <MenuItem value='None'>None</MenuItem>}
-                    </Select>
-                </FormControl>
+            <Box sx={{ minWidth: 120, display: 'flex', justifyContent:'center'}}>
+                <Box style={{width:230}}>
+                    <FormControl fullWidth>
+                        <InputLabel id="nation-select-label">Nation</InputLabel>
+                        <Select
+                            id="nation-select"
+                            value={selected}
+                            label="Nation"
+                            onBlur={handleDirty}
+                            onChange={handleChange}
+                            error={error}
+                        >
+                            {nations.length !== 0 ? nations.map(nation => (<MenuItem key={nation.id} value={nation.id}>{nation.title}</MenuItem>)) 
+                            : 
+                            <MenuItem value='None'>None</MenuItem>}
+                        </Select>
+                    </FormControl>
+                </Box>
             </Box>
     );
     return {
