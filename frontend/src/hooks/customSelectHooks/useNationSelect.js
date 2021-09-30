@@ -13,6 +13,7 @@ const useNationSelect = () => {
     const [selected, setSelected] = useState("");
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
+    const [validInput, setValidInput] = useState(false);
     const dispatch = useDispatch();
     const nations = useSelector((state) => state.nations.nations);
 
@@ -50,6 +51,14 @@ const useNationSelect = () => {
         }
     }, [selected, dirty]);
 
+    useEffect(()=>{
+        if(dirty&&!error){
+            setValidInput(true)
+        } else {
+            setValidInput(false)
+        }
+    }, [dirty, error])
+
     const render = () => (
         <Box sx={{ minWidth: 120, display: "flex", justifyContent: "center" }}>
             <Box style={{ width: 230 }}>
@@ -82,6 +91,7 @@ const useNationSelect = () => {
         selected,
         dirty,
         clear,
+        validInput
     };
 };
 

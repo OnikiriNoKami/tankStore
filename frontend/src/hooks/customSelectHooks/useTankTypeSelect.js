@@ -13,6 +13,7 @@ const useTankTypeSelect = () => {
     const [selected, setSelected] = useState("");
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
+    const [validInput, setValidInput] = useState(false);
     const dispatch = useDispatch();
     const tankTypes = useSelector((state) => state.tankTypes.tankTypes);
 
@@ -49,6 +50,13 @@ const useTankTypeSelect = () => {
             setError(false);
         }
     }, [selected, dirty]);
+    useEffect(()=>{
+        if(dirty&&!error){
+            setValidInput(true)
+        } else {
+            setValidInput(false)
+        }
+    }, [dirty, error])
 
     const render = () => (
         <Box sx={{ minWidth: 120, display: "flex", justifyContent: "center" }}>
@@ -82,6 +90,7 @@ const useTankTypeSelect = () => {
         selected,
         dirty,
         clear,
+        validInput
     };
 };
 
