@@ -16,7 +16,14 @@ const useTankStatusSelect = () => {
     const dispatch = useDispatch();
     const statuses = useSelector((state) => state.tankStatuses.statuses);
 
+    const handleDirty = () => {
+        setDirty(true);
+    };
+
     const handleChange = (event) => {
+        if (!dirty) {
+            handleDirty();
+        }
         setSelected(event.target.value);
     };
 
@@ -24,14 +31,11 @@ const useTankStatusSelect = () => {
         dispatch(tankStatusFetch);
     };
 
-    const handleDirty = () => {
-        setDirty(true);
-    };
-
     const clear = () => {
-        if(dirty){
-        setDirty(false)
-        setSelected('')}
+        if (dirty) {
+            setDirty(false);
+            setSelected("");
+        }
     };
 
     useEffect(() => {
@@ -77,7 +81,7 @@ const useTankStatusSelect = () => {
         render,
         selected,
         dirty,
-        clear
+        clear,
     };
 };
 

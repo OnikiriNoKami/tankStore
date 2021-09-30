@@ -10,13 +10,20 @@ import {
 } from "@material-ui/core";
 
 const useNationSelect = () => {
-    const [selected, setSelected] = useState('');
+    const [selected, setSelected] = useState("");
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
     const dispatch = useDispatch();
     const nations = useSelector((state) => state.nations.nations);
 
+    const handleDirty = () => {
+        setDirty(true);
+    };
+
     const handleChange = (event) => {
+        if (!dirty) {
+            handleDirty();
+        }
         setSelected(event.target.value);
     };
 
@@ -24,14 +31,11 @@ const useNationSelect = () => {
         dispatch(nationFetch());
     };
 
-    const handleDirty = () => {
-        setDirty(true)
-    };
-
     const clear = () => {
-        if(dirty){
-        setDirty(false)
-        setSelected('')}
+        if (dirty) {
+            setDirty(false);
+            setSelected("");
+        }
     };
 
     useEffect(() => {
@@ -39,41 +43,46 @@ const useNationSelect = () => {
     }, []);
 
     useEffect(() => {
-        if(dirty&&selected===''){
-            setError(true)
+        if (dirty && selected === "") {
+            setError(true);
         } else {
-            setError(false)
+            setError(false);
         }
-    }, [selected, dirty])
+    }, [selected, dirty]);
 
     const render = () => (
-            <Box sx={{ minWidth: 120, display: 'flex', justifyContent:'center'}}>
-                <Box style={{width:230}}>
-                    <FormControl fullWidth>
-                        <InputLabel id="nation-select-label">Nation</InputLabel>
-                        <Select
-                            id="nation-select"
-                            value={selected}
-                            label="Nation"
-                            onBlur={handleDirty}
-                            onChange={handleChange}
-                            error={error}
-                        >
-                            {nations.length !== 0 ? nations.map(nation => (<MenuItem key={nation.id} value={nation.id}>{nation.title}</MenuItem>)) 
-                            : 
-                            <MenuItem value='None'>None</MenuItem>}
-                        </Select>
-                    </FormControl>
-                </Box>
+        <Box sx={{ minWidth: 120, display: "flex", justifyContent: "center" }}>
+            <Box style={{ width: 230 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="nation-select-label">Nation</InputLabel>
+                    <Select
+                        id="nation-select"
+                        value={selected}
+                        label="Nation"
+                        onBlur={handleDirty}
+                        onChange={handleChange}
+                        error={error}
+                    >
+                        {nations.length !== 0 ? (
+                            nations.map((nation) => (
+                                <MenuItem key={nation.id} value={nation.id}>
+                                    {nation.title}
+                                </MenuItem>
+                            ))
+                        ) : (
+                            <MenuItem value="None">None</MenuItem>
+                        )}
+                    </Select>
+                </FormControl>
             </Box>
+        </Box>
     );
     return {
         render,
         selected,
         dirty,
         clear,
-    }
-
+    };
 };
 
-export default useNationSelect
+export default useNationSelect;

@@ -16,7 +16,14 @@ const useTankTypeSelect = () => {
     const dispatch = useDispatch();
     const tankTypes = useSelector((state) => state.tankTypes.tankTypes);
 
+    const handleDirty = () => {
+        setDirty(true);
+    };
+
     const handleChange = (event) => {
+        if (dirty) {
+            handleDirty();
+        }
         setSelected(event.target.value);
     };
 
@@ -24,14 +31,11 @@ const useTankTypeSelect = () => {
         dispatch(tankTypeFetch());
     };
 
-    const handleDirty = () => {
-        setDirty(true);
-    };
-
     const clear = () => {
-        if(dirty){
-        setDirty(false)
-        setSelected('')}
+        if (dirty) {
+            setDirty(false);
+            setSelected("");
+        }
     };
 
     useEffect(() => {
@@ -77,7 +81,7 @@ const useTankTypeSelect = () => {
         render,
         selected,
         dirty,
-        clear
+        clear,
     };
 };
 
