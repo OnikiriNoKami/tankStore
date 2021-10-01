@@ -61,7 +61,7 @@ const useTankStatusSelect = () => {
 
     const render = () => (
         <Box sx={{ minWidth: 120, display: "flex", justifyContent: "center" }}>
-            <Box style={{ width: 230 }}>
+            <Box style={{ width: "100%" }}>
                 <FormControl fullWidth>
                     <InputLabel id="status-select-label">Status</InputLabel>
                     <Select
