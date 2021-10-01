@@ -38,8 +38,9 @@ const useNumberFormat = (defaultValue='') => {
     }
 
     const clear = () => {
+        if(dirty){
         setValue(defaultValue)
-        setDirty(false)
+        setDirty(false)}
     }
     
 
@@ -67,7 +68,8 @@ const useNumberFormat = (defaultValue='') => {
         onBlur,
         clear,
         error,
-        validInput
+        validInput,
+        dirty,
     };
 };
 
