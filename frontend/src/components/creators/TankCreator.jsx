@@ -5,12 +5,15 @@ import {
     TextField,
     Typography,
 } from "@material-ui/core";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { tankCreate } from "../../asyncActions/creation";
 import useNationSelect from "../../hooks/customSelectHooks/useNationSelect";
 import useTankStatusSelect from "../../hooks/customSelectHooks/useTankStatusSelect";
 import useTankTypeSelect from "../../hooks/customSelectHooks/useTankTypeSelect";
 import useValidatedInput from "../../hooks/useValidatedInput";
+import NumberFormat from "react-number-format";
+import useNumberFormat from "../../hooks/useNumberFormat";
 
 const TankCreator = () => {
     const title = useValidatedInput("", {
@@ -23,6 +26,8 @@ const TankCreator = () => {
         minLength: 2,
         maxLength: 900,
     });
+    const priceSilver = useNumberFormat();
+    const priceExp = useNumberFormat();
     const nation = useNationSelect();
     const tankType = useTankTypeSelect();
     const tankStatus = useTankStatusSelect();
@@ -35,11 +40,24 @@ const TankCreator = () => {
         nation.clear();
         tankType.clear();
         tankStatus.clear();
+        priceSilver.clear();
+        priceExp.clear();
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        //dispatch(tankCreate())
+        dispatch(
+            tankCreate(
+                title.value,
+                description.value,
+                priceSilver.value,
+                priceExp.value,
+                nation.selected,
+                tankType.selected,
+                tankStatus.selected,
+                token
+            )
+        );
         handleClear();
     };
 
@@ -64,7 +82,7 @@ const TankCreator = () => {
                     </Grid>
                     <Grid item xs={10} sm={10}>
                         <TextField
-                            label="Role description"
+                            label="Tank description"
                             value={description.value}
                             error={description.errorStatus}
                             onChange={description.onChange}
@@ -76,13 +94,51 @@ const TankCreator = () => {
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={10} sm={10}>
-                        <Typography variant="h6" component="body1">
+                    <Grid item xs={12} sm={10}>
+                        <Grid container spacing={2} justifyContent="center">
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Price silver"
+                                    variant="outlined"
+                                    autoComplete="off"
+                                    value={priceSilver.value}
+                                    onBlur={priceSilver.onBlur}
+                                    error={priceSilver.error}
+                                    onChange={priceSilver.onChange}
+                                    fullWidth
+                                    InputProps={{
+                                        inputComponent: priceSilver.render,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Price exp"
+                                    variant="outlined"
+                                    autoComplete="off"
+                                    value={priceExp.value}
+                                    onBlur={priceExp.onBlur}
+                                    error={priceExp.error}
+                                    onChange={priceExp.onChange}
+                                    fullWidth
+                                    InputProps={{
+                                        inputComponent: priceExp.render,
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={10}>
+                        <Typography variant="h6">
                             Select correct position in each.
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={10}>
-                        <Grid container spacing={3} justifyContent="center">
+                        <Grid
+                            container
+                            spacing={3}
+                            justifyContent="space-between"
+                        >
                             <Grid item xs={12} md={4}>
                                 {nation.render()}
                             </Grid>
@@ -105,7 +161,9 @@ const TankCreator = () => {
                                         !description.validInput ||
                                         !nation.validInput ||
                                         !tankStatus.validInput ||
-                                        !tankType.validInput
+                                        !tankType.validInput ||
+                                        !priceSilver.validInput ||
+                                        !priceExp.validInput
                                     }
                                     color="primary"
                                 >
@@ -121,7 +179,9 @@ const TankCreator = () => {
                                         description.isEmpty &&
                                         !nation.dirty &&
                                         !tankStatus.dirty &&
-                                        !tankType.dirty
+                                        !tankType.dirty &&
+                                        !priceSilver.dirty &&
+                                        !priceExp.dirty
                                     }
                                     color="secondary"
                                 >
