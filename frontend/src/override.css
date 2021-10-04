@@ -1,0 +1,11 @@
+.carousel .thumb img {
+    height: 80px;  /* change this to whatever you want */
+    max-width: 80px;
+    object-fit: contain;
+}
+
+.carousel .slide img {
+    height: 300px;  /* change this to whatever you want */
+    max-width: 500px;
+    object-fit: contain;
+}
