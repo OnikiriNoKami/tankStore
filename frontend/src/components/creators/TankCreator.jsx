@@ -5,15 +5,18 @@ import {
     TextField,
     Typography,
 } from "@material-ui/core";
-import { useState } from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import '../../override.css';
 import { useDispatch, useSelector } from "react-redux";
 import { tankCreate } from "../../asyncActions/creation";
 import useNationSelect from "../../hooks/customSelectHooks/useNationSelect";
 import useTankStatusSelect from "../../hooks/customSelectHooks/useTankStatusSelect";
 import useTankTypeSelect from "../../hooks/customSelectHooks/useTankTypeSelect";
 import useValidatedInput from "../../hooks/useValidatedInput";
-import NumberFormat from "react-number-format";
 import useNumberFormat from "../../hooks/useNumberFormat";
+import useImageUpload from "../../hooks/useImageUpload";
+import AddPhotoAlternate from "@material-ui/icons/AddPhotoAlternate";
+import { Carousel } from "react-responsive-carousel";
 
 const TankCreator = () => {
     const title = useValidatedInput("", {
@@ -26,6 +29,7 @@ const TankCreator = () => {
         minLength: 2,
         maxLength: 900,
     });
+    const images = useImageUpload();
     const priceSilver = useNumberFormat();
     const priceExp = useNumberFormat();
     const nation = useNationSelect();
@@ -44,9 +48,9 @@ const TankCreator = () => {
         priceExp.clear();
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(
+        const result = await dispatch(
             tankCreate(
                 title.value,
                 description.value,
@@ -59,6 +63,7 @@ const TankCreator = () => {
             )
         );
         handleClear();
+        console.log(result);
     };
 
     return (
@@ -150,6 +155,23 @@ const TankCreator = () => {
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Grid item xs={12} sm={10}>
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            color="primary"
+                            endIcon={<AddPhotoAlternate />}
+                        >
+                            <Typography variant="body1">Add image</Typography>
+                            <input
+                                type="file"
+                                hidden
+                                onChange={images.onChange}
+                                onBlur={images.onBlur}
+                                accept="image/*"
+                            />
+                        </Button>
+                    </Grid>
                     <Grid item xs={10} sm={10}>
                         <Grid container justifyContent="space-between">
                             <Grid item>
@@ -189,6 +211,23 @@ const TankCreator = () => {
                                 </Button>
                             </Grid>
                         </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={10}>
+                        <Carousel dynamicHeight={true}>
+                            {images.value.length !== 0 ? (
+                                images.value.map((image) => (
+                                    <div key={URL.createObjectURL(image)}>
+                                        <img 
+                                            src={URL.createObjectURL(image)}
+                                        />
+                                    </div>
+                                ))
+                            ) : (
+                                <div>
+                                    <p className="legend">No images</p>
+                                </div>
+                            )}
+                        </Carousel>
                     </Grid>
                 </Grid>
             </form>
