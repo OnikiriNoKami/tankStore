@@ -56,7 +56,8 @@ const useNumberFormat = (defaultValue='') => {
     useEffect(()=>{
         if(error&&dirty){
             setValidInput(false)
-        } else {
+        }
+        if(!error&&dirty) {
             setValidInput(true)
         }
     }, [dirty, error])
