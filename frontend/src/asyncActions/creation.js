@@ -25,10 +25,11 @@ const creator = (data, path, token) => async (dispatch) => {
             body,
             { headers: headers }
         );
-        console.log(result.status);
         dispatch(successMessage(true));
+        return result.data
     } catch (error) {
         dispatch(failMessage(true));
+        return null
     }
 };
 
