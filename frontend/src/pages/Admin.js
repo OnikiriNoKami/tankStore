@@ -16,6 +16,7 @@ import ModuleTypeList from '../components/updaters/lists/ModuleTypeList';
 import AdminUsersList from '../components/updaters/lists/AdminUsersList';
 import CombinedMonitors from '../components/monitors/CombinedMonitors';
 import TankCreator from '../components/creators/TankCreator';
+import '../override.css';
 
 const Admin = () => {
     const classes = useBoxStyles()
@@ -25,15 +26,16 @@ const Admin = () => {
         <div style={{width:'100%'}}>
             <CombinedMonitors/>
 
-            {action==='create'&&<Box className={classes.box}>
+            {action==='create'&&<>
 
-                {type===NATION_CODE&&<NationCRUD role='creator'/>}
-                {type===TYPE_CODE&&<TypeCreator/>}
-                {type===ROLE_CODE&&<RoleCreator/>}
-                {type===TANK_STATUS_CODE&&<TankStatusCreator/>}
-                {type===MODULE_TYPE_CODE&&<ModuleTypeCreator/>}
-                {type===TANK_CODE&&<TankCreator/>}
-            </Box>
+                {type===NATION_CODE&&<Box className={classes.box}><NationCRUD role='creator'/></Box>}
+                {type===TYPE_CODE&&<Box className={classes.box}><TypeCreator/></Box>}
+                {type===ROLE_CODE&&<Box className={classes.box}><RoleCreator/></Box>}
+                {type===TANK_STATUS_CODE&&<Box className={classes.box}><TankStatusCreator/></Box>}
+                {type===MODULE_TYPE_CODE&&<Box className={classes.box}><ModuleTypeCreator/></Box>}
+                {type===TANK_CODE&&<Box className={classes.boxNoFixedHeigth}><TankCreator/></Box>}
+                </>
+            
             }
 
             {action==='change'&&<Box className={classes.boxUpdater}>
