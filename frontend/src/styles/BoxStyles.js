@@ -35,7 +35,20 @@ const useBoxStyles = makeStyles((theme) => {
                 height: `calc(100% - 64px - 10px)`,
                 marginTop: '64px'
              }, 
-        }
+        },
+        boxNoFixedHeigth: {
+            marginTop: '56px',
+            width: '100%',
+            display: 'flex',
+            flexGrow: 1,
+            alignItems: 'center',
+            [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: { 
+                marginTop: '48px' 
+              }, 
+            [theme.breakpoints.up('sm')]: { 
+                marginTop: '64px'
+             },
+        },
     })
 })
 
