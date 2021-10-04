@@ -13,13 +13,14 @@ class ImageController {
             let fileName = uuid.v4() +'.jpg'
 
             file.mv(path.resolve(__dirname, '..', 'static', fileName))
-            const img = await Image.create({tankId,
+            const img = await Image.create({
+                tankId,
                 image: fileName
             })
 
             return res.status(201).json(img)
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
 
     }
@@ -35,7 +36,7 @@ class ImageController {
 
             return res.json(images)
         } catch (err){
-            console.log(err.message)
+            return next(err)
         }
     }
 
@@ -47,7 +48,6 @@ class ImageController {
                     id: id
                 }
             })
-            console.log(image)
             
             if(image === null) {
                 return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
@@ -67,7 +67,7 @@ class ImageController {
                 
             }
         } catch {
-            console.log(err.message)
+            return next(err)
         }
     }
 }
