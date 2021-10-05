@@ -1,75 +1,114 @@
-const uuid = require('uuid')
-const {Image} = require('../models/models')
-const path = require('path')
-const ApiError = require('../error/ApiError')
-const messages = require('../message/databaseRelated')
-const fs = require('fs')
+const uuid = require("uuid");
+const { Image } = require("../models/models");
+const path = require("path");
+const ApiError = require("../error/ApiError");
+const messages = require("../message/databaseRelated");
+const fs = require("fs");
 
 class ImageController {
-    async create(req, res, next){
+    async create(req, res, next) {
         try {
-            const {tankId} = req.body
-            const {file} = req.files
-            let fileName = uuid.v4() +'.jpg'
+            const { tankId } = req.body;
+            const { file } = req.files;
+            let fileName = uuid.v4() + ".jpg";
 
-            file.mv(path.resolve(__dirname, '..', 'static', fileName))
+            file.mv(path.resolve(__dirname, "..", "static", fileName));
             const img = await Image.create({
                 tankId,
-                image: fileName
-            })
+                title: fileName,
+            });
 
-            return res.status(201).json(img)
-        } catch (err){
-            return next(err)
+            return res.status(201).json(img);
+        } catch (err) {
+            return next(err);
         }
-
     }
 
-    async getAllById(req, res, next){
+    async createMultiple(req, res, next) {
         try {
-            const {tankId} = req.params
-            const images = Image.findAll({
-                where: {
-                    tankId: tankId
+            const { tankId } = req.body;
+            const { files } = req.files;
+            let message = "";
+            if (files.length !== 0 && files.length <= 15) {
+                for (let file of files) {
+                    if ((file.size <= 26214400)) {
+                        try {
+                            let fileName = uuid.v4() + ".jpg";
+                            file.mv(
+                                path.resolve(
+                                    __dirname,
+                                    "..",
+                                    "static",
+                                    fileName
+                                )
+                            );
+                            const img = await Image.create({
+                                tankId,
+                                title: fileName,
+                            });
+                        } catch (err){
+                            console.log(err.message)
+                            message += `Error while uploading ${file.name}`+'\n'
+                        }
+                    } else {
+                        message += `Image ${file.name} surpass size limit(25 MB).\n`;
+                    }
                 }
-            })
-
-            return res.json(images)
-        } catch (err){
-            return next(err)
+            }
+            return res.status(200).json({ Message: message });
+        } catch (err) {
+            return next(err);
         }
     }
 
-    async delete(req, res, next){
+    async getAllById(req, res, next) {
         try {
-            const {id} = req.body
+            const { tankId } = req.params;
+            const images = await Image.findAll({
+                attributes:['id', 'title', 'tankId'],
+                where: {
+                    tankId: tankId,
+                },
+            });
+
+            return res.json(images);
+        } catch (err) {
+            return next(err);
+        }
+    }
+
+    async delete(req, res, next) {
+        try {
+            const { id } = req.body;
             const image = await Image.findOne({
                 where: {
-                    id: id
-                }
-            })
-            
-            if(image === null) {
-                return next(ApiError.badRequest(messages.NOT_IN_DATABASE))
+                    id: id,
+                },
+            });
+
+            if (image === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE));
             } else {
                 try {
-                    fs.unlink(path.resolve(__dirname,'..','static', image.title), (errs) => {
-                        if(errs){
-                            return res.json({message: errs.message})
+                    fs.unlink(
+                        path.resolve(__dirname, "..", "static", image.title),
+                        (errs) => {
+                            if (errs) {
+                                return res.json({ message: errs.message });
+                            }
+                            console.log(`Image ${image.title} deleted`);
                         }
-                        console.log(`Image ${image.title} deleted`)
-                    })
-                    await image.destroy()
-                    return res.json({message: messages.DELETION_SUCCESS})
-                } catch (err){
-                    return res.json({message: err.message})
+                    );
+                    await image.destroy();
+                    return res.json({ message: messages.DELETION_SUCCESS });
+                } catch (err) {
+                    return res.json({ message: err.message });
                 }
-                
             }
         } catch {
-            return next(err)
+            return next(err);
         }
     }
 }
 
-module.exports = new ImageController()
+module.exports = new ImageController();
