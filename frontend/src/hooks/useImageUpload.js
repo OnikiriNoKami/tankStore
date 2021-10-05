@@ -5,13 +5,19 @@ const useImageUpload = () => {
     const [isDirty, setIsDirty] = useState(false);
 
     const handleClear = () => {
-        setImages([])
-        setIsDirty(false)
-    }
+        setImages([]);
+        setIsDirty(false);
+    };
 
     const handleChange = (event) => {
         if (event.target.files[0]) {
-            setImages([...images, event.target.files[0]]);
+            setImages([
+                ...images,
+                {
+                    image: event.target.files[0],
+                    url: URL.createObjectURL(event.target.files[0]),
+                },
+            ]);
         }
     };
 
