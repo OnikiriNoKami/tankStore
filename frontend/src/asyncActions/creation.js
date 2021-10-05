@@ -9,15 +9,14 @@ import {
     ADD_ROLE_TO_USER_PATH,
     ADD_ROLES_TO_USER_PATH,
     TANK_PATH,
+    IMAGE_MULTIPLE_PATH,
+    IMAGE_PATH,
 } from "../utils/routes";
 import { isRequired } from "../utils/errors";
 
-const creator = (data, path, token) => async (dispatch) => {
+const creator = (body, path, token) => async (dispatch) => {
     const headers = {
         Authorization: "jwt " + token,
-    };
-    const body = {
-        ...data,
     };
     try {
         const result = await axios.post(
@@ -26,10 +25,10 @@ const creator = (data, path, token) => async (dispatch) => {
             { headers: headers }
         );
         dispatch(successMessage(true));
-        return result.data
+        return result.data;
     } catch (error) {
         dispatch(failMessage(true));
-        return null
+        return null;
     }
 };
 
@@ -56,7 +55,8 @@ export const tankCreate = (
     tankTypeId = null,
     statusId = null,
     token
-) => creator(
+) =>
+    creator(
         {
             title,
             description,
@@ -69,3 +69,20 @@ export const tankCreate = (
         TANK_PATH,
         token
     );
+
+export const imageMultipleSet = (
+    tankId = isRequired("Tank id"),
+    images = isRequired("Images"),
+    token
+) => {
+    let formData = new FormData();
+    formData.append('tankId', tankId)
+    images.forEach(image=>{
+        formData.append('files', image)
+    })
+    return creator(
+        formData,
+        IMAGE_MULTIPLE_PATH,
+        token
+    );
+};
