@@ -5,10 +5,8 @@ import {
     TextField,
     Typography,
 } from "@material-ui/core";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import '../../override.css';
 import { useDispatch, useSelector } from "react-redux";
-import { tankCreate } from "../../asyncActions/creation";
+import { imageMultipleSet, tankCreate } from "../../asyncActions/creation";
 import useNationSelect from "../../hooks/customSelectHooks/useNationSelect";
 import useTankStatusSelect from "../../hooks/customSelectHooks/useTankStatusSelect";
 import useTankTypeSelect from "../../hooks/customSelectHooks/useTankTypeSelect";
@@ -16,7 +14,7 @@ import useValidatedInput from "../../hooks/useValidatedInput";
 import useNumberFormat from "../../hooks/useNumberFormat";
 import useImageUpload from "../../hooks/useImageUpload";
 import AddPhotoAlternate from "@material-ui/icons/AddPhotoAlternate";
-import { Carousel } from "react-responsive-carousel";
+import ImageCarousel from "../ImageCarousel";
 
 const TankCreator = () => {
     const title = useValidatedInput("", {
@@ -37,7 +35,6 @@ const TankCreator = () => {
     const tankStatus = useTankStatusSelect();
     const token = useSelector((state) => state.token.token);
     const dispatch = useDispatch();
-
     const handleClear = () => {
         title.clear();
         description.clear();
@@ -46,6 +43,7 @@ const TankCreator = () => {
         tankStatus.clear();
         priceSilver.clear();
         priceExp.clear();
+        images.clear();
     };
 
     const handleSubmit = async (e) => {
@@ -62,8 +60,10 @@ const TankCreator = () => {
                 token
             )
         );
+        if(result.id){
+            const imageResult = await dispatch(imageMultipleSet(result.id, images.value, token))
+        }
         handleClear();
-        console.log(result);
     };
 
     return (
@@ -213,21 +213,7 @@ const TankCreator = () => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={10}>
-                        <Carousel dynamicHeight={true}>
-                            {images.value.length !== 0 ? (
-                                images.value.map((image) => (
-                                    <div key={URL.createObjectURL(image)}>
-                                        <img 
-                                            src={URL.createObjectURL(image)}
-                                        />
-                                    </div>
-                                ))
-                            ) : (
-                                <div>
-                                    <p className="legend">No images</p>
-                                </div>
-                            )}
-                        </Carousel>
+                        <ImageCarousel images={images} dynamicHeight={true}/>
                     </Grid>
                 </Grid>
             </form>
