@@ -16,7 +16,8 @@ import ModuleTypeList from '../components/updaters/lists/ModuleTypeList';
 import AdminUsersList from '../components/updaters/lists/AdminUsersList';
 import CombinedMonitors from '../components/monitors/CombinedMonitors';
 import TankCreator from '../components/creators/TankCreator';
-import '../override.css';
+import TankList from '../components/updaters/lists/TankList';
+
 
 const Admin = () => {
     const classes = useBoxStyles()
@@ -37,16 +38,18 @@ const Admin = () => {
                 </>
             
             }
-
-            {action==='change'&&<Box className={classes.boxUpdater}>
-                {type===NATION_CODE&&<NationList/>}
-                {type===TYPE_CODE&&<TankTypeList/>}
-                {type===ROLE_CODE&&<RoleList/>}
-                {type===TANK_STATUS_CODE&&<TankStatusList/>}
-                {type===MODULE_TYPE_CODE&&<ModuleTypeList/>}
-                {type===USERS_MANAGING_CODE&&<AdminUsersList/>}
-            </Box>            
+            
+            {action === 'change'&& <>
+            {type===NATION_CODE&&<Box className={classes.boxUpdater}><NationList/></Box>}
+                {type===TYPE_CODE&&<Box className={classes.boxUpdater}><TankTypeList/></Box>}
+                {type===ROLE_CODE&&<Box className={classes.boxUpdater}><RoleList/></Box>}
+                {type===TANK_STATUS_CODE&&<Box className={classes.boxUpdater}><TankStatusList/></Box>}
+                {type===MODULE_TYPE_CODE&&<Box className={classes.boxUpdater}><ModuleTypeList/></Box>}
+                {type===USERS_MANAGING_CODE&&<Box className={classes.boxUpdater}><AdminUsersList/></Box>}
+                {type===TANK_CODE&&<Box className={classes.boxUpdater}><TankList/></Box>}
+                </>
             }
+           
             
 
         </div>
