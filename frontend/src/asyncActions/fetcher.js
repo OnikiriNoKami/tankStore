@@ -13,6 +13,7 @@ import {
     usersFetchEnd,
     userByIdFetchEnd,
     tankByIdFetchEnd,
+    tankImagesFetchEnd,
 } from "./fetcherEnd";
 import { moduleTypesLoading } from "../store/ModuleTypeReducer";
 import { usersLoading } from "../store/AdminUsers";
@@ -35,56 +36,6 @@ const defPagination = {
     offset: null,
     limit: null,
 };
-
-const fetcher1 =
-    (path, { pagination = defPagination, token = null, id = null } = {}) =>
-    async (dispatch) => {
-        const headers = {
-            Authorization: "jwt " + token,
-        };
-        const cases = {
-            [NATION_PATH]: (data, success) => {
-                dispatch(nationFetchEnd(data, success));
-            },
-            [ROLE_PATH]: (data, success) => {
-                dispatch(roleFetchEnd(data, success));
-            },
-            [TANK_TYPE_PATH]: (data, success) => {
-                dispatch(tankTypesFetchEnd(data, success));
-            },
-            [STATUS_PATH]: (data, success) => {
-                dispatch(tankStatusesFetchEnd(data, success));
-            },
-            [MODULE_TYPE_PATH]: (data, success) => {
-                dispatch(moduleTypesFetchEnd(data, success));
-            },
-            [GET_USERS_PATH]: (data, success) => {
-                dispatch(usersFetchEnd(data, success));
-            },
-            [GET_USER_BY_ID_PATH]: (data, success) => {
-                dispatch(userByIdFetchEnd(data, success));
-            },
-            [TANK_PATH]: (data, success) => {
-                dispatch(tankByIdFetchEnd(data, success));
-            },
-        };
-        try {
-            const result = await axios.get(
-                `http://localhost:4221/api/` +
-                    path +
-                    (id ? id : "") +
-                    (pagination.used
-                        ? `?limit=${pagination.limit}&offset=${pagination.offset}`
-                        : ""),
-                { headers: headers }
-            );
-            cases[path](result.data, true);
-            //dispatch(successMessage(true));
-        } catch (error) {
-            cases[path](null, false);
-            dispatch(failMessage(true));
-        }
-    };
 
 const fetcher =
     (path = "", pathFull = "", headers = {}) =>
@@ -113,6 +64,9 @@ const fetcher =
             },
             [TANK_PATH]: (data, success) => {
                 dispatch(tankByIdFetchEnd(data, success));
+            },
+            [IMAGE_PATH]: (data, success) => {
+                dispatch(tankImagesFetchEnd(data, success));
             },
         };
         try {
@@ -178,7 +132,7 @@ export const tankByIdFetch = (id) => async (dispatch) => {
 };
 
 export const tankImagesFetch = (tankId) => async (dispatch) => {
-    const fullPath = `${IMAGE_PATH}/${tankId}`
+    const fullPath = `${IMAGE_PATH}/${tankId}`;
     dispatch(tankImagesLoading(true));
     dispatch(fetcher(IMAGE_PATH, fullPath));
 };

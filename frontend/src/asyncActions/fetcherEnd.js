@@ -136,7 +136,7 @@ export const tankByIdFetchEnd = (data, success) => async (dispatch) => {
     }
 }
 
-export const imagesFetchEnd = (data, success) => (dispatch) => {
+export const tankImagesFetchEnd = (data, success) => (dispatch) => {
     if(success){
         dispatch(tankImagesSet(data))
         dispatch(tankImagesLoading(false));
