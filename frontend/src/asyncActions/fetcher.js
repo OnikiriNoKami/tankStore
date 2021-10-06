@@ -26,8 +26,9 @@ import {
     GET_USERS_PATH,
     GET_USER_BY_ID_PATH,
     TANK_PATH,
+    IMAGE_PATH,
 } from "../utils/routes";
-import { tankLoading } from "../store/TankStore";
+import { tankImagesLoading, tankLoading } from "../store/TankStore";
 
 const defPagination = {
     used: false,
@@ -35,7 +36,8 @@ const defPagination = {
     limit: null,
 };
 
-const fetcher = (path, {pagination = defPagination, token=null, id=null}={}) =>
+const fetcher1 =
+    (path, { pagination = defPagination, token = null, id = null } = {}) =>
     async (dispatch) => {
         const headers = {
             Authorization: "jwt " + token,
@@ -63,8 +65,8 @@ const fetcher = (path, {pagination = defPagination, token=null, id=null}={}) =>
                 dispatch(userByIdFetchEnd(data, success));
             },
             [TANK_PATH]: (data, success) => {
-                dispatch(tankByIdFetchEnd(data, success))
-            }
+                dispatch(tankByIdFetchEnd(data, success));
+            },
         };
         try {
             const result = await axios.get(
@@ -84,42 +86,99 @@ const fetcher = (path, {pagination = defPagination, token=null, id=null}={}) =>
         }
     };
 
+const fetcher =
+    (path = "", pathFull = "", headers = {}) =>
+    async (dispatch) => {
+        const cases = {
+            [NATION_PATH]: (data, success) => {
+                dispatch(nationFetchEnd(data, success));
+            },
+            [ROLE_PATH]: (data, success) => {
+                dispatch(roleFetchEnd(data, success));
+            },
+            [TANK_TYPE_PATH]: (data, success) => {
+                dispatch(tankTypesFetchEnd(data, success));
+            },
+            [STATUS_PATH]: (data, success) => {
+                dispatch(tankStatusesFetchEnd(data, success));
+            },
+            [MODULE_TYPE_PATH]: (data, success) => {
+                dispatch(moduleTypesFetchEnd(data, success));
+            },
+            [GET_USERS_PATH]: (data, success) => {
+                dispatch(usersFetchEnd(data, success));
+            },
+            [GET_USER_BY_ID_PATH]: (data, success) => {
+                dispatch(userByIdFetchEnd(data, success));
+            },
+            [TANK_PATH]: (data, success) => {
+                dispatch(tankByIdFetchEnd(data, success));
+            },
+        };
+        try {
+            const result = await axios.get(
+                `http://localhost:4221/api/` + pathFull,
+                { headers: headers }
+            );
+            cases[path](result.data, true);
+            //dispatch(successMessage(true));
+        } catch (error) {
+            cases[path](null, false);
+            dispatch(failMessage(true));
+        }
+    };
+
 export const nationFetch = () => async (dispatch) => {
     dispatch(nationsLoading(true));
-    dispatch(fetcher(NATION_PATH));
+    dispatch(fetcher(NATION_PATH, NATION_PATH));
 };
 
 export const roleFetch = () => async (dispatch) => {
     dispatch(rolesLoading(true));
-    dispatch(fetcher(ROLE_PATH));
+    dispatch(fetcher(ROLE_PATH, ROLE_PATH));
 };
 
 export const tankTypeFetch = () => async (dispatch) => {
     dispatch(tankTypesLoading(true));
-    dispatch(fetcher(TANK_TYPE_PATH));
+    dispatch(fetcher(TANK_TYPE_PATH, TANK_TYPE_PATH));
 };
 
 export const tankStatusFetch = () => async (dispatch) => {
     dispatch(tankStatusesLoading(true));
-    dispatch(fetcher(STATUS_PATH));
+    dispatch(fetcher(STATUS_PATH, STATUS_PATH));
 };
 
 export const moduleTypesFetch = () => async (dispatch) => {
     dispatch(moduleTypesLoading(true));
-    dispatch(fetcher(MODULE_TYPE_PATH));
+    dispatch(fetcher(MODULE_TYPE_PATH, MODULE_TYPE_PATH));
 };
 
 export const usersFetch = (limit, offset, token) => async (dispatch) => {
+    const fullPath = `${GET_USERS_PATH}/?limit=${limit}&offset=${offset}`;
+    const headers = {
+        Authorization: "jwt " + token,
+    };
     dispatch(usersLoading(true));
-    dispatch(fetcher(GET_USERS_PATH, { pagination:{used: true, limit, offset}, token }));
+    dispatch(fetcher(GET_USERS_PATH, fullPath, headers));
 };
 
 export const userByIdFetch = (id, token) => async (dispatch) => {
+    const fullPath = `${GET_USER_BY_ID_PATH}/${id}`;
+    const headers = {
+        Authorization: "jwt " + token,
+    };
     dispatch(usersByIdLoading(true));
-    dispatch(fetcher(GET_USER_BY_ID_PATH, {token: token, id: id}));
+    dispatch(fetcher(GET_USER_BY_ID_PATH, fullPath, headers));
 };
 
 export const tankByIdFetch = (id) => async (dispatch) => {
-    dispatch(tankLoading(true))
-    dispatch(fetcher(TANK_PATH, {id: id}))
+    const fullPath = `${TANK_PATH}/${id}`;
+    dispatch(tankLoading(true));
+    dispatch(fetcher(TANK_PATH, fullPath));
+};
+
+export const tankImagesFetch = (tankId) => async (dispatch) => {
+    const fullPath = `${IMAGE_PATH}/${tankId}`
+    dispatch(tankImagesLoading(true));
+    dispatch(fetcher(IMAGE_PATH, fullPath));
 };
