@@ -4,6 +4,7 @@ const path = require("path");
 const ApiError = require("../error/ApiError");
 const messages = require("../message/databaseRelated");
 const fs = require("fs");
+const { Op } = require("sequelize");
 
 class ImageController {
     async create(req, res, next) {
@@ -31,7 +32,7 @@ class ImageController {
             let message = "";
             if (files.length !== 0 && files.length <= 15) {
                 for (let file of files) {
-                    if ((file.size <= 26214400)) {
+                    if (file.size <= 26214400) {
                         try {
                             let fileName = uuid.v4() + ".jpg";
                             file.mv(
@@ -46,9 +47,10 @@ class ImageController {
                                 tankId,
                                 title: fileName,
                             });
-                        } catch (err){
-                            console.log(err.message)
-                            message += `Error while uploading ${file.name}`+'\n'
+                        } catch (err) {
+                            console.log(err.message);
+                            message +=
+                                `Error while uploading ${file.name}` + "\n";
                         }
                     } else {
                         message += `Image ${file.name} surpass size limit(25 MB).\n`;
@@ -65,7 +67,7 @@ class ImageController {
         try {
             const { tankId } = req.params;
             const images = await Image.findAll({
-                attributes:['id', 'title', 'tankId'],
+                attributes: ["id", "title", "tankId"],
                 where: {
                     tankId: tankId,
                 },
@@ -106,6 +108,49 @@ class ImageController {
                 }
             }
         } catch {
+            return next(err);
+        }
+    }
+
+    async deleteMultiple(req, res, next) {
+        try {
+            const { idArray } = req.body;
+            const images = await Image.findAll({
+                attributes: ["id", "title"],
+                where: {
+                    id: {
+                        [Op.or]: idArray,
+                    },
+                },
+            });
+
+            if (images.length === null) {
+                return next(ApiError.badRequest(messages.NOT_IN_DATABASE));
+            } else {
+                images.forEach(async (image) => {
+                    try {
+                        fs.unlink(
+                            path.resolve(
+                                __dirname,
+                                "..",
+                                "static",
+                                image.title
+                            ),
+                            (errs) => {
+                                if (errs) {
+                                    return res.json({ message: errs.message });
+                                }
+                                console.log(`Image ${image.title} deleted`);
+                            }
+                        );
+                        await image.destroy();
+                    } catch (err) {
+                        console.log(err.message);
+                    }
+                });
+                return res.json({ message: "success" });
+            }
+        } catch (err) {
             return next(err);
         }
     }
