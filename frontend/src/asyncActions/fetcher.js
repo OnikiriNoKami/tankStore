@@ -14,6 +14,7 @@ import {
     userByIdFetchEnd,
     tankByIdFetchEnd,
     tankImagesFetchEnd,
+    tanksFetchEnd,
 } from "./fetcherEnd";
 import { moduleTypesLoading } from "../store/ModuleTypeReducer";
 import { usersLoading } from "../store/AdminUsers";
@@ -28,8 +29,10 @@ import {
     GET_USER_BY_ID_PATH,
     TANK_PATH,
     IMAGE_PATH,
+    TANKS_PATH,
 } from "../utils/routes";
 import { tankImagesLoading, tankLoading } from "../store/TankStore";
+import { tanksLoading } from "../store/TanksStore";
 
 const defPagination = {
     used: false,
@@ -68,6 +71,10 @@ const fetcher =
             [IMAGE_PATH]: (data, success) => {
                 dispatch(tankImagesFetchEnd(data, success));
             },
+            [TANKS_PATH]: (data, success) => {
+                dispatch(tanksFetchEnd(data, success));
+            }
+
         };
         try {
             const result = await axios.get(
@@ -129,6 +136,12 @@ export const tankByIdFetch = (id) => async (dispatch) => {
     const fullPath = `${TANK_PATH}/${id}`;
     dispatch(tankLoading(true));
     dispatch(fetcher(TANK_PATH, fullPath));
+};
+
+export const tanksFetch = (limit, offset) => async (dispatch) => {
+    const fullPath = `${TANK_PATH}/?limit=${limit}&offset=${offset}`
+    dispatch(tanksLoading(true));
+    dispatch(fetcher(TANKS_PATH, fullPath));
 };
 
 export const tankImagesFetch = (tankId) => async (dispatch) => {
