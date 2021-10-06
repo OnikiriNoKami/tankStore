@@ -107,7 +107,7 @@ export const usersSearch = (query, limit, offset, token) => async (dispatch) => 
     dispatch(fetcher(GET_USERS_BY_QUERY, pathFull, token));
 };
 
-export const tanksFilterGet = (filter, limit, offset) => async(dispatch) => {
+export const tanksFilterSearch = (filter, limit, offset) => async(dispatch) => {
     const pathMain = `${TANK_PATH}/?limit=${limit}&offset=${offset}`
     let pathFilter = ''
     for(let field of filter){

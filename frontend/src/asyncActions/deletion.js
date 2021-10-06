@@ -1,9 +1,16 @@
 import axios from "axios";
 import { failMessage, successMessage } from "../store/MessageStore";
 import { isRequired } from "../utils/errors";
-import { TANK_PATH, USER_ROLES_PATH } from "../utils/routes";
+import {
+    IMAGE_MULTIPLE_PATH,
+    IMAGE_PATH,
+    TANK_PATH,
+    USER_ROLES_PATH,
+} from "../utils/routes";
 
-const deleter = (data = null, path = null, token = null) => async (dispatch) => {
+const deleter =
+    (data = null, path = null, token = null) =>
+    async (dispatch) => {
         const headers = {
             Authorization: "jwt " + token,
         };
@@ -25,6 +32,11 @@ const deleter = (data = null, path = null, token = null) => async (dispatch) => 
 export const removeRoleFromUser = (userId, roleId, token) =>
     deleter({ id: userId, role: roleId }, USER_ROLES_PATH, token);
 
-export const deleteTank = (tankId=isRequired('Tank id'), token=isRequired('Token')) => deleter({id: tankId}, TANK_PATH, token);
-
-
+export const deleteTank = (
+    tankId = isRequired("Tank id"),
+    token = isRequired("Token")
+) => deleter({ id: tankId }, TANK_PATH, token);
+export const seletetankImages = (
+    idArray = isRequired("Id"),
+    token = isRequired("Token")
+) => deleter({ idArray: idArray }, IMAGE_MULTIPLE_PATH, token);
