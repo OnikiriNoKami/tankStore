@@ -24,25 +24,25 @@ const defaultState = {
 export const tanksReducer = (state = defaultState, action) => {
     switch (action.type) {
         case TANKS_LOADING:
-            return { ...state, tanks: { ...state.tanks, loading: action.payload } };
+            return { ...state, loading: action.payload };
         case TANKS_LOADED:
-            return { ...state, tanks: { ...state.tanks, loaded: action.payload } };
+            return { ...state, loaded: action.payload };
         case TANKS_SET:
-            return { ...state, tanks: { ...state.tanks, tanks: action.payload } };
+            return { ...state, tanks: action.payload };
         case TANKS_SET_TOTAL_COUNT:
-            return { ...state, tanks: { ...state.tanks, totalCount: action.payload },
+            return { ...state, totalCount: action.payload,
             };
         case TANKS_SET_OFFSET:
-            return { ...state, tanks: { ...state.tanks, offset: action.payload } };
+            return { ...state, offset: action.payload };
         case TANKS_SET_PAGE:
-            return { ...state, tanks: { ...state.tanks, page: action.payload } };
+            return { ...state, page: action.payload };
         case TANKS_SET_LIMIT:
-            return { ...state, tanks: { ...state.tanks, limit: action.payload } };
+            return { ...state, limit: action.payload };
         case TANKS_SET_TOTAL_PAGES:
-            return { ...state, tanks: { ...state.tanks, totalPages: action.payload },
+            return { ...state, totalPages: action.payload,
             };
         case TANKS_RESET_STATUSES:
-            return { ...state, tanks: { ...state.tanks, loading: false, loaded: null },
+            return { ...state, loading: false, loaded: null,
             };
         default:
             return state;
