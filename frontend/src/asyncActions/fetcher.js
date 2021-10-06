@@ -154,7 +154,7 @@ export const moduleTypesFetch = () => async (dispatch) => {
 };
 
 export const usersFetch = (limit, offset, token) => async (dispatch) => {
-    const fullPath = `${GET_USERS_PATH}?limit=${limit}&offset=${offset}`;
+    const fullPath = `${GET_USERS_PATH}/?limit=${limit}&offset=${offset}`;
     const headers = {
         Authorization: "jwt " + token,
     };
