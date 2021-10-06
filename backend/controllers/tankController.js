@@ -2,6 +2,7 @@ const { Tank } = require("../models/models")
 const messages = require('../message/databaseRelated')
 const ApiError = require('../error/ApiError')
 const { renameProp } = require('../utils/utils')
+const { Op } = require('sequelize');
 
 
 class TankController {
@@ -79,12 +80,15 @@ class TankController {
         try {
             let tanks;
             const filter = {...req.query}
-            const {limit, offset} = req.query
+            const {limit, offset, title=''} = req.query
             delete filter.limit
             delete filter.offset
+            title ? filter.title = {[Op.iLike]: `%${title}%`} : null
             tanks = await Tank.findAndCountAll({
                 attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
-                where: filter,
+                where: {
+                    ...filter,  
+                    },
                 limit: limit,
                 offset: offset,
                 order: [
