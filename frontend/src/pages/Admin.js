@@ -17,11 +17,18 @@ import AdminUsersList from '../components/updaters/lists/AdminUsersList';
 import CombinedMonitors from '../components/monitors/CombinedMonitors';
 import TankCreator from '../components/creators/TankCreator';
 import TankList from '../components/updaters/lists/TankList';
+import useQuery from '../hooks/useQuery';
 
 
 const Admin = () => {
     const classes = useBoxStyles()
     let {action, type} = useParams()
+    const queryParams = useQuery()
+    const tankId = queryParams.find((element) => {
+        if(element.key==='tank'){
+            return true;
+        }
+    })
 
     return (
         <div style={{width:'100%'}}>
@@ -40,7 +47,8 @@ const Admin = () => {
             }
             
             {action === 'change'&& <>
-            {type===NATION_CODE&&<Box className={classes.boxUpdater}><NationList/></Box>}
+                
+                {type===NATION_CODE&&<Box className={classes.boxUpdater}><NationList/></Box>}
                 {type===TYPE_CODE&&<Box className={classes.boxUpdater}><TankTypeList/></Box>}
                 {type===ROLE_CODE&&<Box className={classes.boxUpdater}><RoleList/></Box>}
                 {type===TANK_STATUS_CODE&&<Box className={classes.boxUpdater}><TankStatusList/></Box>}
@@ -49,7 +57,13 @@ const Admin = () => {
                 {type===TANK_CODE&&<Box className={classes.boxUpdater}><TankList/></Box>}
                 </>
             }
-           
+
+            {action === 'modify'&& <>
+                
+                {type===TANK_CODE&&<Box className={classes.boxNoFixedHeigth}><TankCreator/></Box>}
+                
+                </>
+            }
             
 
         </div>
