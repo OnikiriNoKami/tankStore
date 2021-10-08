@@ -1,44 +1,108 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useTankMonitor from '../../../hooks/monitors/useTankMonitor'
-import { tanksFetch } from '../../../asyncActions/fetcher';
+import { Grid, Typography } from "@material-ui/core";
+import useTankMonitor from "../../../hooks/monitors/useTankMonitor";
+import { tanksFetch } from "../../../asyncActions/fetcher";
 import { tanksSetPage } from "../../../store/TanksStore";
 import { tanksFilterSearch } from "../../../asyncActions/searchFetcher";
 import { Container } from "@material-ui/core";
 import SearchBar from "../SearcBar";
+import TankRow from "../rows/TankRow";
+import { Pagination } from "@mui/material";
+import BackdropStyles from "../../../styles/BackdropStyles";
+import PaginationStyles from "../../../styles/PaginationStyles";
 
 const TankList = () => {
-    const tankMonitor = useTankMonitor()
-    const tanks = useSelector(state => state.tanks.tanks)
-    const dispatch = useDispatch()
-    const [lastAction, setLastAction] = useState('')
-    const [lastFilter, setLastFilter] = useState([])
+    const classes = BackdropStyles();
+    const paginationClasses = PaginationStyles();
+    const tankMonitor = useTankMonitor();
+    const tanks = useSelector((state) => state.tanks.tanks);
+    const dispatch = useDispatch();
+    const [lastAction, setLastAction] = useState("");
+    const [lastFilter, setLastFilter] = useState([]);
 
     const fetchTanks = () => {
-        dispatch(tanksFetch(tankMonitor.limit, tankMonitor.offset))
-    }
+        dispatch(tanksFetch(tankMonitor.limit, tankMonitor.offset));
+    };
 
     const loadTanks = () => {
-        setLastAction('load')
-        fetchTanks()
-    }
+        setLastAction("load");
+        fetchTanks();
+    };
 
-    useEffect(()=>{
-        loadTanks()
-    },[])
+    useEffect(() => {
+        loadTanks();
+    }, []);
+
+    useEffect(() => {
+        if (lastAction === "load") {
+            fetchTanks();
+        }
+        if (lastAction === "search") {
+            searchFetch(lastFilter);
+        }
+    }, [tankMonitor.offset]);
 
     const searchFetch = (filter) => {
-        dispatch(tanksFilterSearch(filter, tankMonitor.limit, tankMonitor.offset));
-    }
+        dispatch(
+            tanksFilterSearch(filter, tankMonitor.limit, tankMonitor.offset)
+        );
+    };
 
     const searchCallBack = (query) => {
-        const filter = []
-        filter.push({key: 'title', value: query})
-        setLastAction('search')
+        const filter = [];
+        filter.push({ key: "title", value: query });
+        setLastAction("search");
         setLastFilter(filter);
-        dispatch(tanksSetPage(1))
-        searchFetch(filter)
-    }
+        dispatch(tanksSetPage(1));
+        searchFetch(filter);
+    };
+
+    const handleClick = (id) => {
+        console.log(id);
+    };
+
+    const changePage = (event, value) => {
+        if (tankMonitor.currentPage !== value) {
+            dispatch(tanksSetPage(value));
+        }
+    };
+
+    const paginator = () => {
+        return (<Grid item xs={6}>
+            {tanks.length !== 0 && (
+                <Pagination
+                    classes={{ ul: paginationClasses.ul }}
+                    count={tankMonitor.totalPages ? tankMonitor.totalPages : 0}
+                    page={tankMonitor.page}
+                    onChange={changePage}
+                />
+            )}
+        </Grid>);
+    };
+
+    const rowMap = () => {
+        return (
+            <Grid container spacing={3} justifyContent="center">
+                {tanks.length !== 0 ? (
+                    tanks.map((tank) => {
+                        return (
+                            <Grid key={tank.id} item xs={11} sm={10}>
+                                <TankRow
+                                    id={tank.id}
+                                    title={tank.title}
+                                    clickHandle={handleClick}
+                                />
+                            </Grid>
+                        );
+                    })
+                ) : (
+                    <Typography variant="h4">No tanks</Typography>
+                )}
+                {paginator()}
+            </Grid>
+        );
+    };    
 
     return (
         <Container>
@@ -47,9 +111,9 @@ const TankList = () => {
                 callBack={searchCallBack}
                 callReset={loadTanks}
             />
+            {rowMap()}
         </Container>
     );
+};
 
-}
-
-export default TankList
+export default TankList;
