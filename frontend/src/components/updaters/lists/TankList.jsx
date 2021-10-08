@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Typography } from "@material-ui/core";
 import useTankMonitor from "../../../hooks/monitors/useTankMonitor";
@@ -11,13 +12,14 @@ import TankRow from "../rows/TankRow";
 import { Pagination } from "@mui/material";
 import BackdropStyles from "../../../styles/BackdropStyles";
 import PaginationStyles from "../../../styles/PaginationStyles";
+import {ADMIN_ROUTE} from '../../../utils/consts';
 
 const TankList = () => {
-    const classes = BackdropStyles();
     const paginationClasses = PaginationStyles();
     const tankMonitor = useTankMonitor();
     const tanks = useSelector((state) => state.tanks.tanks);
     const dispatch = useDispatch();
+    const history = useHistory();
     const [lastAction, setLastAction] = useState("");
     const [lastFilter, setLastFilter] = useState([]);
 
@@ -58,9 +60,9 @@ const TankList = () => {
         searchFetch(filter);
     };
 
-    const handleClick = (id) => {
-        console.log(id);
-    };
+    const handleTankClick = (id) => {
+        history.push(`${ADMIN_ROUTE}/modify&tank?tank=${id}`)
+     }
 
     const changePage = (event, value) => {
         if (tankMonitor.currentPage !== value) {
@@ -91,7 +93,7 @@ const TankList = () => {
                                 <TankRow
                                     id={tank.id}
                                     title={tank.title}
-                                    clickHandle={handleClick}
+                                    clickHandle={handleTankClick}
                                 />
                             </Grid>
                         );
