@@ -16,6 +16,7 @@ const useTankMonitor = () => {
     const offset = useSelector((state) => state.tanks.offset);
     const limit = useSelector((state) => state.tanks.limit);
     const page = useSelector((state) => state.tanks.page);
+    const totalPages = useSelector((state) => state.tanks.totalPages);
 
     useEffect(() => {
         if (loading) {
@@ -49,6 +50,7 @@ const useTankMonitor = () => {
         offset,
         limit,
         page,
+        totalPages,
     };
 };
 
