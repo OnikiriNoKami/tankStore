@@ -26,8 +26,9 @@ const Admin = () => {
     const queryParams = useQuery()
     const tankId = queryParams.find((element) => {
         if(element.key==='tank'){
-            return true;
+            return 1;
         }
+        return -1;
     })
 
     return (
