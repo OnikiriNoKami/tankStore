@@ -13,6 +13,7 @@ import { Pagination } from "@mui/material";
 import BackdropStyles from "../../../styles/BackdropStyles";
 import PaginationStyles from "../../../styles/PaginationStyles";
 import {ADMIN_ROUTE} from '../../../utils/consts';
+import useTankFilter from "../../../hooks/filters/useTankFilters";
 
 const TankList = () => {
     const paginationClasses = PaginationStyles();
@@ -20,6 +21,8 @@ const TankList = () => {
     const tanks = useSelector((state) => state.tanks.tanks);
     const dispatch = useDispatch();
     const history = useHistory();
+    const tankFilter = useTankFilter()
+    
     const [lastAction, setLastAction] = useState("");
     const [lastFilter, setLastFilter] = useState([]);
 
@@ -113,6 +116,7 @@ const TankList = () => {
                 callBack={searchCallBack}
                 callReset={loadTanks}
             />
+            {tankFilter.render()}
             {rowMap()}
         </Container>
     );
