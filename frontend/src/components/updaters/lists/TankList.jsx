@@ -10,7 +10,6 @@ import { Container } from "@material-ui/core";
 import SearchBar from "../SearcBar";
 import TankRow from "../rows/TankRow";
 import { Pagination } from "@mui/material";
-import BackdropStyles from "../../../styles/BackdropStyles";
 import PaginationStyles from "../../../styles/PaginationStyles";
 import {ADMIN_ROUTE} from '../../../utils/consts';
 import useTankFilter from "../../../hooks/filters/useTankFilters";
@@ -49,8 +48,9 @@ const TankList = () => {
     }, [tankMonitor.offset]);
 
     const searchFetch = (filter) => {
+        const combinedFilter = [...filter, ...tankFilter.filter];
         dispatch(
-            tanksFilterSearch(filter, tankMonitor.limit, tankMonitor.offset)
+            tanksFilterSearch(combinedFilter, tankMonitor.limit, tankMonitor.offset)
         );
     };
 
@@ -65,7 +65,13 @@ const TankList = () => {
 
     const handleTankClick = (id) => {
         history.push(`${ADMIN_ROUTE}/modify&tank?tank=${id}`)
-     }
+    };
+
+    useEffect(()=>{
+        if(tankFilter.request){
+            searchFetch(lastFilter)
+        }
+    }, [tankFilter.request]);
 
     const changePage = (event, value) => {
         if (tankMonitor.currentPage !== value) {
