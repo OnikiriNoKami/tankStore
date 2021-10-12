@@ -80,10 +80,12 @@ class TankController {
         try {
             let tanks;
             const filter = {...req.query}
-            const {limit, offset, title=''} = req.query
+            const {limit, offset, title='', silvPrLess=2147483647, silvPrMore=-2147483647} = req.query
             delete filter.limit
             delete filter.offset
+            delete filter.silvPrMore ; delete filter.silvPrLess
             title ? filter.title = {[Op.iLike]: `%${title}%`} : null
+            filter.price_silver = {[Op.between]: [silvPrMore, silvPrLess]}
             tanks = await Tank.findAndCountAll({
                 attributes: ['id', 'title', 'description', 'price_silver', 'price_exp','nationId', 'tankTypeId', 'statusId'],
                 where: {
