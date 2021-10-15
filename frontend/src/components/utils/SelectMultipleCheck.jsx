@@ -8,7 +8,7 @@ import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import {MenuProps} from "../../styles/SelectStyles";
 
-export default function SelectMultipleCheck({list,values,selectLabel='', onChange, ...rest}) {
+export default function SelectMultipleCheck({list,values,selectLabel='', onChange,onFocus, ...rest}) {
     const createLabel = (selected) => {
         let label = [];
         selected.forEach((id)=>{
@@ -33,7 +33,8 @@ export default function SelectMultipleCheck({list,values,selectLabel='', onChang
                     onChange={onChange}
                     //input={<OutlinedInput label="Tag" />}
                     renderValue={createLabel}
-                    MenuProps={MenuProps}                
+                    MenuProps={MenuProps}   
+                    onFocus={onFocus}             
                 >
                     {list?.map((element) => (
                         <MenuItem key={element.id} value={element.id}>

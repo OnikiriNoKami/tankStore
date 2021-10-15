@@ -12,7 +12,7 @@ import TankRow from "../rows/TankRow";
 import { Pagination } from "@mui/material";
 import PaginationStyles from "../../../styles/PaginationStyles";
 import {ADMIN_ROUTE} from '../../../utils/consts';
-import useTankFilter from "../../../hooks/filters/useTankFilters";
+import TankFilterHorizontal from "../../filters/TankFilterHorizontal";
 
 const TankList = () => {
     const paginationClasses = PaginationStyles();
@@ -20,10 +20,10 @@ const TankList = () => {
     const tanks = useSelector((state) => state.tanks.tanks);
     const dispatch = useDispatch();
     const history = useHistory();
-    const tankFilter = useTankFilter()
     
     const [lastAction, setLastAction] = useState("");
     const [lastFilter, setLastFilter] = useState([]);
+    const [lastQuery, setLastQuery] = useState([]);
 
     const fetchTanks = () => {
         dispatch(tanksFetch(tankMonitor.limit, tankMonitor.offset));
@@ -43,35 +43,33 @@ const TankList = () => {
             fetchTanks();
         }
         if (lastAction === "search") {
-            searchFetch(lastFilter);
+            searchFetch([...lastQuery,...lastFilter]);
         }
     }, [tankMonitor.offset]);
 
     const searchFetch = (filter) => {
-        const combinedFilter = [...filter, ...tankFilter.filter];
         dispatch(
-            tanksFilterSearch(combinedFilter, tankMonitor.limit, tankMonitor.offset)
+            tanksFilterSearch(filter, tankMonitor.limit, tankMonitor.offset)
         );
     };
 
     const searchCallBack = (query) => {
-        const filter = [];
-        filter.push({ key: "title", value: query });
         setLastAction("search");
-        setLastFilter(filter);
+        setLastQuery([{ key: "title", value: query }]);
         dispatch(tanksSetPage(1));
-        searchFetch(filter);
+        searchFetch([{ key: "title", value: query }, ...lastFilter]);
     };
 
     const handleTankClick = (id) => {
         history.push(`${ADMIN_ROUTE}/modify&tank?tank=${id}`)
     };
 
-    useEffect(()=>{
-        if(tankFilter.request){
-            searchFetch(lastFilter)
-        }
-    }, [tankFilter.request]);
+    const applyTankFilter = (filter=[]) => {
+        setLastFilter(filter);
+        searchFetch([...lastQuery,...filter]);
+        
+    }
+
 
     const changePage = (event, value) => {
         if (tankMonitor.currentPage !== value) {
@@ -122,7 +120,8 @@ const TankList = () => {
                 callBack={searchCallBack}
                 callReset={loadTanks}
             />
-            {tankFilter.render()}
+            <TankFilterHorizontal applyFilter={applyTankFilter} reloadCallback={applyTankFilter}/>
+            
             {rowMap()}
         </Container>
     );
