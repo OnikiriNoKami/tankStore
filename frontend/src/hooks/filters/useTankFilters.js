@@ -28,8 +28,8 @@ const useTankFilter = () => {
     const handleReset = (e) => {
         setApplyReq(false);
         handleClear();
-        setTimeout(()=>{
-           handleClick();
+        setTimeout(() => {
+            handleClick();
         }, 250);
     };
 
@@ -37,11 +37,11 @@ const useTankFilter = () => {
         setFilter([...nation.filter, ...type.filter, ...status.filter]);
     }, [nation.filter, type.filter, status.filter]);
 
-    useEffect(()=>{
-        if(applyReq){
+    useEffect(() => {
+        if (applyReq) {
             setApplyReq(false);
         }
-    }, [applyReq])
+    }, [applyReq]);
 
     const render = () => {
         return (
@@ -60,6 +60,15 @@ const useTankFilter = () => {
                         </Grid>
                         <Grid item xs={12} md={4}>
                             {status.render()}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container spacing={3}>
+                                <Grid item xs={6} md={3}>
+                                </Grid>
+                                <Grid item xs={6} md={3}></Grid>
+                                <Grid item xs={6} md={3}></Grid>
+                                <Grid item xs={6} md={3}></Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container spacing={3}>
