@@ -96,15 +96,27 @@ class TankController {
                 silvPrLess = 2147483647,
                 silvPrMore = -2147483647,
                 expPrLess = 2147483647,
-                expPrMore = -2147483647
+                expPrMore = -2147483647,
             } = req.query;
             delete filter.limit;
             delete filter.offset;
-            delete filter.silvPrMore; delete filter.expPrLess;
-            delete filter.silvPrLess; delete filter.expPrMore;
+            delete filter.silvPrMore;
+            delete filter.expPrLess;
+            delete filter.silvPrLess;
+            delete filter.expPrMore;
             title ? (filter.title = { [Op.iLike]: `%${title}%` }) : null;
-            filter.price_silver = { [Op.between]: [silvPrMore, silvPrLess] };
-            filter.price_exp = { [Op.between]: [expPrMore, expPrLess]};
+            filter.price_silver = {
+                [Op.between]: [
+                    silvPrMore === "" ? -2147483647 : silvPrMore,
+                    silvPrLess === "" ? 2147483647 : silvPrLess,
+                ],
+            };
+            filter.price_exp = {
+                [Op.between]: [
+                    expPrMore === "" ? -2147483647 : expPrMore,
+                    expPrLess === "" ? 2147483647 : expPrLess,
+                ],
+            };
             tanks = await Tank.findAndCountAll({
                 attributes: [
                     "id",
