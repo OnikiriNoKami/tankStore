@@ -1,12 +1,16 @@
 import useNumberFormat from "../../hooks/useNumberFormat";
 import { Grid, TextField } from "@material-ui/core";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const PriceFilterHorizontal = ({ clear, setClear,filterGetter, filterValid }) => {
     const priceExpM = useNumberFormat();
     const priceExpL = useNumberFormat();
     const priceSilvM = useNumberFormat();
     const priceSilvL = useNumberFormat();
+
+    const [silvLessMoreDiff, setSilvLessMoreDiff] = useState(false);
+    const [expLessMoreDiff, setExpLessMoreDiff] = useState(true);
+
     useEffect(() => {
         filterGetter([
             { key: "silvPrLess", value: priceSilvL.value },
@@ -14,6 +18,16 @@ const PriceFilterHorizontal = ({ clear, setClear,filterGetter, filterValid }) =>
             { key: "expPrLess", value: priceExpL.value },
             { key: "expPrMore", value: priceExpM.value },
         ]);
+        if(priceExpM.value > priceExpL.value && priceExpM.value.length!==0 && priceExpL.value.length!==0){
+            setExpLessMoreDiff(true)
+        } else {
+            setExpLessMoreDiff(false)
+        }
+        if(priceSilvM.value > priceSilvL.value && priceSilvM.value.length!==0 && priceSilvL.value.length!==0){
+            setSilvLessMoreDiff(true)
+        } else {
+            setSilvLessMoreDiff(false)
+        }
     }, [priceExpM.value, priceExpL.value, priceSilvL.value, priceSilvM.value]);
 
     useEffect(() => {
@@ -53,6 +67,7 @@ const PriceFilterHorizontal = ({ clear, setClear,filterGetter, filterValid }) =>
                     value={priceExpM.value}
                     onBlur={priceExpM.onBlur}
                     onChange={priceExpM.onChange}
+                    error={expLessMoreDiff}
                     fullWidth
                     InputProps={{
                         inputComponent: priceExpM.render,
@@ -66,6 +81,7 @@ const PriceFilterHorizontal = ({ clear, setClear,filterGetter, filterValid }) =>
                     value={priceExpL.value}
                     onBlur={priceExpL.onBlur}
                     onChange={priceExpL.onChange}
+                    error={expLessMoreDiff}
                     fullWidth
                     InputProps={{
                         inputComponent: priceExpL.render,
@@ -79,6 +95,7 @@ const PriceFilterHorizontal = ({ clear, setClear,filterGetter, filterValid }) =>
                     value={priceSilvM.value}
                     onBlur={priceSilvM.onBlur}
                     onChange={priceSilvM.onChange}
+                    error={silvLessMoreDiff}
                     fullWidth
                     InputProps={{
                         inputComponent: priceSilvM.render,
@@ -92,6 +109,7 @@ const PriceFilterHorizontal = ({ clear, setClear,filterGetter, filterValid }) =>
                     value={priceSilvL.value}
                     onBlur={priceSilvL.onBlur}
                     onChange={priceSilvL.onChange}
+                    error={silvLessMoreDiff}
                     fullWidth
                     InputProps={{
                         inputComponent: priceSilvL.render,
