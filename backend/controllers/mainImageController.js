@@ -6,7 +6,7 @@ const messages = require("../message/databaseRelated");
 const fs = require("fs");
 //const { Op } = require("sequelize");
 
-class ImageController {
+class MainImageController {
     async create(req, res, next) {
         try {
             const { tankId } = req.body;
@@ -76,4 +76,4 @@ class ImageController {
 
 }
 
-module.exports = new ImageController();
+module.exports = new MainImageController();
