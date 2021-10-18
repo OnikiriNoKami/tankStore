@@ -53,6 +53,11 @@ const Image = sequelize.define('image', {
     title: {type: DataTypes.STRING, allowNull: false}
 })
 
+const MainImage = sequelize.define('mainImage', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    title : {type: DataTypes.STRING, allowNull: false},
+})
+
 const Storage = sequelize.define('storage', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     amount: {type: DataTypes.INTEGER, allowNull: false}
@@ -107,6 +112,9 @@ Status.hasMany(Tank)
 Tank.belongsTo(Status)
 
 Tank.hasMany(Image)
+Image.belongsTo(Tank)
+
+Tank.hasOne(MainImage)
 Image.belongsTo(Tank)
 
 Tank.hasOne(Storage)
