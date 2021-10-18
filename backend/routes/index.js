@@ -12,6 +12,7 @@ const userRouter = require('./userRoute')
 const storageRouter = require('./storageRoute')
 const imageRouter = require('./imageRoute')
 const basketRouter = require('./basketRoutes')
+const mainImageRouter = require('./mainImageRoutes')
 
 router.use('/user', userRouter)
 router.use('/module', moduleRouter)
@@ -24,4 +25,5 @@ router.use('/module_type', moduleTypeRouter)
 router.use('/storage', storageRouter)
 router.use('/images', imageRouter)
 router.use('/basket', basketRouter)
+router.use('/mainImage', mainImageRouter)
 module.exports = router
