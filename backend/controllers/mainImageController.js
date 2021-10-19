@@ -13,7 +13,7 @@ class MainImageController {
             const { file } = req.files;
             let fileName = uuid.v4() + ".jpg";
 
-            file.mv(path.resolve(__dirname, "..", "static", fileName));
+            file.mv(path.resolve(__dirname, "..", "static", "main",fileName));
             const img = await MainImage.create({
                 tankId,
                 title: fileName,
@@ -55,7 +55,7 @@ class MainImageController {
             } else {
                 try {
                     fs.unlink(
-                        path.resolve(__dirname, "..", "static", image.title),
+                        path.resolve(__dirname, "..", "static","main", image.title),
                         (errs) => {
                             if (errs) {
                                 return res.json({ message: errs.message });
