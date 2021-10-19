@@ -11,6 +11,7 @@ import {
     TANK_PATH,
     IMAGE_MULTIPLE_PATH,
     IMAGE_PATH,
+    MAIN_IMAGE_PATH,
 } from "../utils/routes";
 import { isRequired } from "../utils/errors";
 
@@ -76,13 +77,32 @@ export const imageMultipleSet = (
     token
 ) => {
     let formData = new FormData();
-    formData.append('tankId', tankId)
-    images.forEach(image=>{
-        formData.append('files', image)
-    })
-    return creator(
-        formData,
-        IMAGE_MULTIPLE_PATH,
-        token
-    );
+    formData.append("tankId", tankId);
+    images.forEach((image) => {
+        formData.append("files", image.image);
+    });
+    return creator(formData, IMAGE_MULTIPLE_PATH, token);
+};
+
+export const imageSingleSet = (
+    tankId = isRequired("Tank id"),
+    image = isRequired("Image"),
+    token
+) => {
+    let formData = new FormData();
+    formData.append("tankId", tankId);   
+    formData.append("file", image.image);
+    return creator(formData, IMAGE_PATH, token);
+};
+
+export const mainImageSet = (
+    tankId = isRequired("Tank id"),
+    image = isRequired("Main Image"),
+    token
+) => {
+    let formData = new FormData();
+    formData.append("tankId", tankId);
+    formData.append("file", image.image);
+
+    return creator(formData, MAIN_IMAGE_PATH, token);
 };

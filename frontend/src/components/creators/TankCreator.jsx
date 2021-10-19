@@ -6,7 +6,7 @@ import {
     Typography,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { imageMultipleSet, tankCreate } from "../../asyncActions/creation";
+import { imageMultipleSet, mainImageSet, tankCreate, imageSingleSet } from "../../asyncActions/creation";
 import useNationSelect from "../../hooks/customSelectHooks/useNationSelect";
 import useTankStatusSelect from "../../hooks/customSelectHooks/useTankStatusSelect";
 import useTankTypeSelect from "../../hooks/customSelectHooks/useTankTypeSelect";
@@ -15,6 +15,7 @@ import useNumberFormat from "../../hooks/useNumberFormat";
 import useImageUpload from "../../hooks/useImageUpload";
 import AddPhotoAlternate from "@material-ui/icons/AddPhotoAlternate";
 import ImageCarousel from "../ImageCarousel";
+import { useState } from "react";
 
 const TankCreator = () => {
     const title = useValidatedInput("", {
@@ -35,6 +36,7 @@ const TankCreator = () => {
     const tankStatus = useTankStatusSelect();
     const token = useSelector((state) => state.token.token);
     const dispatch = useDispatch();
+    const [checkedMain, setCheckedMain] = useState("");
     const handleClear = () => {
         title.clear();
         description.clear();
@@ -44,6 +46,7 @@ const TankCreator = () => {
         priceSilver.clear();
         priceExp.clear();
         images.clear();
+        setCheckedMain("");
     };
 
     const handleSubmit = async (e) => {
@@ -60,10 +63,35 @@ const TankCreator = () => {
                 token
             )
         );
-        if(result.id){
-            const imageResult = await dispatch(imageMultipleSet(result.id, images.value, token))
+        if (result.id) {
+            if(images.value.length > 1){
+                const imageResult = await dispatch(
+                    imageMultipleSet(result.id, images.value, token)
+                );
+            }
+
+            if(images.value.length === 1){
+                const imageResult = await dispatch(
+                    
+                    imageSingleSet(result.id, images[0].value, token)
+                );
+            }
+
+            if(checkedMain!==''){
+                const mainImgRes = await dispatch(
+                    mainImageSet(result.id, images.value.find(elem=>elem.id===checkedMain), token)
+                )
+            }
         }
         handleClear();
+    };
+
+    const handleChecked = (code) => {
+        if (checkedMain !== code) {
+            setCheckedMain(code);
+        } else {
+            setCheckedMain("");
+        }
     };
 
     return (
@@ -156,21 +184,42 @@ const TankCreator = () => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={10}>
-                        <Button
-                            variant="outlined"
-                            component="label"
-                            color="primary"
-                            endIcon={<AddPhotoAlternate />}
-                        >
-                            <Typography variant="body1">Add image</Typography>
-                            <input
-                                type="file"
-                                hidden
-                                onChange={images.onChange}
-                                onBlur={images.onBlur}
-                                accept="image/*"
-                            />
-                        </Button>
+                        <Grid container>
+                            <Grid item xs={12} sm={4} md={3}>
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    color="primary"
+                                    endIcon={<AddPhotoAlternate />}
+                                >
+                                    <Typography variant="body1">
+                                        Add image
+                                    </Typography>
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={images.onChange}
+                                        onBlur={images.onBlur}
+                                        accept="image/*"
+                                    />
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={8} md={9}>
+                                {images.value.length!==0 ? checkedMain === "" ? (
+                                    <Typography color='secondary' variant="h6">
+                                        Main image not choosed.
+                                    </Typography>
+                                ) : (
+                                    <Typography color='primary' variant="h6">
+                                        Main image choosed.
+                                    </Typography>
+                                ):
+                                <Typography color='secondary' variant="h6">
+                                        No images uploaded!
+                                    </Typography>
+                                }
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item xs={10} sm={10}>
                         <Grid container justifyContent="space-between">
@@ -213,7 +262,12 @@ const TankCreator = () => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={10}>
-                        <ImageCarousel images={images} dynamicHeight={true}/>
+                        <ImageCarousel
+                            images={images}
+                            checkedMain={checkedMain}
+                            handleChecked={handleChecked}
+                            dynamicHeight={true}
+                        />
                     </Grid>
                 </Grid>
             </form>
