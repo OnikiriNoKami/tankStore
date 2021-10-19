@@ -16,6 +16,7 @@ const useImageUpload = () => {
                 {
                     image: event.target.files[0],
                     url: URL.createObjectURL(event.target.files[0]),
+                    id: crypto.getRandomValues(new Uint16Array(4)).join('')
                 },
             ]);
         }
