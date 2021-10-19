@@ -1,7 +1,5 @@
 const sequelize = require('../db')
 const {DataTypes} = require('sequelize')
-const { SIGQUIT } = require('constants')
-const { databaseVersion } = require('../db')
 
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -115,7 +113,7 @@ Tank.hasMany(Image)
 Image.belongsTo(Tank)
 
 Tank.hasOne(MainImage)
-Image.belongsTo(Tank)
+MainImage.belongsTo(Tank)
 
 Tank.hasOne(Storage)
 Storage.belongsTo(Tank)
@@ -140,7 +138,8 @@ module.exports = {
     NationTankType,
     UserRole,
     BasketTank,
-    Storage
+    Storage,
+    MainImage,
 }
 
 

@@ -15,7 +15,7 @@ class ImageController {
 
             file.mv(path.resolve(__dirname, "..", "static", fileName));
             const img = await Image.create({
-                tankId,
+                tankId: tankId,
                 title: fileName,
             });
 
@@ -30,6 +30,7 @@ class ImageController {
             const { tankId } = req.body;
             const { files } = req.files;
             let message = "";
+
             if (files.length !== 0 && files.length <= 15) {
                 for (let file of files) {
                     if (file.size <= 26214400) {

@@ -13,10 +13,11 @@ class MainImageController {
             const { file } = req.files;
             let fileName = uuid.v4() + ".jpg";
 
-            file.mv(path.resolve(__dirname, "..", "static", "main",fileName));
+            file.mv(path.resolve(__dirname, "..", "static", "main", fileName));
+
             const img = await MainImage.create({
-                tankId,
                 title: fileName,
+                tankId: tankId,
             });
 
             return res.status(201).json(img);
@@ -55,7 +56,13 @@ class MainImageController {
             } else {
                 try {
                     fs.unlink(
-                        path.resolve(__dirname, "..", "static","main", image.title),
+                        path.resolve(
+                            __dirname,
+                            "..",
+                            "static",
+                            "main",
+                            image.title
+                        ),
                         (errs) => {
                             if (errs) {
                                 return res.json({ message: errs.message });
@@ -73,7 +80,6 @@ class MainImageController {
             return next(err);
         }
     }
-
 }
 
 module.exports = new MainImageController();
