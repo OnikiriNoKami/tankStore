@@ -14,19 +14,21 @@ const useNationSelect = () => {
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
     const [validInput, setValidInput] = useState(false);
-    const [def, setDef] = useState('');
+    const [def, setDef] = useState("");
     const [isDefault, setIsDefault] = useState(true);
     const dispatch = useDispatch();
     const nations = useSelector((state) => state.nations.nations);
 
     const toDefault = () => {
-        setSelected(def)
-    }
+        if (selected !== def) {
+            setSelected(def);
+        }
+    };
 
     const setDefault = (value) => {
-        setDef(value)
-        setSelected(value)
-    }
+        setDef(value);
+        setSelected(value);
+    };
 
     const handleDirty = () => {
         setDirty(true);
@@ -60,24 +62,24 @@ const useNationSelect = () => {
         } else {
             setError(false);
         }
-        if(selected === def){
+        if (selected === def) {
             setIsDefault(true);
         } else {
             setIsDefault(false);
         }
     }, [selected, dirty]);
 
-    useEffect(()=>{
-        if(dirty&&!error){
-            setValidInput(true)
+    useEffect(() => {
+        if (dirty && !error) {
+            setValidInput(true);
         } else {
-            setValidInput(false)
+            setValidInput(false);
         }
-    }, [dirty, error])
+    }, [dirty, error]);
 
     const render = () => (
         <Box sx={{ minWidth: 120, display: "flex", justifyContent: "center" }}>
-            <Box style={{ width: '100%' }}>
+            <Box style={{ width: "100%" }}>
                 <FormControl fullWidth>
                     <InputLabel id="nation-select-label">Nation</InputLabel>
                     <Select

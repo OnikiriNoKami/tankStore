@@ -43,8 +43,12 @@ const useNumberFormat = (defaultValue='') => {
     const onBlur = () => {
         setDirty(true)
     }
-
     
+    const toDefault = () => {
+        if(value!==def){
+            setValue(def)
+        }
+    }
 
     const clear = () => {
         if(dirty){
@@ -88,6 +92,8 @@ const useNumberFormat = (defaultValue='') => {
         dirty,
         setDefault,
         isDefault,
+        toDefault,
+        def,
     };
 };
 

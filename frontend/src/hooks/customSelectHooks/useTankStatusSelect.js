@@ -19,8 +19,10 @@ const useTankStatusSelect = () => {
     const [def, setDef] = useState('');
     const [isDefault, setIsDefault] = useState(true);
     const toDefault = () => {
-        setSelected(def)
-    }
+        if (selected !== def) {
+            setSelected(def);
+        }
+    };
     const setDefault = (value) => {
         setDef(value)
         setSelected(value)

@@ -18,6 +18,12 @@ const useValidatedInput = (initialValue, validations) => {
         setValue(value)
     }
 
+    const toDefault = () => {
+        if(value !== def){
+            setValue(def)
+        }
+    }
+
     const onBlur = (e) => {
         setIsDirty(true)
     }
@@ -48,6 +54,7 @@ const useValidatedInput = (initialValue, validations) => {
         isDirty,
         errorStatus,
         setDefaultValue,
+        toDefault,
         ...valid
     }
 }
