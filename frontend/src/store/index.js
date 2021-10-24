@@ -14,12 +14,16 @@ import { moduleTypeReducer } from "./ModuleTypeReducer";
 import { adminUsers } from "./AdminUsers";
 import { tankReducer } from "./TankStore";
 import { tanksReducer } from "./TanksStore";
+import { mainImageReducer } from "./MainImage";
+
+
 
 const mainReducer = combineReducers({
     user: userReducer,
     token: tokenReducer,
     status: statusReducer,
     tank: tankReducer,
+    mainImages: mainImageReducer,
     tanks: tanksReducer,
     users: adminUsers,
     nations: nationReducer,
