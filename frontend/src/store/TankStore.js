@@ -9,53 +9,73 @@ import {
     TANK_IMAGES_RESET_STATUSES,
 } from "../actions/TanksActions";
 
-const defaultState = {    
-        loading: false,
-        loaded: null,
-        tank: {
-            id: null,
-            title: null,
-            description: null,
-            priceSilver: null,
-            priceExp: null,
-            nationId: null,
-            tankTypeId: null,
-            statusId: null,
-        },
-        imagesLoading: false,
-        imagesLoaded: null,
-        images: [],
+const defaultState = {
+    loading: false,
+    loaded: null,
+    tank: {
+        id: '',
+        title: '',
+        description: '',
+        priceSilver: '',
+        priceExp: '',
+        nationId: '',
+        tankTypeId: '',
+        statusId: '',
+    },
+    imagesLoading: false,
+    imagesLoaded: null,
+    images: [],
 };
 
 export const tankReducer = (state = defaultState, action) => {
     switch (action.type) {
-        case TANK_LOADED: 
-            return { ...state, loaded: action.payload}
+        case TANK_LOADED:
+            return { ...state, loaded: action.payload };
         case TANK_LOADING:
-            return { ...state, loading: action.payload}
+            return { ...state, loading: action.payload };
         case TANK_SET:
-            return { ...state, tank:{...action.payload}}
+            return {
+                ...state,
+                tank: {
+                    id: action.payload.id,
+                    title: action.payload.title,
+                    description: action.payload.description,
+                    priceSilver: action.payload.price_silver,
+                    priceExp: action.payload.price_exp,
+                    nationId: action.payload.nationId,
+                    tankTypeId: action.payload.tankTypeId,
+                    statusId: action.payload.statusId,
+                },
+            };
         case TANK_RESET_STATUSES:
-            return { ...state, loading: false, loaded: null}
-        case TANK_IMAGES_LOADED: 
-            return { ...state, loaded: action.payload}
+            return { ...state, loading: false, loaded: null };
+        case TANK_IMAGES_LOADED:
+            return { ...state, loaded: action.payload };
         case TANK_IMAGES_LOADING:
-            return { ...state, loading: action.payload}
+            return { ...state, loading: action.payload };
         case TANK_IMAGES_SET:
-            return { ...state, images: action.payload}
+            return { ...state, images: action.payload };
         case TANK_IMAGES_RESET_STATUSES:
-            return { ...state, loading: false, loaded: null}
+            return { ...state, loading: false, loaded: null };
 
         default:
             return state;
     }
 };
 
-export const tankLoaded = (payload) => ({type: TANK_LOADED, payload})
-export const tankLoading = (payload) => ({type: TANK_LOADING, payload})
-export const tankSet = (payload) => ({type: TANK_SET, payload})
-export const tankResetStatuses = () => ({type: TANK_RESET_STATUSES})
-export const tankImagesLoading = (payload) => ({type: TANK_IMAGES_LOADING, payload})
-export const tankImagesLoaded = (payload) => ({type: TANK_IMAGES_LOADED, payload})
-export const tankImagesSet = (payload) => ({type: TANK_IMAGES_SET, payload})
-export const tankImagesResetStatuses = () => ({type: TANK_IMAGES_RESET_STATUSES})
+export const tankLoaded = (payload) => ({ type: TANK_LOADED, payload });
+export const tankLoading = (payload) => ({ type: TANK_LOADING, payload });
+export const tankSet = (payload) => ({ type: TANK_SET, payload });
+export const tankResetStatuses = () => ({ type: TANK_RESET_STATUSES });
+export const tankImagesLoading = (payload) => ({
+    type: TANK_IMAGES_LOADING,
+    payload,
+});
+export const tankImagesLoaded = (payload) => ({
+    type: TANK_IMAGES_LOADED,
+    payload,
+});
+export const tankImagesSet = (payload) => ({ type: TANK_IMAGES_SET, payload });
+export const tankImagesResetStatuses = () => ({
+    type: TANK_IMAGES_RESET_STATUSES,
+});
