@@ -30,14 +30,15 @@ const useNumberFormat = (defaultValue='') => {
     const [validInput, setValidInput] = useState(false);
     const [def, setDef]= useState(defaultValue);
     const [isDefault, setIsDefault] = useState(true);
-    const setDefault = (value) => {
-        setDef(value);
-        setValue(value);
-    }
 
     const onChange = (event) => {
         setValue(event.target.value);
     };
+
+    const setDefault = (value) => {
+        setDef(value);
+        setValue(value);
+    }
 
     const onBlur = () => {
         setDirty(true)
