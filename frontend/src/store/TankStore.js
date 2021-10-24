@@ -30,21 +30,21 @@ const defaultState = {
 export const tankReducer = (state = defaultState, action) => {
     switch (action.type) {
         case TANK_LOADED: 
-            return { ...state, tank: { ...state.tank, loaded: action.payload}}
+            return { ...state, loaded: action.payload}
         case TANK_LOADING:
-            return { ...state, tank: { ...state.tank, loading: action.payload}}
+            return { ...state, loading: action.payload}
         case TANK_SET:
-            return { ...state, tank: { ...state.tank, tank:{...action.payload}}}
+            return { ...state, tank:{...action.payload}}
         case TANK_RESET_STATUSES:
-            return { ...state, tank: { ...state.tank, loading: false, loaded: null}}
+            return { ...state, loading: false, loaded: null}
         case TANK_IMAGES_LOADED: 
-            return { ...state, tank: { ...state.tank, loaded: action.payload}}
+            return { ...state, loaded: action.payload}
         case TANK_IMAGES_LOADING:
-            return { ...state, tank: { ...state.tank, loading: action.payload}}
+            return { ...state, loading: action.payload}
         case TANK_IMAGES_SET:
-            return { ...state, tank: { ...state.tank, images: action.payload}}
+            return { ...state, images: action.payload}
         case TANK_IMAGES_RESET_STATUSES:
-            return { ...state, tank: { ...state.tank, loading: false, loaded: null}}
+            return { ...state, loading: false, loaded: null}
 
         default:
             return state;
