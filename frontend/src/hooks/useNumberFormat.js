@@ -28,6 +28,12 @@ const useNumberFormat = (defaultValue='') => {
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
     const [validInput, setValidInput] = useState(false);
+    const [def, setDef]= useState(defaultValue);
+    const [isDefault, setIsDefault] = useState(true);
+    const setDefault = (value) => {
+        setDef(value);
+        setValue(value);
+    }
 
     const onChange = (event) => {
         setValue(event.target.value);
@@ -36,6 +42,8 @@ const useNumberFormat = (defaultValue='') => {
     const onBlur = () => {
         setDirty(true)
     }
+
+    
 
     const clear = () => {
         if(dirty){
@@ -50,6 +58,12 @@ const useNumberFormat = (defaultValue='') => {
             setError(true)
         } else {
             setError(false)
+        }
+
+        if(value===def){
+            setIsDefault(true)
+        } else {
+            setIsDefault(false)
         }
     }, [value, dirty])
 
@@ -71,6 +85,8 @@ const useNumberFormat = (defaultValue='') => {
         error,
         validInput,
         dirty,
+        setDefault,
+        isDefault,
     };
 };
 
