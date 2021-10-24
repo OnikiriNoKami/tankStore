@@ -15,6 +15,7 @@ import {
     tankByIdFetchEnd,
     tankImagesFetchEnd,
     tanksFetchEnd,
+    mainImageFetchEnd,
 } from "./fetcherEnd";
 import { moduleTypesLoading } from "../store/ModuleTypeReducer";
 import { usersLoading } from "../store/AdminUsers";
@@ -30,19 +31,14 @@ import {
     TANK_PATH,
     IMAGE_PATH,
     TANKS_PATH,
+    MAIN_IMAGE_PATH,
 } from "../utils/routes";
 import { tankImagesLoading, tankLoading } from "../store/TankStore";
 import { tanksLoading } from "../store/TanksStore";
-
-const defPagination = {
-    used: false,
-    offset: null,
-    limit: null,
-};
+import { mainImageLoading } from "../store/MainImage";
 
 const fetcher =
-    (path = "", pathFull = "", headers = {}) =>
-    async (dispatch) => {
+    (path = "", pathFull = "", headers = {}) => async (dispatch) => {
         const cases = {
             [NATION_PATH]: (data, success) => {
                 dispatch(nationFetchEnd(data, success));
@@ -73,7 +69,10 @@ const fetcher =
             },
             [TANKS_PATH]: (data, success) => {
                 dispatch(tanksFetchEnd(data, success));
-            }
+            },
+            [MAIN_IMAGE_PATH]: (data, success) => {
+                dispatch(mainImageFetchEnd(data, success));
+            },
 
         };
         try {
@@ -149,3 +148,9 @@ export const tankImagesFetch = (tankId) => async (dispatch) => {
     dispatch(tankImagesLoading(true));
     dispatch(fetcher(IMAGE_PATH, fullPath));
 };
+
+export const mainImageFetch = (tankId) => async (dispatch) => {
+    const fullPath = `${MAIN_IMAGE_PATH}/${tankId}`;
+    dispatch(mainImageLoading(true));
+    dispatch(fetcher(MAIN_IMAGE_PATH, fullPath));
+}

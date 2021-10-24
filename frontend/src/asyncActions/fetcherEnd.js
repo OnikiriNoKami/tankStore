@@ -45,6 +45,15 @@ import {
     tankSet,
 } from "../store/TankStore";
 
+import {
+    mainImageSet,
+    mainImageLoaded,
+    mainImageLoading,
+    mainImagesSet,
+    mainImagesLoaded,
+    mainImagesLoading,    
+} from "../store/MainImage";
+
 
 export const nationFetchEnd = (data, success) => async (dispatch) => {
     if (success) {
@@ -149,7 +158,6 @@ export const tankByIdFetchEnd = (data, success) => async (dispatch) => {
     }
 };
 
-
 export const tankImagesFetchEnd = (data, success) => (dispatch) => {
     if (success) {
         dispatch(tankImagesSet(data));
@@ -160,3 +168,26 @@ export const tankImagesFetchEnd = (data, success) => (dispatch) => {
         dispatch(tankImagesLoading(false));
     }
 };
+
+export const mainImageFetchEnd = (data, success) => (dispatch) => {
+    if(success){
+        dispatch(mainImageSet(data));
+        dispatch(mainImageLoading(false));
+        dispatch(mainImageLoaded(true));
+    } else {
+        dispatch(mainImageLoading(false));
+        dispatch(mainImageLoaded(true));
+    }
+}
+
+export const mainImagesFetchEnd = (data, success) => (dispatch) => {
+    if(success){
+        dispatch(mainImagesSet(data));
+        dispatch(mainImagesLoading(false));
+        dispatch(mainImagesLoaded(true));
+    } else {
+        dispatch(mainImagesLoading(false));
+        dispatch(mainImagesLoaded(true));
+    }
+}
+
