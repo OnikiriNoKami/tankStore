@@ -18,6 +18,7 @@ import CombinedMonitors from '../components/monitors/CombinedMonitors';
 import TankCreator from '../components/creators/TankCreator';
 import TankList from '../components/updaters/lists/TankList';
 import useQuery from '../hooks/useQuery';
+import TankUpdater from '../components/updaters/pages/TankUpdater';
 
 
 const Admin = () => {
@@ -61,7 +62,7 @@ const Admin = () => {
 
             {action === 'modify'&& <>
                 
-                {type===TANK_CODE&&<Box className={classes.boxNoFixedHeigth}><TankCreator/></Box>}
+                {type===TANK_CODE&&<Box className={classes.boxNoFixedHeigth}><TankUpdater tankId={tankId}/></Box>}
                 
                 </>
             }
