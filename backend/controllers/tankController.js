@@ -142,7 +142,7 @@ class TankController {
         }
     }
 
-    async getOne(req, res) {
+    async getOne(req, res, next) {
         try {
             const { id } = req.params;
 
@@ -166,7 +166,7 @@ class TankController {
             }
             return res.json(tank);
         } catch (err) {
-            return res.json({ error_message: err.message });
+            return next(err);
         }
     }
 }
