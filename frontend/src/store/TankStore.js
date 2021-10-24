@@ -50,13 +50,13 @@ export const tankReducer = (state = defaultState, action) => {
         case TANK_RESET_STATUSES:
             return { ...state, loading: false, loaded: null };
         case TANK_IMAGES_LOADED:
-            return { ...state, loaded: action.payload };
+            return { ...state, imagesLoaded: action.payload };
         case TANK_IMAGES_LOADING:
-            return { ...state, loading: action.payload };
+            return { ...state, imagesLoading: action.payload };
         case TANK_IMAGES_SET:
             return { ...state, images: action.payload };
         case TANK_IMAGES_RESET_STATUSES:
-            return { ...state, loading: false, loaded: null };
+            return { ...state, imagesLoading: false, imagesLoaded: null };
 
         default:
             return state;

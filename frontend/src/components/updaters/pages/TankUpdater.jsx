@@ -6,11 +6,6 @@ import {
     Typography,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    imageMultipleSet,
-    mainImageSet,
-    imageSingleSet,
-} from "../../../asyncActions/creation";
 import useNationSelect from "../../../hooks/customSelectHooks/useNationSelect";
 import useTankStatusSelect from "../../../hooks/customSelectHooks/useTankStatusSelect";
 import useTankTypeSelect from "../../../hooks/customSelectHooks/useTankTypeSelect";
@@ -19,7 +14,7 @@ import useNumberFormat from "../../../hooks/useNumberFormat";
 import useImageUpload from "../../../hooks/useImageUpload";
 import AddPhotoAlternate from "@material-ui/icons/AddPhotoAlternate";
 import ImageCarousel from "../../ImageCarousel";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     tankByIdFetch,
     tankImagesFetch,
@@ -30,6 +25,9 @@ const TankUpdater = ({ tankId, ...props }) => {
     const tankLoaded = useSelector((state) => state.tank.loaded);
     const tank = useSelector((state) => state.tank.tank);
     const tankImages = useSelector((state) => state.tank.images);
+    const tankImagesLoaded = useSelector((state) => state.tank.imagesLoaded)
+    const mainImage = useSelector((state) => state.mainImages.image)
+
     const title = useValidatedInput("", {
         isEmpty: true,
         minLength: 2,
@@ -40,7 +38,7 @@ const TankUpdater = ({ tankId, ...props }) => {
         minLength: 2,
         maxLength: 900,
     });
-    const images = useImageUpload();
+    const imagesInCaroucel = useImageUpload();
     const priceSilver = useNumberFormat();
     const priceExp = useNumberFormat();
     const nation = useNationSelect();
@@ -48,13 +46,13 @@ const TankUpdater = ({ tankId, ...props }) => {
     const tankStatus = useTankStatusSelect();
     const token = useSelector((state) => state.token.token);
     const handleReset = () => {
-        title.toDefault()
-        description.toDefault()
-        priceSilver.toDefault()
-        priceExp.toDefault()
-        nation.toDefault()
-        tankType.toDefault()
-        tankStatus.toDefault()
+        title.toDefault();
+        description.toDefault();
+        priceSilver.toDefault();
+        priceExp.toDefault();
+        nation.toDefault();
+        tankType.toDefault();
+        tankStatus.toDefault();
     };
 
     const dispatch = useDispatch();
@@ -78,30 +76,35 @@ const TankUpdater = ({ tankId, ...props }) => {
     };
 
     const prepareDefault = () => {
-            nation.setDefault(tank.nationId||'');
-            tankType.setDefault(tank.tankTypeId||'');
-            tankStatus.setDefault(tank.statusId||'');
-            title.setDefaultValue(tank.title||"");
-            description.setDefaultValue(tank.description||"");
-            priceExp.setDefault(tank.priceExp.toString()||"");
-            priceSilver.setDefault(tank.priceSilver.toString()||"");
-    }
+        nation.setDefault(tank.nationId || "");
+        tankType.setDefault(tank.tankTypeId || "");
+        tankStatus.setDefault(tank.statusId || "");
+        title.setDefaultValue(tank.title || "");
+        description.setDefaultValue(tank.description || "");
+        priceExp.setDefault(tank.priceExp.toString() || "");
+        priceSilver.setDefault(tank.priceSilver.toString() || "");
+    };
 
     useEffect(() => {
         loadTank();
         loadImages();
         loadMainImage();
+
     }, []);
 
     useEffect(() => {
         if (tankLoaded) {
-            prepareDefault()
+            prepareDefault();
         }
     }, [tankLoaded, tank]);
 
-    const handleSubmit = () => {
+    useEffect(()=>{
+        if(tankImagesLoaded){
+            imagesInCaroucel.addImages(tankImages)
+        }
+    }, [tankImagesLoaded])
 
-    }
+    const handleSubmit = () => {};
 
     return (
         <Container style={{ display: "flex", justifyContent: "center" }}>
@@ -148,7 +151,7 @@ const TankUpdater = ({ tankId, ...props }) => {
                                     error={priceSilver.error}
                                     onChange={priceSilver.onChange}
                                     InputLabelProps={{
-                                        shrink: true
+                                        shrink: true,
                                     }}
                                     fullWidth
                                     InputProps={{
@@ -166,7 +169,7 @@ const TankUpdater = ({ tankId, ...props }) => {
                                     error={priceExp.error}
                                     onChange={priceExp.onChange}
                                     InputLabelProps={{
-                                        shrink: true
+                                        shrink: true,
                                     }}
                                     fullWidth
                                     InputProps={{
@@ -213,15 +216,13 @@ const TankUpdater = ({ tankId, ...props }) => {
                                     <input
                                         type="file"
                                         hidden
-                                        onChange={images.onChange}
-                                        onBlur={images.onBlur}
+                                        onChange={imagesInCaroucel.onChange}
+                                        onBlur={imagesInCaroucel.onBlur}
                                         accept="image/*"
                                     />
                                 </Button>
                             </Grid>
-                            <Grid item xs={12} sm={8} md={9}>
-                                
-                            </Grid>
+                            <Grid item xs={12} sm={8} md={9}></Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={10} sm={10}>
@@ -261,12 +262,16 @@ const TankUpdater = ({ tankId, ...props }) => {
                                 >
                                     Default
                                 </Button>
-                                
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={10}>
-                        
+                        <ImageCarousel
+                            images={imagesInCaroucel}
+                            checkedMain={false}
+                            handleChecked={() => {}}
+                            dynamicHeight={true}
+                        />
                     </Grid>
                 </Grid>
             </form>
