@@ -62,7 +62,7 @@ const Admin = () => {
 
             {action === 'modify'&& <>
                 
-                {type===TANK_CODE&&<Box className={classes.boxNoFixedHeigth}><TankUpdater tankId={tankId}/></Box>}
+                {type===TANK_CODE&&<Box className={classes.boxNoFixedHeigth}><TankUpdater tankId={tankId?.value}/></Box>}
                 
                 </>
             }
