@@ -14,8 +14,19 @@ const useNationSelect = () => {
     const [dirty, setDirty] = useState(false);
     const [error, setError] = useState(false);
     const [validInput, setValidInput] = useState(false);
+    const [def, setDef] = useState('');
+    const [isDefault, setIsDefault] = useState(true);
     const dispatch = useDispatch();
     const nations = useSelector((state) => state.nations.nations);
+
+    const toDefault = () => {
+        setSelected(def)
+    }
+
+    const setDefault = (value) => {
+        setDef(value)
+        setSelected(value)
+    }
 
     const handleDirty = () => {
         setDirty(true);
@@ -48,6 +59,11 @@ const useNationSelect = () => {
             setError(true);
         } else {
             setError(false);
+        }
+        if(selected === def){
+            setIsDefault(true);
+        } else {
+            setIsDefault(false);
         }
     }, [selected, dirty]);
 
@@ -91,7 +107,10 @@ const useNationSelect = () => {
         selected,
         dirty,
         clear,
-        validInput
+        validInput,
+        toDefault,
+        setDefault,
+        isDefault,
     };
 };
 
